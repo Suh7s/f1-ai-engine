@@ -1,3 +1,19 @@
+# F1 Engine V2 — evidence-first local race control
+
+The replacement implementation is on this branch in `v2/f1engine/` and `web/`. Start with the [V2 guide](docs/v2/README.md) and [release evidence](docs/v2/release-evidence.md).
+
+```sh
+./scripts/setup-v2.sh
+. .venv-v2/bin/activate
+f1engine app
+```
+
+Use `f1engine app --demo` for fictional offline fixtures. Predictive superiority is not claimed without a named evaluation and a passed promotion gate.
+
+---
+
+The original README and implementation below are preserved as historical reference. Their previous “production-ready” description is not a V2 release claim.
+
 # F1 AI Prediction Engine
 
 Production-ready Python project for end-to-end Formula 1 race and championship prediction:

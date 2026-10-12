@@ -1,0 +1,13 @@
+{
+  "checked_at": "2026-10-12T07:04:34.559029+00:00",
+  "code_version": "92da2de4ced93d745bd4cdeca061bc9afface9ae2f9f3a4f8eee529c320c26dc",
+  "isolated_wheel_install": true,
+  "health_status": 200,
+  "ui_status": 200,
+  "ui_bundled": true,
+  "bundled_assets_verified": 3,
+  "private_data_required": false,
+  "python_package_version": "2.0.0",
+  "transport": "In-process ASGI client; local socket binding was blocked by the execution sandbox.",
+  "wheel_sha256": "d73061e8880951b995afa62dad55fb45ee697c323f44f494a9a0647be1cc19fb"
+}
