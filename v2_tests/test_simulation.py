@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from f1engine.simulation import sample_race, forecast, simulate_season
+from f1engine.simulation import sample_race, forecast, simulate_season, reproduce
 from f1engine.contracts import SeasonRequest, Unavailable
 from f1engine.rules import Rules, countback_order, classification
 from f1engine.demo import DEMO_CUTOFF
@@ -92,13 +92,32 @@ def test_season_consistency_and_already_completed_sprint(store):
 def test_future_actuals_cannot_change_historical_season(store):
     r = SeasonRequest(season=2026, as_of_utc=DEMO_CUTOFF, simulations=200)
     a = simulate_season(store, r, persist=False)
-    changes = [
-        {**x, "points": 999, "position": 1} for x in store.table("results") if x["event_id"] == "2026-04"
+    future = [
+        {**x, "event_id": "2026-04", "available_at": "2026-04-19T17:00:00Z"}
+        for x in store.table("results")
+        if x["event_id"] == "2026-02" and x["session"] == "race"
     ]
-    store.publish({"results": changes}, illustrative=True)
+    assert len(future) == len(a["drivers"])
+    store.publish({"results": future}, illustrative=True)
     b = simulate_season(store, r, persist=False)
     assert a["drivers"] == b["drivers"]
     assert a["constructors"] == b["constructors"]
+    store.publish({"results": [{**x, "points": 999, "position": 1} for x in future]}, illustrative=True)
+    c = simulate_season(store, r, persist=False)
+    assert a["drivers"] == c["drivers"]
+    assert a["constructors"] == c["constructors"]
+
+
+def test_championship_revisions_are_linked_and_cannot_cross_seasons(store):
+    request = SeasonRequest(season=2026, as_of_utc=DEMO_CUTOFF, simulations=200)
+    original = simulate_season(store, request)
+    revised = simulate_season(store, request.model_copy(update={"seed": 43, "revision_of": original["id"]}))
+    assert revised["request"]["revision_of"] == original["id"]
+    assert reproduce(store, revised["id"])["match"]
+    with pytest.raises(ValueError, match="same forecast"):
+        store.save_forecast({**revised, "request": {**revised["request"], "season": 2025}})
+    assert len(store.forecasts()) == 2
+    assert store.verify_ledger()["valid"]
 
 
 def test_disqualification_distinct_from_retirement():

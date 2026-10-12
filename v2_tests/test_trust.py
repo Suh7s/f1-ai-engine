@@ -19,6 +19,15 @@ def test_startup_without_files(tmp_path):
         assert client.get("/api/v1/events").json() == []
 
 
+def test_source_changes_require_restart_before_saving_evidence(store, request_, monkeypatch):
+    import f1engine.contracts as contracts
+
+    monkeypatch.setattr(contracts, "_source_code_version", lambda: "edited-source")
+    with pytest.raises(Unavailable, match="restart"):
+        forecast(store, request_)
+    assert not store.forecasts()
+
+
 def test_history_and_telemetry_preserved(store):
     old = store.current_version()
     counts = {k: len(store.table(k)) for k in ("results", "laps", "entries")}
@@ -51,14 +60,20 @@ def test_integrity_validation(store):
 def test_future_records_cannot_change_earlier_features(store, request_):
     a = build_features(store, request_)
     rows = [
-        {**r, "position": 99, "points": 1000}
+        {**r, "event_id": "2026-04", "available_at": "2026-04-19T17:00:00Z"}
         for r in store.table("results")
-        if timestamp(r["available_at"]) > request_.as_of_utc
+        if r["event_id"] == "2026-02" and r["session"] == "race"
     ]
+    assert len(rows) == len(a["rows"])
+    assert all(timestamp(r["available_at"]) > request_.as_of_utc for r in rows)
     store.publish({"results": rows}, illustrative=True)
     b = build_features(store, request_)
     assert a["feature_hash"] == b["feature_hash"]
     np.testing.assert_allclose(matrix(a), matrix(b), equal_nan=True)
+    store.publish({"results": [{**r, "position": 99, "points": 1000} for r in rows]}, illustrative=True)
+    c = build_features(store, request_)
+    assert a["feature_hash"] == c["feature_hash"]
+    np.testing.assert_allclose(matrix(a), matrix(c), equal_nan=True)
 
 
 def test_training_inference_same_snapshot(store, request_):

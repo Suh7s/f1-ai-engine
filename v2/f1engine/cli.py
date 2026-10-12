@@ -23,6 +23,8 @@ def main():
     sub.add_parser("jobs")
     sync = sub.add_parser("sync")
     sync.add_argument("season", type=int)
+    standings = sub.add_parser("standings")
+    standings.add_argument("event_id", help="Official standings after this round, e.g. 2024-17")
     for name in ("experiment", "holdout"):
         p = sub.add_parser(name)
         p.add_argument("--parameters", default="{}", help="JSON parameters")
@@ -88,6 +90,8 @@ def main():
         result = jobs.jobs(store)
     elif args.command == "sync":
         result = jobs.submit(store, "sync_season", {"season": args.season})
+    elif args.command == "standings":
+        result = jobs.submit(store, "sync_standings", {"event_id": args.event_id})
     elif args.command in {"experiment", "holdout"}:
         result = jobs.submit(store, args.command, json.loads(args.parameters))
     elif args.command in {"cancel", "resume"}:

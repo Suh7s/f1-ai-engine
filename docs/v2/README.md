@@ -42,6 +42,7 @@ Every forecast stores information cutoff, stage, exact input dataset, feature ha
 
 ```sh
 f1engine sync 2024
+f1engine standings 2024-17
 f1engine jobs
 f1engine cancel JOB_ID
 f1engine resume JOB_ID
@@ -71,11 +72,17 @@ Submit additional source jobs through `POST /api/v1/jobs`:
 {"kind":"fastf1","parameters":{"event_id":"2024-24","session":"FP2"}}
 ```
 
-Other job kinds: `sync_season`, `weather`, `climate`, `openf1`, `forecast`, `championship`, `experiment`, `holdout`, `score`, `benchmark`. The SSE endpoint `/api/v1/jobs/stream` delivers observed progress. OpenF1 supplementary jobs require an event and session key and refuse active-session paid access. FastF1 detailed sessions begin in 2018 and never request high-frequency car telemetry by default.
+Other job kinds: `sync_season`, `sync_standings`, `weather`, `climate`, `openf1`, `forecast`, `championship`, `experiment`, `holdout`, `score`, `benchmark`. The SSE endpoint `/api/v1/jobs/stream` delivers observed progress. OpenF1 supplementary jobs require an event and session key and refuse active-session paid access. FastF1 detailed sessions begin in 2018 and never request high-frequency car telemetry by default.
 
-Jolpica supplies calendars, entries reconstructed from results, race/qualifying/sprint results and official standings. Historical publication times are generally unavailable: the recorded session-end and entry-availability times are disclosed reconstructions, not archival proof of publication. Official standings ingestion currently captures the latest round for a season. A historical championship cutoff requires its matching official standings snapshot; otherwise it is unavailable. Source conflicts follow an explicit recorded precedence (Jolpica, FastF1, OpenF1) and same-source revisions retain earlier snapshots.
+Jolpica supplies calendars, entries reconstructed from results, race/qualifying/sprint results and official standings. Historical publication times are generally unavailable: the recorded session-end and entry-availability times are disclosed reconstructions, not archival proof of publication. Season ingestion captures the latest standings. Use `f1engine standings YEAR-ROUND` or a `sync_standings` job with `event_id` to acquire one historical round. Driver and constructor snapshots publish together only after both validate; other rounds remain intact. A historical championship cutoff without its matching official standings snapshot is unavailable. Source conflicts follow an explicit recorded precedence (Jolpica, FastF1, OpenF1) and same-source revisions retain earlier snapshots.
+
+FastF1 lap times use absolute lap dates when supplied. Otherwise the adapter subtracts the session clock origin before anchoring to the scheduled start; it labels this reconstruction and retains the timing references. Actual start delays and publication times remain unverified in that fallback. A stream-relative lap time must never simply be added to the scheduled start.
 
 Open-Meteo forecasts are captured when retrieved and never replaced with observed race weather. A separate climate job computes the fraction of days with at least 1 mm precipitation in the event month across five prior years. That is an explicitly labelled daily climate prior, not an event-hour forecast. Missing weather/climate remains missing; learned imputation uses training data only.
+
+The weather adapter's current `issued_at` field records local capture time, not the provider's internal model issuance time. Source retrieval timestamps establish when this application obtained the forecast. No historical weather accuracy claim has been made from these records.
+
+Both race and championship requests accept `revision_of`. Corrections must identify an existing forecast for the same event or season and kind. Restart the application after editing its Python source: new processes reject evidence generation if their source files change while they are running. To reproduce evidence from an older code version, restore the recorded source checkpoint and restart that process.
 
 ## Free recorder and replay
 

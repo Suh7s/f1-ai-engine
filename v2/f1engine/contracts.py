@@ -80,6 +80,7 @@ class SeasonRequest(StrictModel):
     data_version: str | None = None
     simulations: int = Field(default=10000, ge=100, le=100000)
     seed: int = Field(default=42, ge=0, le=2**32 - 1)
+    revision_of: str | None = None
 
     @field_validator("as_of_utc")
     @classmethod
@@ -143,7 +144,16 @@ def digest(value: Any) -> str:
     return hashlib.sha256(canonical(value).encode()).hexdigest()
 
 
-def code_version() -> str:
-    # Hash actual source, including uncommitted edits, rather than claiming HEAD is the running code.
+def _source_code_version() -> str:
     source = Path(__file__).parent
     return digest({p.name: p.read_text() for p in sorted(source.glob("*.py"))})
+
+
+_LOADED_CODE_VERSION = _source_code_version()
+
+
+def code_version() -> str:
+    # An already-imported process must not claim newly edited files as its running code.
+    if _source_code_version() != _LOADED_CODE_VERSION:
+        raise Unavailable("Application source changed while running; restart before generating new evidence")
+    return _LOADED_CODE_VERSION

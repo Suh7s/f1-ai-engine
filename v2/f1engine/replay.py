@@ -38,10 +38,13 @@ def replay(messages: list[dict], event_id: str, as_of_utc: str, stale_after_seco
     visible = {}
     duplicates = 0
     for raw in messages:
-        # Parsing is not forecasting; later records never enter visible state or its hash.
-        m = Message(**raw)
-        if m.event_id != event_id or m.received_at > cutoff or m.occurred_at > cutoff:
+        # Inspect only the routing/arrival envelope before validating the payload.
+        # A malformed future payload must not change an earlier replay's availability.
+        if raw.get("event_id") != event_id or timestamp(raw["received_at"]) > cutoff:
             continue
+        if timestamp(raw["occurred_at"]) > cutoff:
+            continue
+        m = Message(**raw)
         if m.received_at < m.occurred_at:
             raise ValueError("Message received before its observation timestamp")
         old = visible.get(m.id)

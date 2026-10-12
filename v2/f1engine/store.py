@@ -244,10 +244,11 @@ class Store:
                 old = json.loads(
                     db.execute("SELECT body FROM forecasts WHERE id=?", (revision,)).fetchone()["body"]
                 )
+                identity = "season" if record.get("kind") == "championship" else "event_id"
                 if old.get("kind") != record.get("kind") or old.get("request", {}).get(
-                    "event_id"
-                ) != record.get("request", {}).get("event_id"):
-                    raise ValueError("A revision must refer to the same forecast event and kind")
+                    identity
+                ) != record.get("request", {}).get(identity):
+                    raise ValueError("A revision must refer to the same forecast event/season and kind")
             previous = db.execute("SELECT hash FROM forecasts ORDER BY rowid DESC LIMIT 1").fetchone()
             previous_hash = previous["hash"] if previous else None
             record_hash = digest({"previous_hash": previous_hash, "body": record})

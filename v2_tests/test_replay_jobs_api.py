@@ -36,6 +36,18 @@ def test_corrected_message_visible_only_when_received():
     assert next(d for d in after["drivers"] if d["driver_id"] == correction["driver_id"])["elapsed"] == 999
 
 
+@pytest.mark.parametrize("future_field", ["received_at", "occurred_at"])
+def test_malformed_future_payload_cannot_break_earlier_replay(future_field):
+    messages = replay_fixture(drivers=12)[:24]
+    at = messages[-1]["received_at"]
+    future_time = (timestamp(at) + timedelta(seconds=2)).isoformat()
+    malformed = {**messages[-1], "id": "future-invalid", "lap": -1, future_field: future_time}
+    assert replay(messages + [malformed], DEMO_EVENT, at) == replay(messages, DEMO_EVENT, at)
+    # Once the observation is visible, invalid input must fail transparently.
+    with pytest.raises(ValueError):
+        replay(messages + [malformed], DEMO_EVENT, future_time)
+
+
 def test_conflicting_duplicate_rejected():
     m = replay_fixture(drivers=12)[:12]
     with pytest.raises(ValueError, match="Conflicting"):

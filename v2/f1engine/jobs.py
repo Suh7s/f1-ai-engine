@@ -13,6 +13,7 @@ from .store import Store
 
 KINDS = {
     "sync_season",
+    "sync_standings",
     "weather",
     "climate",
     "fastf1",
@@ -246,11 +247,13 @@ def run(store, identifier):
 def dispatch(store, kind, p, check, progress, checkpoint):
     from .contracts import ForecastRequest, SeasonRequest
 
-    if kind in {"sync_season", "weather", "climate", "fastf1", "openf1"}:
-        from .sources import sync_season, sync_weather, sync_fastf1, sync_openf1, sync_climate
+    if kind in {"sync_season", "sync_standings", "weather", "climate", "fastf1", "openf1"}:
+        from .sources import sync_season, sync_standings, sync_weather, sync_fastf1, sync_openf1, sync_climate
 
         if kind == "sync_season":
             return {"data_version": sync_season(store, int(p["season"]), check, progress)}
+        if kind == "sync_standings":
+            return {"data_version": sync_standings(store, p["event_id"], check)}
         if kind == "climate":
             return {"data_version": sync_climate(store, p["event_id"], check)}
         if kind == "weather":

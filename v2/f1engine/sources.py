@@ -324,6 +324,58 @@ def sync_weather(store: Store, event_id: str, check=lambda: None) -> str:
         client.close()
 
 
+def sync_standings(store: Store, event_id: str, check=lambda: None) -> str:
+    """Acquire one official historical round, without overwriting other snapshots."""
+    event = next((e for e in store.table("events") if e["event_id"] == event_id), None)
+    if not event:
+        raise Unavailable("Sync the calendar before requesting a standings snapshot")
+    season, round_number = event["season"], event["round"]
+    available = (timestamp(event["start_at"]) + timedelta(hours=4)).isoformat()
+    if timestamp(available) > timestamp(now_utc()):
+        raise Unavailable("Official standings cannot be requested for an unfinished round")
+    changes = {"standings": [], "constructor_standings": []}
+    client = PublicClient(store, check)
+    try:
+        for suffix, group, target, identity in (
+            ("driverStandings", "DriverStandings", "standings", "driver_id"),
+            ("constructorStandings", "ConstructorStandings", "constructor_standings", "team_id"),
+        ):
+            for table, source in _race_payloads(client, f"{season}/{round_number}/{suffix}"):
+                for snapshot in table.get("StandingsLists", []):
+                    if int(snapshot["season"]) != season or int(snapshot["round"]) != round_number:
+                        raise Unavailable("Standings response does not match the requested round")
+                    for row in snapshot.get(group, []):
+                        item = {
+                            "event_id": event_id,
+                            "points": float(row["points"]),
+                            "wins": int(row["wins"]),
+                            "position": int(row["position"]) if row.get("position") else None,
+                            **provenance(source, available),
+                        }
+                        if identity == "driver_id":
+                            item[identity] = row["Driver"]["driverId"]
+                            # Constructor-list order is not proof of the driver's current seat.
+                            seats = [
+                                r
+                                for r in store.table("entries")
+                                if r["event_id"] == event_id and r["driver_id"] == item[identity]
+                            ]
+                            item["team_id"] = seats[0]["team_id"] if seats else None
+                        else:
+                            item[identity] = row["Constructor"]["constructorId"]
+                        changes[target].append(item)
+            rows = changes[target]
+            if not rows or len({r[identity] for r in rows}) != len(rows):
+                raise Unavailable("Standings snapshot is empty or contains duplicate identities")
+            prior = [r for r in store.table(target) if r["event_id"] == event_id]
+            if {r[identity] for r in prior} - {r[identity] for r in rows}:
+                raise Unavailable("Standings refresh is incomplete; previous snapshot retained")
+        # Both driver and constructor tables must validate before either is visible.
+        return store.publish(changes)
+    finally:
+        client.close()
+
+
 def sync_fastf1(store: Store, season: int, round_number: int, session: str, check=lambda: None) -> str:
     import fastf1
 
@@ -354,8 +406,16 @@ def sync_fastf1(store: Store, season: int, round_number: int, session: str, chec
         raise Unavailable("Sync this season before acquiring detailed sessions")
     laps = []
     raw_rows = loaded.laps.reset_index(drop=True).to_json(orient="records", date_format="iso")
+    session_start = getattr(loaded, "session_start_time", None)
     source = store.raw(
-        "fastf1", f"fastf1://{season}/{round_number}/{session}", __import__("json").loads(raw_rows)
+        "fastf1",
+        f"fastf1://{season}/{round_number}/{session}",
+        {
+            "laps": __import__("json").loads(raw_rows),
+            "scheduled_start_utc": loaded.date.isoformat(),
+            "session_start_time": str(session_start) if session_start is not None else None,
+            "timestamp_limitation": "Without absolute lap dates, UTC is reconstructed from the scheduled start and session clock; start delays and publication times are unverified.",
+        },
     )
     start = loaded.date.to_pydatetime().replace(tzinfo=timezone.utc)
     for _, lap in loaded.laps.iterrows():
@@ -367,7 +427,18 @@ def sync_fastf1(store: Store, season: int, round_number: int, session: str, chec
         end = lap.get("Time")
         if __import__("pandas").isna(lap_time) or __import__("pandas").isna(end):
             continue
-        available = (start + end.to_pytimedelta()).isoformat()
+        absolute_start = lap.get("LapStartDate")
+        if __import__("pandas").notna(absolute_start):
+            absolute = absolute_start.to_pydatetime()
+            absolute = absolute.replace(tzinfo=timezone.utc) if absolute.tzinfo is None else absolute
+            available = (absolute + lap_time.to_pytimedelta()).isoformat()
+            clock_basis = "reconstructed_absolute_lap_end"
+        elif session_start is not None and __import__("pandas").notna(session_start):
+            # FastF1 Time is relative to the data stream, not the scheduled session start.
+            available = (start + (end - session_start).to_pytimedelta()).isoformat()
+            clock_basis = "reconstructed_scheduled_session_clock"
+        else:
+            raise Unavailable("Session clock origin unavailable; previous lap data retained")
         laps.append(
             {
                 "event_id": event_id,
@@ -383,7 +454,7 @@ def sync_fastf1(store: Store, season: int, round_number: int, session: str, chec
                 ),
                 "green": str(lap.get("TrackStatus", "")) == "1",
                 "accurate": bool(lap.get("IsAccurate", False)),
-                **provenance(source, available, "reconstructed_lap_end"),
+                **provenance(source, available, clock_basis),
             }
         )
     if not laps:
