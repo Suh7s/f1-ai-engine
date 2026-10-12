@@ -1,0 +1,8 @@
+{
+  "isolated_wheel_install": true,
+  "health_status": 200,
+  "ui_status": 200,
+  "ui_bundled": true,
+  "private_data_required": false,
+  "python_package_version": "2.0.0"
+}

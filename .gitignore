@@ -5,3 +5,14 @@ __pycache__/
 
 data/
 logs/
+
+.venv-v2/
+.f1engine/
+*.egg-info/
+web/node_modules/
+web/dist/
+web/test-results/
+.ruff_cache/
+
+# V2 wheel staging
+build/
