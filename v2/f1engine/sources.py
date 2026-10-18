@@ -211,7 +211,10 @@ def sync_season(store: Store, season: int, check=lambda: None, progress=lambda v
                                 "driver_id": d["driverId"],
                                 "name": f"{d['givenName']} {d['familyName']}",
                                 "code": d.get("code", d["familyName"][:3].upper()),
-                                "number": d.get("permanentNumber"),
+                                "number": result.get("number"),
+                                "number_basis": "event_specific_result"
+                                if result.get("number")
+                                else "unavailable",
                                 "team_id": t["constructorId"],
                                 "team_name": t["name"],
                                 **provenance(
@@ -237,10 +240,19 @@ def sync_season(store: Store, season: int, check=lambda: None, progress=lambda v
                         timestamp(session_time(calendar[event], "race")) + timedelta(hours=4)
                     ).isoformat()
                     for row in snapshot.get(group, []):
+                        driver_id = row.get("Driver", {}).get("driverId")
+                        seat = next(
+                            (
+                                e["team_id"]
+                                for e in changes["entries"]
+                                if e["event_id"] == event and e["driver_id"] == driver_id
+                            ),
+                            None,
+                        )
                         identity = (
                             {
                                 "driver_id": row["Driver"]["driverId"],
-                                "team_id": row.get("Constructors", [{}])[-1].get("constructorId"),
+                                "team_id": seat,
                             }
                             if target == "standings"
                             else {"team_id": row["Constructor"]["constructorId"]}
@@ -311,13 +323,19 @@ def sync_weather(store: Store, event_id: str, check=lambda: None) -> str:
         if target not in hourly["time"]:
             raise Unavailable("Provider has no forecast for the requested race time")
         idx = hourly["time"].index(target)
+        probability = hourly["precipitation_probability"][idx]
+        if probability is None or not __import__("math").isfinite(probability) or not 0 <= probability <= 100:
+            raise Unavailable("Weather probability is missing or invalid; previous capture retained")
         row = {
             "event_id": event_id,
             "issued_at": issued,
+            "captured_at": issued,
+            "provider_issued_at": None,
+            "issued_at_basis": "Local capture is an upper bound on provider issue time; provider issue timestamp unavailable",
             "valid_at": target + ":00+00:00",
             "temperature_c": hourly["temperature_2m"][idx],
-            "rain_probability": hourly["precipitation_probability"][idx] / 100,
-            **provenance(source, issued, "observed_issue_time"),
+            "rain_probability": probability / 100,
+            **provenance(source, issued, "observed_capture_time"),
         }
         return store.publish({"weather": [row]})
     finally:
@@ -367,6 +385,17 @@ def sync_standings(store: Store, event_id: str, check=lambda: None) -> str:
             rows = changes[target]
             if not rows or len({r[identity] for r in rows}) != len(rows):
                 raise Unavailable("Standings snapshot is empty or contains duplicate identities")
+            if any(not __import__("math").isfinite(r["points"]) for r in rows):
+                raise Unavailable("Standings contains nonfinite points")
+            competed = {
+                r[identity]
+                for r in store.table("results")
+                if r["event_id"].startswith(f"{season}-")
+                and r["event_id"] <= event_id
+                and r["session"] in {"race", "sprint"}
+            }
+            if competed - {r[identity] for r in rows}:
+                raise Unavailable("Standings snapshot omits earlier season participants")
             prior = [r for r in store.table(target) if r["event_id"] == event_id]
             if {r[identity] for r in prior} - {r[identity] for r in rows}:
                 raise Unavailable("Standings refresh is incomplete; previous snapshot retained")
@@ -400,7 +429,9 @@ def sync_fastf1(store: Store, season: int, round_number: int, session: str, chec
     check()
     event_id = f"{season}-{round_number:02d}"
     entries = store.table("entries")
-    number_map = {str(r.get("number")): r["driver_id"] for r in entries if r["event_id"] == event_id}
+    from .session_data import entry_number_map
+
+    number_map = entry_number_map(entries, event_id)
     existing_event = next((e for e in store.table("events") if e["event_id"] == event_id), None)
     if not existing_event:
         raise Unavailable("Sync this season before acquiring detailed sessions")
@@ -485,6 +516,33 @@ def sync_openf1(store: Store, event_id: str, session_key: int, check=lambda: Non
         payload, lap_source = client.get(
             "https://api.openf1.org/v1/laps", {"session_key": session_key}, "openf1"
         )
+        bundle = {"session": row, "laps": payload}
+        input_sources = [source, lap_source]
+        for endpoint in ("stints", "race_control", "pit"):
+            bundle[endpoint], input_source = client.get(
+                "https://api.openf1.org/v1/" + endpoint, {"session_key": session_key}, "openf1"
+            )
+            input_sources.append(input_source)
+        bundle["input_source_ids"] = input_sources
+        bundle_source = store.raw("openf1", f"openf1://sessions/{session_key}/lap-inputs", bundle)
+        labels = {
+            "Practice 1": "practice1",
+            "Practice 2": "practice2",
+            "Practice 3": "practice3",
+            "Qualifying": "qualifying",
+            "Sprint": "sprint",
+            "Race": "race",
+        }
+        if row["session_name"] not in labels:
+            raise Unavailable("Unsupported archived session type")
+        from .session_data import normalize_openf1_laps, entry_number_map
+
+        number_map = entry_number_map(store.table("entries"), event_id)
+
+        normalized = normalize_openf1_laps(
+            bundle, event_id, labels[row["session_name"]], number_map, bundle_source
+        )
+        version = store.publish({"laps": normalized})
         store.add_evidence(
             {
                 "kind": "source_coverage",
@@ -493,11 +551,14 @@ def sync_openf1(store: Store, event_id: str, session_key: int, check=lambda: Non
                 "session_source": source,
                 "lap_source": lap_source,
                 "lap_rows": len(payload),
-                "status": "raw_supplement",
-                "note": "Retained raw supplement; FastF1 remains authoritative for practice features.",
+                "status": "normalized_archive",
+                "normalized_laps": len({(r["driver_id"], r["lap"]) for r in normalized}),
+                "source_id": bundle_source,
+                "data_version": version,
+                "note": "Sector-checked lap archive with pit/flag/tyre filters. Historical arrival times unverified; FastF1 retains source precedence.",
             }
         )
-        return source
+        return {"source_id": bundle_source, "data_version": version}
     finally:
         client.close()
 

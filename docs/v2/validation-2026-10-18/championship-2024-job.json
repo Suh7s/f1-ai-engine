@@ -1,0 +1,25 @@
+{
+  "attempt": 1,
+  "budget_seconds": 2700,
+  "cancel_requested": false,
+  "created_at": "2026-10-18T16:00:02.299478+00:00",
+  "elapsed_seconds": 8.08345933293458,
+  "id": "93495e584a5e405686b4c3f370db38e6",
+  "kind": "championship_evaluation",
+  "launched_epoch": 1792339202.302901,
+  "message": "Completed",
+  "parameters": {
+    "data_version": "a9a95521c502f9829536b250635e8f7a5a632a3088db92d91ce2834c261ed7c7",
+    "events": [
+      "2024-17",
+      "2024-22"
+    ],
+    "season": 2024
+  },
+  "pid": 59328,
+  "progress": 1,
+  "started_at": "2026-10-18T16:00:02.438776+00:00",
+  "status": "completed",
+  "updated_at": "2026-10-18T16:00:10.522417+00:00",
+  "checkpoint_keys": []
+}

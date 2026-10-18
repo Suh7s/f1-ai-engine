@@ -14,7 +14,7 @@ Python **3.13** is required. From the repository root:
 f1engine app
 ```
 
-Open <http://127.0.0.1:8765>. The packaged UI works without Node at runtime. The initial empty installation makes no network requests. Load one season at a time from Evidence, or run `f1engine sync 2024`.
+Open <http://127.0.0.1:8765>. The packaged Pit Wall UI works without Node or external font requests at runtime. Its design uses warm paper, racing red and serif headings; the season calendar selects the same event as the forecast controls. The initial empty installation makes no network requests. Load one season at a time from Evidence, or run `f1engine sync 2024`.
 
 The completely offline, fictional demonstration uses a separate data directory:
 
@@ -49,16 +49,18 @@ f1engine resume JOB_ID
 f1engine verify
 f1engine reproduce FORECAST_ID
 f1engine experiment --parameters '{"stage":"pre_weekend","candidates":12}'
-f1engine holdout --parameters '{"freeze_id":"FREEZE_ID"}'
+f1engine collect --parameters '{"freeze_id":"FREEZE_ID","event_id":"2026-18"}'
+f1engine prospective --parameters '{"freeze_id":"FREEZE_ID"}'
+f1engine repair_identities
 f1engine score
 f1engine benchmark
 ```
 
 Experiments are subprocess jobs with four training threads, at most twelve parameter candidates, one active expensive job per data directory and a 45-minute execution budget. Cancellation and time limits preserve completed candidate checkpoints. Downloads are bounded by season, with atomic publication only after the season request set completes. Failed downloads preserve previously published data; raw downloaded responses remain available. A cancelled season import currently reissues its requests on resume. Queued jobs are serialized, but FIFO order is not guaranteed.
 
-A candidate freeze identifies both the selected model and its complete selection procedure. The 2025 holdout can be opened for that frozen candidate once. An interrupted evaluation can resume against the same candidate and dataset; it cannot switch candidates. Later revisions must treat inspected holdout results as development evidence. Completed 2026 races are a separately labelled regulation-transfer report.
+A candidate freeze identifies the selected model and its complete selection procedure. The first 2025 holdout has already been inspected and is now retired for revised candidates, including fresh stores. New candidates register a prospective procedure. Collect paired candidate/baseline forecasts before events and evaluate the frozen first-15-registered-event cohort only once all outcomes are available. Later outcome corrections append scoring revisions. No automatic recurring collector is configured. The original completed-2026 report remains a separately labelled regulation-transfer evaluation of its original model.
 
-A challenger is promoted only when the paired race-bootstrap 95% interval for normalized RPS improvement excludes zero in the favorable direction and winner log loss worsens by no more than 2%. At least fifteen paired races are required. Stage-specific model pointers prevent a post-qualifying model from silently serving pre-weekend forecasts. Development selects the strongest named baseline for that stage when no challenger is promoted. There is no ensemble unless one is separately implemented and evaluated.
+A challenger is promoted only when the paired race-bootstrap 95% interval for normalized RPS improvement excludes zero in the favorable direction and winner log loss worsens by no more than 2%. At least fifteen paired races are required. Stage-specific model pointers prevent a post-qualifying model from silently serving pre-weekend forecasts. Development selects the strongest named baseline for that stage when no challenger is promoted. The candidate set includes a chronological mixture of calibrated rating, ridge and XGBoost components; ensemble weights use disjoint calibration predictions. Evaluation, not complexity, determines selection.
 
 ## API and ingestion
 
@@ -72,7 +74,7 @@ Submit additional source jobs through `POST /api/v1/jobs`:
 {"kind":"fastf1","parameters":{"event_id":"2024-24","session":"FP2"}}
 ```
 
-Other job kinds: `sync_season`, `sync_standings`, `weather`, `climate`, `openf1`, `forecast`, `championship`, `experiment`, `holdout`, `score`, `benchmark`. The SSE endpoint `/api/v1/jobs/stream` delivers observed progress. OpenF1 supplementary jobs require an event and session key and refuse active-session paid access. FastF1 detailed sessions begin in 2018 and never request high-frequency car telemetry by default.
+Other job kinds: `sync_season`, `sync_standings`, `weather`, `climate`, `openf1`, `forecast`, `championship`, `experiment`, `holdout` (retired for revised candidates), `collect`, `prospective`, `replay_evaluation`, `championship_evaluation`, `repair_identities`, `score`, `benchmark`. The SSE endpoint `/api/v1/jobs/stream` delivers observed progress. OpenF1 supplementary jobs require an event and session key and refuse active-session paid access. FastF1 detailed sessions begin in 2018 and never request high-frequency car telemetry by default.
 
 Jolpica supplies calendars, entries reconstructed from results, race/qualifying/sprint results and official standings. Historical publication times are generally unavailable: the recorded session-end and entry-availability times are disclosed reconstructions, not archival proof of publication. Season ingestion captures the latest standings. Use `f1engine standings YEAR-ROUND` or a `sync_standings` job with `event_id` to acquire one historical round. Driver and constructor snapshots publish together only after both validate; other rounds remain intact. A historical championship cutoff without its matching official standings snapshot is unavailable. Source conflicts follow an explicit recorded precedence (Jolpica, FastF1, OpenF1) and same-source revisions retain earlier snapshots.
 
@@ -80,7 +82,7 @@ FastF1 lap times use absolute lap dates when supplied. Otherwise the adapter sub
 
 Open-Meteo forecasts are captured when retrieved and never replaced with observed race weather. A separate climate job computes the fraction of days with at least 1 mm precipitation in the event month across five prior years. That is an explicitly labelled daily climate prior, not an event-hour forecast. Missing weather/climate remains missing; learned imputation uses training data only.
 
-The weather adapter's current `issued_at` field records local capture time, not the provider's internal model issuance time. Source retrieval timestamps establish when this application obtained the forecast. No historical weather accuracy claim has been made from these records.
+The weather adapter labels local `captured_at`, leaves unverified `provider_issued_at` missing, and retains a legacy `issued_at` alias for compatibility. The alias is capture time, not the provider's internal model issuance time. Source retrieval timestamps establish when this application obtained the forecast. No historical weather accuracy claim has been made from these records.
 
 Both race and championship requests accept `revision_of`. Corrections must identify an existing forecast for the same event or season and kind. Restart the application after editing its Python source: new processes reject evidence generation if their source files change while they are running. To reproduce evidence from an older code version, restore the recorded source checkpoint and restart that process.
 

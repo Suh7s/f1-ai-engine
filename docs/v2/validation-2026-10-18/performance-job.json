@@ -1,0 +1,20 @@
+{
+  "attempt": 1,
+  "budget_seconds": 2700,
+  "cancel_requested": false,
+  "created_at": "2026-10-18T16:00:12.334667+00:00",
+  "elapsed_seconds": 37.49815200001467,
+  "id": "38d51fe9d9b6459da008485159213e12",
+  "kind": "benchmark",
+  "launched_epoch": 1792339212.33778,
+  "message": "Completed",
+  "parameters": {
+    "data_version": "a9a95521c502f9829536b250635e8f7a5a632a3088db92d91ce2834c261ed7c7"
+  },
+  "pid": 60050,
+  "progress": 1,
+  "started_at": "2026-10-18T16:00:12.479579+00:00",
+  "status": "completed",
+  "updated_at": "2026-10-18T16:00:49.977881+00:00",
+  "checkpoint_keys": []
+}

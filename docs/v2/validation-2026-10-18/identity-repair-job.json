@@ -1,0 +1,35 @@
+{
+  "attempt": 1,
+  "budget_seconds": 2700,
+  "cancel_requested": false,
+  "checkpoint": {},
+  "created_at": "2026-10-18T15:55:40.227962+00:00",
+  "elapsed_seconds": 10.956712790997699,
+  "id": "9439f29fb4434063a95958044c6ff49b",
+  "kind": "repair_identities",
+  "launched_epoch": 1792338940.231332,
+  "message": "Completed",
+  "parameters": {},
+  "pid": 50810,
+  "progress": 1,
+  "result": {
+    "bundle_sources": [
+      "3d0a50602adde6448c469147a939ee7330f986bc685dbfb2813f246986f4c217",
+      "5a60eade5c1aa42eedc675d28bd34b516528728447fff75c5e6dfd75ee287c73",
+      "76423d94b0e59a8cb5af98212837ddd7f23191abe47fa53404da9493428f6e2f"
+    ],
+    "car_number_corrections": 419,
+    "code_version": "f66851c119c59115c27b1f1ec8818a032780fd180e6d2624f1f9105420113f86",
+    "data_version": "a9a95521c502f9829536b250635e8f7a5a632a3088db92d91ce2834c261ed7c7",
+    "entry_metadata_revisions": 5480,
+    "evidence_id": "92b1f7dabab8bc645aab43d2d6b55cbfe130a9f42ea73fdd4f50c8c9d425c6fb",
+    "invalidated_misidentified_keys": 1,
+    "kind": "identity_repair",
+    "parent_data_version": "33e699d147510a066d774a8997e129b52f0393ff3b60e1178e1157b2bb7b6f5f",
+    "reason": "Historical car numbers come from event results, never the mutable current driver profile. Rebuilt archived lap identities preserve earlier dataset versions; obsolete keys are explicitly invalidated rather than deleted.",
+    "rebuilt_lap_rows": 2764
+  },
+  "started_at": "2026-10-18T15:55:40.413860+00:00",
+  "status": "completed",
+  "updated_at": "2026-10-18T15:55:51.370803+00:00"
+}

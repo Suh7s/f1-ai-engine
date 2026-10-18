@@ -1,0 +1,20 @@
+{
+  "90f0db116b764bf4bdafd8d0e9343210": {
+    "forecast_id": "90f0db116b764bf4bdafd8d0e9343210",
+    "match": true,
+    "expected": "9100bb8d2789ef1ab5b7ef3fdb1dda2b795bb209f88989afe3d644b84a32cf77",
+    "actual": "9100bb8d2789ef1ab5b7ef3fdb1dda2b795bb209f88989afe3d644b84a32cf77"
+  },
+  "d5bbb924e1de498d8f29b547962fc5f5": {
+    "forecast_id": "d5bbb924e1de498d8f29b547962fc5f5",
+    "match": true,
+    "expected": "4362210992fb2adc78a5665634e01d01762c76c1d8dcd4d5aa2f6a6557586afc",
+    "actual": "4362210992fb2adc78a5665634e01d01762c76c1d8dcd4d5aa2f6a6557586afc"
+  },
+  "adf043d2b89b4b7fa57be83cfc68f4f1": {
+    "forecast_id": "adf043d2b89b4b7fa57be83cfc68f4f1",
+    "match": true,
+    "expected": "59180c5a9c60595f4cc6a43a37d6fe2f5166238279f3c06761771958ab10685a",
+    "actual": "59180c5a9c60595f4cc6a43a37d6fe2f5166238279f3c06761771958ab10685a"
+  }
+}

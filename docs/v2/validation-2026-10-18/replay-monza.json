@@ -1,0 +1,1328 @@
+{
+  "code_version": "f66851c119c59115c27b1f1ec8818a032780fd180e6d2624f1f9105420113f86",
+  "data_version": "a9a95521c502f9829536b250635e8f7a5a632a3088db92d91ce2834c261ed7c7",
+  "deterministic": true,
+  "distance_source": "https://www.formula1.com/en/racing/2024/italy",
+  "evaluated_cutoffs": 3,
+  "event_id": "2024-16",
+  "evidence_id": "8c91121727aa0418a1848d42e0c111ebd21c543f15af0a31587dd1fa668c6bf4",
+  "evidence_kind": "historical_reconstruction",
+  "kind": "replay_reconstruction",
+  "latency_seconds_assumption": 1,
+  "limitations": [
+    "Historical arrival times are reconstructed, not captured live.",
+    "Cutoffs from one race are correlated and are not counted as independent race samples.",
+    "No retirement is inferred from final results or the absence of later laps; missing retirement messages can make forecasts unavailable.",
+    "Future pit strategy, penalties, neutralizations and weather are not modeled. These metrics do not establish live forecasting readiness."
+  ],
+  "messages": 1082,
+  "messages_hash": "54532372a314462047dcaa3a421c4ffed9ed41a925f998ccd2017c969820f558",
+  "prefix_invariant": true,
+  "rows": [
+    {
+      "as_of_utc": "2024-09-01T13:08:08.321000+00:00",
+      "calibration_pairs": {
+        "podium": [
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.153,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.6194999999999999,
+            1
+          ],
+          [
+            0.1225,
+            0
+          ],
+          [
+            0.8674999999999999,
+            1
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0005,
+            0
+          ],
+          [
+            0.8925,
+            1
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.046,
+            0
+          ],
+          [
+            0.2985,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ]
+        ],
+        "points": [
+          [
+            0.5525,
+            1
+          ],
+          [
+            0.825,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0085,
+            0
+          ],
+          [
+            0.311,
+            0
+          ],
+          [
+            0.9145,
+            1
+          ],
+          [
+            0.345,
+            0
+          ],
+          [
+            0.079,
+            1
+          ],
+          [
+            0.9065,
+            1
+          ],
+          [
+            0.93,
+            1
+          ],
+          [
+            0.938,
+            1
+          ],
+          [
+            0.1095,
+            0
+          ],
+          [
+            0.8895,
+            1
+          ],
+          [
+            0.932,
+            1
+          ],
+          [
+            0.4285,
+            0
+          ],
+          [
+            0.881,
+            1
+          ],
+          [
+            0.8925,
+            1
+          ],
+          [
+            0.0215,
+            0
+          ],
+          [
+            0.0355,
+            0
+          ],
+          [
+            0.0,
+            0
+          ]
+        ],
+        "retirement": [
+          [
+            0.16,
+            0
+          ],
+          [
+            0.095,
+            0
+          ],
+          [
+            0.122,
+            0
+          ],
+          [
+            0.1205,
+            0
+          ],
+          [
+            0.118,
+            0
+          ],
+          [
+            0.0815,
+            0
+          ],
+          [
+            0.0885,
+            0
+          ],
+          [
+            0.113,
+            0
+          ],
+          [
+            0.09,
+            0
+          ],
+          [
+            0.0695,
+            0
+          ],
+          [
+            0.0615,
+            0
+          ],
+          [
+            0.1025,
+            0
+          ],
+          [
+            0.11,
+            0
+          ],
+          [
+            0.0675,
+            0
+          ],
+          [
+            0.0895,
+            0
+          ],
+          [
+            0.114,
+            0
+          ],
+          [
+            0.107,
+            0
+          ],
+          [
+            0.0975,
+            0
+          ],
+          [
+            0.097,
+            1
+          ],
+          [
+            0.1335,
+            0
+          ]
+        ],
+        "win": [
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0055,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0865,
+            1
+          ],
+          [
+            0.005,
+            0
+          ],
+          [
+            0.349,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.5315,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0015,
+            0
+          ],
+          [
+            0.021,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ]
+        ]
+      },
+      "circuit": "monza",
+      "cutoff_lap": 3,
+      "driver_count": 20,
+      "event_id": "2024-16",
+      "feature_hash": "ab1765a2d6b08ba962be6421744300a724c4f8aab70076cb7a14921038e8cc2c",
+      "interval_coverage": 0.7,
+      "podium_brier": 0.015176325000000004,
+      "points_brier": 0.110480675,
+      "position_mae": 1.9803000000000002,
+      "retirement_brier": 0.05121322500000001,
+      "rps": 0.07491539736842105,
+      "scoring_version": "full-field-rps-v2.1",
+      "season": 2024,
+      "source_ids": [
+        "0251fc31f7d9b133cc4b76f555bd4452f00dd46522ed4b103e11f28d7f48470d",
+        "02c0713edfb96fe09ce1498e6540fff32c7257328202a454498a3d05aa13647b",
+        "038a458c04ca903d2f1b66179486327d059a2fb40f44a308d05592eb75997904",
+        "046793aeb5b00ceea78fc251eb5ffde2337e053a6a1ebccf735046e321e6ab02",
+        "060301983c1ad5b630e46f10e1f4d3b68205cf0da787bdd2bcf096dcd1310474",
+        "0606d77f1ffb53d6d0b85fa22478f21190adbdbeaf277c0045a1ee610dc8e76d",
+        "0a9745c2e74e856108811a82951d2683ffa82eb71533125b5c457ae239d9696a",
+        "0cce8f7c86913bb10ae3d3064b75b72c4b0bc940ed73160d66feb5774d66a7f7",
+        "1cd55dbc1af1a3fabb4a1d85d29efd40e36054f40afb963f22d71a88b48504d1",
+        "1dd6885eea8b30ab62125bd38f4bae2aef0921daeadd5c36756dc59bbdc8f170",
+        "1efc1cd55816464d41c272e2eeede560d115dc1186f8778c46fab26ae5544024",
+        "1f3581223638d5a62579e59f7d2ac5d8e1f6ed8f14032835d40db05fe81cffb4",
+        "2b5ce2180218863bf20637409d08d5c1ae692f2149d9aa3164b04c1bdb7ea009",
+        "2da856c607bec4ec4b4b9e806842e8b85f3712d11b3fa3afc02769f7cda2662c",
+        "330780de2d126d044a8084641534711393ecf6e510555dd20fcea09f3f2dfd4b",
+        "34e4d787bf51a4a0721707793122acd7253438c5f35060061b490c3df8c8c02f",
+        "38ed604cef918869e257eaeb6a01a1819f7c1d83a9a1f2df2ceb6fcfa53bea60",
+        "3d0a50602adde6448c469147a939ee7330f986bc685dbfb2813f246986f4c217",
+        "46dfe13b327af9f4a1dbaf1fc66ed605b611b14c5f0137e434c3b78f8d2abb63",
+        "489bbac71fcd9c83622140490379abe9ff0b802323eda9d2f1098f2359ac8ccf",
+        "557e181d6cbe4dd15a11fc279eafdb3285b465d3673cb6d2b0f6aaf368d76897",
+        "5c8ae729265248cb957917cc9a1d520f2e94d0e99694beb22c7ad02fd12223c9",
+        "6f2af7f73fed5510231e0cb5acd9cc9060136bb13f1aa0dc0a59b5bda0ab6c6e",
+        "703383b5c915ffb9816de15845750fe35269eb62813fd5f3096ba6a93b50a824",
+        "79295580514d9acf12d4b604b963ebcd43d3c91d8cc4ef67d8347052b69ee241",
+        "796667e209c772646a71c6019d4c5f2a6feaf1b891a35d98ab11111b79bba265",
+        "7baed8a4236c71be1aff72f7d85c2116fb4641f09da29fe9edcbfbea1f66984f",
+        "7bdafb410784bf730ad4d05fae07f699eb5ef55af347ae040cfa19630260ff42",
+        "861de0450791d64258d417792796a594d45ecc5120d3e00682f5859d4630af96",
+        "89047b798aa4514a5f2b6736c7e16bbca3a461337d9361506bc3b151f6ff2fe9",
+        "891bfc89e44d228a4746ef98111ba8e832195c64b156bc31f334cbd58768d91a",
+        "93487f8f73280b737241eb711d865de1bfdc0174a87c267d3ab5107878f84217",
+        "9a85627ce8082797ca1ebabf1b813bf8faefa6e7e82bf3986eb0c5c5a1b9a99f",
+        "9dcf27a086563588b2945f9157b6cac3fdb001e6cbaafce652dac36242986324",
+        "9fdd06d88896149268dbdfa92c02c641fae6d17b96544424f26f9ce8978c29c3",
+        "a3bb40d720e438fe5c76c20f8312479084c3836d342ac49ab2c2c6c854ad7f43",
+        "a41346082d6fd3e0162c355701622aeb9b9178bae35b314ca5ef1507b9e0acb3",
+        "ad448416fa043f287f4caabf08a799df163a4dad4365af384cdd30d268354e20",
+        "ae1ab95c85517940613a78225717e049fab009b8848e334da5e4963e9d6e392e",
+        "af29a10dbe52f4e4a6a6286ba86edef1c2cfcd4b58c865972d4da7f0492d2821",
+        "b22e629cb6c80ed9aae4479e90d26fc7be39e6a11c0846fdc048a57a56ed5822",
+        "bf2e0e63a40ee2f82fd43c3bf84ced690c2e25b483394af4a4a41f57172b81a9",
+        "ca949786cc49957f46a693b23c4b3a81caaf2112f091d96caab92aba0f620a02",
+        "cad98e1475c220d2e725482ea6a9873d20b8e1c7821aa0dc61fbaf2cd422162f",
+        "d2468a9cbbc3434a83b4f968c0faa527c633284f5bb7d2673f9e31607e93255f",
+        "db322e8820a6f14b216d7b30d299958d19d3302a85f1044928b071ce3a2d7f26",
+        "deee3380b92ca44bea8b9afab13a69cd490a181d77b5a7e7e1b4fcb832758f68",
+        "e3d0610034a913e5851fb9a5d2f270c95ee2bef92aba3c1ccc45a8a28e6e5720",
+        "e8ce9d11b2508e66440e4fb2fb0ac1b8d45b1a138bf2cfe6f6a863385386299e",
+        "f6ab7030f16d15524568b59424bdcfac0933e81d34cc3414e59e313af3a4ac13",
+        "f7fc0f85d35483243b05aeacfb70ca0c6140013fcb1fbcf29342e408015379c4",
+        "f83bd51646d85404da77833422e1c4d0c36de9fd8d4e9553e83075d48ac3556c",
+        "fa274bdc5f14db75152969d7af4667f2e39cb5b6695644fdbebb1d1b526fd49c",
+        "ffac16c879b09878b15d71b58e362b6472d95d6dceb75e22a31a5fa48a10ab7b"
+      ],
+      "stage": "live",
+      "state_hash": "bad03997a09ca789daec1d5b83a7861a3e0717c114141873ee46c17b8af011eb",
+      "weather": "unknown",
+      "winner_log_loss": 2.4497124016662077,
+      "winner_log_loss_estimator": "Jeffreys finite-Monte-Carlo correction; displayed probabilities remain unchanged"
+    },
+    {
+      "as_of_utc": "2024-09-01T13:13:03.673000+00:00",
+      "calibration_pairs": {
+        "podium": [
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.024,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.8554999999999999,
+            1
+          ],
+          [
+            0.019,
+            0
+          ],
+          [
+            0.774,
+            1
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.931,
+            1
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0065,
+            0
+          ],
+          [
+            0.39,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ]
+        ],
+        "points": [
+          [
+            0.6945,
+            1
+          ],
+          [
+            0.823,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0285,
+            0
+          ],
+          [
+            0.227,
+            0
+          ],
+          [
+            0.9185,
+            1
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.27,
+            1
+          ],
+          [
+            0.9105,
+            1
+          ],
+          [
+            0.9325,
+            1
+          ],
+          [
+            0.941,
+            1
+          ],
+          [
+            0.1405,
+            0
+          ],
+          [
+            0.896,
+            1
+          ],
+          [
+            0.9375,
+            1
+          ],
+          [
+            0.469,
+            0
+          ],
+          [
+            0.885,
+            1
+          ],
+          [
+            0.896,
+            1
+          ],
+          [
+            0.03,
+            0
+          ],
+          [
+            0.0005,
+            0
+          ],
+          [
+            0.0,
+            0
+          ]
+        ],
+        "retirement": [
+          [
+            0.1515,
+            0
+          ],
+          [
+            0.0915,
+            0
+          ],
+          [
+            0.1115,
+            0
+          ],
+          [
+            0.116,
+            0
+          ],
+          [
+            0.1115,
+            0
+          ],
+          [
+            0.0775,
+            0
+          ],
+          [
+            0.086,
+            0
+          ],
+          [
+            0.106,
+            0
+          ],
+          [
+            0.086,
+            0
+          ],
+          [
+            0.067,
+            0
+          ],
+          [
+            0.0585,
+            0
+          ],
+          [
+            0.0965,
+            0
+          ],
+          [
+            0.1035,
+            0
+          ],
+          [
+            0.062,
+            0
+          ],
+          [
+            0.0855,
+            0
+          ],
+          [
+            0.11,
+            0
+          ],
+          [
+            0.1035,
+            0
+          ],
+          [
+            0.0915,
+            0
+          ],
+          [
+            0.093,
+            1
+          ],
+          [
+            0.1275,
+            0
+          ]
+        ],
+        "win": [
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.148,
+            1
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.074,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.767,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.011,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ]
+        ]
+      },
+      "circuit": "monza",
+      "cutoff_lap": 6,
+      "driver_count": 20,
+      "event_id": "2024-16",
+      "feature_hash": "ab1765a2d6b08ba962be6421744300a724c4f8aab70076cb7a14921038e8cc2c",
+      "interval_coverage": 0.9,
+      "podium_brier": 0.011489825,
+      "points_brier": 0.08289774999999999,
+      "position_mae": 1.59045,
+      "retirement_brier": 0.05054295000000001,
+      "rps": 0.05482496184210525,
+      "scoring_version": "full-field-rps-v2.1",
+      "season": 2024,
+      "source_ids": [
+        "0251fc31f7d9b133cc4b76f555bd4452f00dd46522ed4b103e11f28d7f48470d",
+        "02c0713edfb96fe09ce1498e6540fff32c7257328202a454498a3d05aa13647b",
+        "038a458c04ca903d2f1b66179486327d059a2fb40f44a308d05592eb75997904",
+        "046793aeb5b00ceea78fc251eb5ffde2337e053a6a1ebccf735046e321e6ab02",
+        "060301983c1ad5b630e46f10e1f4d3b68205cf0da787bdd2bcf096dcd1310474",
+        "0606d77f1ffb53d6d0b85fa22478f21190adbdbeaf277c0045a1ee610dc8e76d",
+        "0a9745c2e74e856108811a82951d2683ffa82eb71533125b5c457ae239d9696a",
+        "0cce8f7c86913bb10ae3d3064b75b72c4b0bc940ed73160d66feb5774d66a7f7",
+        "1cd55dbc1af1a3fabb4a1d85d29efd40e36054f40afb963f22d71a88b48504d1",
+        "1dd6885eea8b30ab62125bd38f4bae2aef0921daeadd5c36756dc59bbdc8f170",
+        "1efc1cd55816464d41c272e2eeede560d115dc1186f8778c46fab26ae5544024",
+        "1f3581223638d5a62579e59f7d2ac5d8e1f6ed8f14032835d40db05fe81cffb4",
+        "2b5ce2180218863bf20637409d08d5c1ae692f2149d9aa3164b04c1bdb7ea009",
+        "2da856c607bec4ec4b4b9e806842e8b85f3712d11b3fa3afc02769f7cda2662c",
+        "330780de2d126d044a8084641534711393ecf6e510555dd20fcea09f3f2dfd4b",
+        "34e4d787bf51a4a0721707793122acd7253438c5f35060061b490c3df8c8c02f",
+        "38ed604cef918869e257eaeb6a01a1819f7c1d83a9a1f2df2ceb6fcfa53bea60",
+        "3d0a50602adde6448c469147a939ee7330f986bc685dbfb2813f246986f4c217",
+        "46dfe13b327af9f4a1dbaf1fc66ed605b611b14c5f0137e434c3b78f8d2abb63",
+        "489bbac71fcd9c83622140490379abe9ff0b802323eda9d2f1098f2359ac8ccf",
+        "557e181d6cbe4dd15a11fc279eafdb3285b465d3673cb6d2b0f6aaf368d76897",
+        "5c8ae729265248cb957917cc9a1d520f2e94d0e99694beb22c7ad02fd12223c9",
+        "6f2af7f73fed5510231e0cb5acd9cc9060136bb13f1aa0dc0a59b5bda0ab6c6e",
+        "703383b5c915ffb9816de15845750fe35269eb62813fd5f3096ba6a93b50a824",
+        "79295580514d9acf12d4b604b963ebcd43d3c91d8cc4ef67d8347052b69ee241",
+        "796667e209c772646a71c6019d4c5f2a6feaf1b891a35d98ab11111b79bba265",
+        "7baed8a4236c71be1aff72f7d85c2116fb4641f09da29fe9edcbfbea1f66984f",
+        "7bdafb410784bf730ad4d05fae07f699eb5ef55af347ae040cfa19630260ff42",
+        "861de0450791d64258d417792796a594d45ecc5120d3e00682f5859d4630af96",
+        "89047b798aa4514a5f2b6736c7e16bbca3a461337d9361506bc3b151f6ff2fe9",
+        "891bfc89e44d228a4746ef98111ba8e832195c64b156bc31f334cbd58768d91a",
+        "93487f8f73280b737241eb711d865de1bfdc0174a87c267d3ab5107878f84217",
+        "9a85627ce8082797ca1ebabf1b813bf8faefa6e7e82bf3986eb0c5c5a1b9a99f",
+        "9dcf27a086563588b2945f9157b6cac3fdb001e6cbaafce652dac36242986324",
+        "9fdd06d88896149268dbdfa92c02c641fae6d17b96544424f26f9ce8978c29c3",
+        "a3bb40d720e438fe5c76c20f8312479084c3836d342ac49ab2c2c6c854ad7f43",
+        "a41346082d6fd3e0162c355701622aeb9b9178bae35b314ca5ef1507b9e0acb3",
+        "ad448416fa043f287f4caabf08a799df163a4dad4365af384cdd30d268354e20",
+        "ae1ab95c85517940613a78225717e049fab009b8848e334da5e4963e9d6e392e",
+        "af29a10dbe52f4e4a6a6286ba86edef1c2cfcd4b58c865972d4da7f0492d2821",
+        "b22e629cb6c80ed9aae4479e90d26fc7be39e6a11c0846fdc048a57a56ed5822",
+        "bf2e0e63a40ee2f82fd43c3bf84ced690c2e25b483394af4a4a41f57172b81a9",
+        "ca949786cc49957f46a693b23c4b3a81caaf2112f091d96caab92aba0f620a02",
+        "cad98e1475c220d2e725482ea6a9873d20b8e1c7821aa0dc61fbaf2cd422162f",
+        "d2468a9cbbc3434a83b4f968c0faa527c633284f5bb7d2673f9e31607e93255f",
+        "db322e8820a6f14b216d7b30d299958d19d3302a85f1044928b071ce3a2d7f26",
+        "deee3380b92ca44bea8b9afab13a69cd490a181d77b5a7e7e1b4fcb832758f68",
+        "e3d0610034a913e5851fb9a5d2f270c95ee2bef92aba3c1ccc45a8a28e6e5720",
+        "e8ce9d11b2508e66440e4fb2fb0ac1b8d45b1a138bf2cfe6f6a863385386299e",
+        "f6ab7030f16d15524568b59424bdcfac0933e81d34cc3414e59e313af3a4ac13",
+        "f7fc0f85d35483243b05aeacfb70ca0c6140013fcb1fbcf29342e408015379c4",
+        "f83bd51646d85404da77833422e1c4d0c36de9fd8d4e9553e83075d48ac3556c",
+        "fa274bdc5f14db75152969d7af4667f2e39cb5b6695644fdbebb1d1b526fd49c",
+        "ffac16c879b09878b15d71b58e362b6472d95d6dceb75e22a31a5fa48a10ab7b"
+      ],
+      "stage": "live",
+      "state_hash": "6c20d8f0b806c18837ec467824eb66d0a4706cbbe2744baf944b9349b23a5e0d",
+      "weather": "unknown",
+      "winner_log_loss": 1.9138427826153412,
+      "winner_log_loss_estimator": "Jeffreys finite-Monte-Carlo correction; displayed probabilities remain unchanged"
+    },
+    {
+      "as_of_utc": "2024-09-01T13:17:20.140000+00:00",
+      "calibration_pairs": {
+        "podium": [
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.053500000000000006,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.8855,
+            1
+          ],
+          [
+            0.0105,
+            0
+          ],
+          [
+            0.8385,
+            1
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.9269999999999999,
+            1
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.003,
+            0
+          ],
+          [
+            0.28200000000000003,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ]
+        ],
+        "points": [
+          [
+            0.572,
+            1
+          ],
+          [
+            0.7775,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.003,
+            0
+          ],
+          [
+            0.0145,
+            0
+          ],
+          [
+            0.9235,
+            1
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.3775,
+            1
+          ],
+          [
+            0.9185,
+            1
+          ],
+          [
+            0.9365,
+            1
+          ],
+          [
+            0.943,
+            1
+          ],
+          [
+            0.1605,
+            0
+          ],
+          [
+            0.9025,
+            1
+          ],
+          [
+            0.941,
+            1
+          ],
+          [
+            0.646,
+            0
+          ],
+          [
+            0.8905,
+            1
+          ],
+          [
+            0.8995,
+            1
+          ],
+          [
+            0.093,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.001,
+            0
+          ]
+        ],
+        "retirement": [
+          [
+            0.1445,
+            0
+          ],
+          [
+            0.086,
+            0
+          ],
+          [
+            0.1045,
+            0
+          ],
+          [
+            0.1065,
+            0
+          ],
+          [
+            0.103,
+            0
+          ],
+          [
+            0.0725,
+            0
+          ],
+          [
+            0.0805,
+            0
+          ],
+          [
+            0.1,
+            0
+          ],
+          [
+            0.078,
+            0
+          ],
+          [
+            0.063,
+            0
+          ],
+          [
+            0.0565,
+            0
+          ],
+          [
+            0.092,
+            0
+          ],
+          [
+            0.097,
+            0
+          ],
+          [
+            0.0585,
+            0
+          ],
+          [
+            0.0805,
+            0
+          ],
+          [
+            0.1045,
+            0
+          ],
+          [
+            0.1,
+            0
+          ],
+          [
+            0.0865,
+            0
+          ],
+          [
+            0.091,
+            1
+          ],
+          [
+            0.1195,
+            0
+          ]
+        ],
+        "win": [
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.2595,
+            1
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.145,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.588,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0075,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ],
+          [
+            0.0,
+            0
+          ]
+        ]
+      },
+      "circuit": "monza",
+      "cutoff_lap": 9,
+      "driver_count": 20,
+      "event_id": "2024-16",
+      "feature_hash": "ab1765a2d6b08ba962be6421744300a724c4f8aab70076cb7a14921038e8cc2c",
+      "interval_coverage": 0.9,
+      "podium_brier": 0.00635135,
+      "points_brier": 0.084099775,
+      "position_mae": 1.4962500000000003,
+      "retirement_brier": 0.049643437500000005,
+      "rps": 0.05127628684210527,
+      "scoring_version": "full-field-rps-v2.1",
+      "season": 2024,
+      "source_ids": [
+        "0251fc31f7d9b133cc4b76f555bd4452f00dd46522ed4b103e11f28d7f48470d",
+        "02c0713edfb96fe09ce1498e6540fff32c7257328202a454498a3d05aa13647b",
+        "038a458c04ca903d2f1b66179486327d059a2fb40f44a308d05592eb75997904",
+        "046793aeb5b00ceea78fc251eb5ffde2337e053a6a1ebccf735046e321e6ab02",
+        "060301983c1ad5b630e46f10e1f4d3b68205cf0da787bdd2bcf096dcd1310474",
+        "0606d77f1ffb53d6d0b85fa22478f21190adbdbeaf277c0045a1ee610dc8e76d",
+        "0a9745c2e74e856108811a82951d2683ffa82eb71533125b5c457ae239d9696a",
+        "0cce8f7c86913bb10ae3d3064b75b72c4b0bc940ed73160d66feb5774d66a7f7",
+        "1cd55dbc1af1a3fabb4a1d85d29efd40e36054f40afb963f22d71a88b48504d1",
+        "1dd6885eea8b30ab62125bd38f4bae2aef0921daeadd5c36756dc59bbdc8f170",
+        "1efc1cd55816464d41c272e2eeede560d115dc1186f8778c46fab26ae5544024",
+        "1f3581223638d5a62579e59f7d2ac5d8e1f6ed8f14032835d40db05fe81cffb4",
+        "2b5ce2180218863bf20637409d08d5c1ae692f2149d9aa3164b04c1bdb7ea009",
+        "2da856c607bec4ec4b4b9e806842e8b85f3712d11b3fa3afc02769f7cda2662c",
+        "330780de2d126d044a8084641534711393ecf6e510555dd20fcea09f3f2dfd4b",
+        "34e4d787bf51a4a0721707793122acd7253438c5f35060061b490c3df8c8c02f",
+        "38ed604cef918869e257eaeb6a01a1819f7c1d83a9a1f2df2ceb6fcfa53bea60",
+        "3d0a50602adde6448c469147a939ee7330f986bc685dbfb2813f246986f4c217",
+        "46dfe13b327af9f4a1dbaf1fc66ed605b611b14c5f0137e434c3b78f8d2abb63",
+        "489bbac71fcd9c83622140490379abe9ff0b802323eda9d2f1098f2359ac8ccf",
+        "557e181d6cbe4dd15a11fc279eafdb3285b465d3673cb6d2b0f6aaf368d76897",
+        "5c8ae729265248cb957917cc9a1d520f2e94d0e99694beb22c7ad02fd12223c9",
+        "6f2af7f73fed5510231e0cb5acd9cc9060136bb13f1aa0dc0a59b5bda0ab6c6e",
+        "703383b5c915ffb9816de15845750fe35269eb62813fd5f3096ba6a93b50a824",
+        "79295580514d9acf12d4b604b963ebcd43d3c91d8cc4ef67d8347052b69ee241",
+        "796667e209c772646a71c6019d4c5f2a6feaf1b891a35d98ab11111b79bba265",
+        "7baed8a4236c71be1aff72f7d85c2116fb4641f09da29fe9edcbfbea1f66984f",
+        "7bdafb410784bf730ad4d05fae07f699eb5ef55af347ae040cfa19630260ff42",
+        "861de0450791d64258d417792796a594d45ecc5120d3e00682f5859d4630af96",
+        "89047b798aa4514a5f2b6736c7e16bbca3a461337d9361506bc3b151f6ff2fe9",
+        "891bfc89e44d228a4746ef98111ba8e832195c64b156bc31f334cbd58768d91a",
+        "93487f8f73280b737241eb711d865de1bfdc0174a87c267d3ab5107878f84217",
+        "9a85627ce8082797ca1ebabf1b813bf8faefa6e7e82bf3986eb0c5c5a1b9a99f",
+        "9dcf27a086563588b2945f9157b6cac3fdb001e6cbaafce652dac36242986324",
+        "9fdd06d88896149268dbdfa92c02c641fae6d17b96544424f26f9ce8978c29c3",
+        "a3bb40d720e438fe5c76c20f8312479084c3836d342ac49ab2c2c6c854ad7f43",
+        "a41346082d6fd3e0162c355701622aeb9b9178bae35b314ca5ef1507b9e0acb3",
+        "ad448416fa043f287f4caabf08a799df163a4dad4365af384cdd30d268354e20",
+        "ae1ab95c85517940613a78225717e049fab009b8848e334da5e4963e9d6e392e",
+        "af29a10dbe52f4e4a6a6286ba86edef1c2cfcd4b58c865972d4da7f0492d2821",
+        "b22e629cb6c80ed9aae4479e90d26fc7be39e6a11c0846fdc048a57a56ed5822",
+        "bf2e0e63a40ee2f82fd43c3bf84ced690c2e25b483394af4a4a41f57172b81a9",
+        "ca949786cc49957f46a693b23c4b3a81caaf2112f091d96caab92aba0f620a02",
+        "cad98e1475c220d2e725482ea6a9873d20b8e1c7821aa0dc61fbaf2cd422162f",
+        "d2468a9cbbc3434a83b4f968c0faa527c633284f5bb7d2673f9e31607e93255f",
+        "db322e8820a6f14b216d7b30d299958d19d3302a85f1044928b071ce3a2d7f26",
+        "deee3380b92ca44bea8b9afab13a69cd490a181d77b5a7e7e1b4fcb832758f68",
+        "e3d0610034a913e5851fb9a5d2f270c95ee2bef92aba3c1ccc45a8a28e6e5720",
+        "e8ce9d11b2508e66440e4fb2fb0ac1b8d45b1a138bf2cfe6f6a863385386299e",
+        "f6ab7030f16d15524568b59424bdcfac0933e81d34cc3414e59e313af3a4ac13",
+        "f7fc0f85d35483243b05aeacfb70ca0c6140013fcb1fbcf29342e408015379c4",
+        "f83bd51646d85404da77833422e1c4d0c36de9fd8d4e9553e83075d48ac3556c",
+        "fa274bdc5f14db75152969d7af4667f2e39cb5b6695644fdbebb1d1b526fd49c",
+        "ffac16c879b09878b15d71b58e362b6472d95d6dceb75e22a31a5fa48a10ab7b"
+      ],
+      "stage": "live",
+      "state_hash": "3d379b63edec605fdf236e195ed1421bc6e38fec87bed659a37f14bd88d68c58",
+      "weather": "unknown",
+      "winner_log_loss": 1.3530231905138395,
+      "winner_log_loss_estimator": "Jeffreys finite-Monte-Carlo correction; displayed probabilities remain unchanged"
+    }
+  ],
+  "scheduled_laps": 53,
+  "seed": 42,
+  "simulations": 2000,
+  "source_id": "76423d94b0e59a8cb5af98212837ddd7f23191abe47fa53404da9493428f6e2f",
+  "source_records": [
+    {
+      "id": "76423d94b0e59a8cb5af98212837ddd7f23191abe47fa53404da9493428f6e2f",
+      "retrieved_at": "2026-10-12T14:09:46.525908+00:00",
+      "source": "openf1",
+      "url": "openf1://sessions/9590/lap-inputs"
+    }
+  ],
+  "unavailable_cutoffs": [
+    {
+      "as_of_utc": "2024-09-01T13:21:35.934000+00:00",
+      "cutoff_lap": 12,
+      "reason": "One or more active drivers have stale timing; full-field prediction unavailable"
+    },
+    {
+      "as_of_utc": "2024-09-01T13:25:51.741000+00:00",
+      "cutoff_lap": 15,
+      "reason": "One or more active drivers have stale timing; full-field prediction unavailable"
+    },
+    {
+      "as_of_utc": "2024-09-01T13:30:13.187000+00:00",
+      "cutoff_lap": 18,
+      "reason": "One or more active drivers have stale timing; full-field prediction unavailable"
+    },
+    {
+      "as_of_utc": "2024-09-01T13:34:30.277000+00:00",
+      "cutoff_lap": 21,
+      "reason": "One or more active drivers have stale timing; full-field prediction unavailable"
+    },
+    {
+      "as_of_utc": "2024-09-01T13:38:48.290000+00:00",
+      "cutoff_lap": 24,
+      "reason": "One or more active drivers have stale timing; full-field prediction unavailable"
+    },
+    {
+      "as_of_utc": "2024-09-01T13:43:05.044000+00:00",
+      "cutoff_lap": 27,
+      "reason": "One or more active drivers have stale timing; full-field prediction unavailable"
+    },
+    {
+      "as_of_utc": "2024-09-01T13:47:21.750000+00:00",
+      "cutoff_lap": 30,
+      "reason": "One or more active drivers have stale timing; full-field prediction unavailable"
+    },
+    {
+      "as_of_utc": "2024-09-01T13:52:07.404000+00:00",
+      "cutoff_lap": 33,
+      "reason": "One or more active drivers have stale timing; full-field prediction unavailable"
+    },
+    {
+      "as_of_utc": "2024-09-01T13:56:18.539000+00:00",
+      "cutoff_lap": 36,
+      "reason": "One or more active drivers have stale timing; full-field prediction unavailable"
+    },
+    {
+      "as_of_utc": "2024-09-01T14:00:34.211000+00:00",
+      "cutoff_lap": 39,
+      "reason": "One or more active drivers have stale timing; full-field prediction unavailable"
+    },
+    {
+      "as_of_utc": "2024-09-01T14:04:45.017000+00:00",
+      "cutoff_lap": 42,
+      "reason": "One or more active drivers have stale timing; full-field prediction unavailable"
+    },
+    {
+      "as_of_utc": "2024-09-01T14:08:55.652000+00:00",
+      "cutoff_lap": 45,
+      "reason": "One or more active drivers have stale timing; full-field prediction unavailable"
+    },
+    {
+      "as_of_utc": "2024-09-01T14:13:11.862000+00:00",
+      "cutoff_lap": 48,
+      "reason": "One or more active drivers have stale timing; full-field prediction unavailable"
+    },
+    {
+      "as_of_utc": "2024-09-01T14:17:37.936000+00:00",
+      "cutoff_lap": 51,
+      "reason": "One or more active drivers have stale timing; full-field prediction unavailable"
+    }
+  ]
+}

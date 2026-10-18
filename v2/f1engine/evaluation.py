@@ -5,14 +5,18 @@ from datetime import timedelta
 import json
 import math
 import numpy as np
-from scipy.optimize import minimize_scalar
+from scipy.optimize import minimize_scalar, minimize
 from scipy.special import logsumexp
 from sklearn.linear_model import LogisticRegression
 from .contracts import ForecastRequest, Stage, Unavailable, code_version, digest, now_utc, timestamp
 from .features import FEATURES, FEATURE_GROUPS, build_features
 from .models import BASELINES, baseline, fit_candidate, predict_candidate, publish_model, load_model, targets
-from .simulation import sample_race
+from .simulation import sample_race, sample_prediction
 from .store import Store
+
+# The published V2 checkpoint already inspected 2025. This project-level fact must
+# survive a fresh local database; deleting local evidence cannot reseal a holdout.
+HOLDOUT_2025_RETIRED = True
 
 
 def examples(
@@ -59,6 +63,60 @@ def calibrate(metadata, ranker, calibration_examples):
     event_ids = [f["event"]["event_id"] for f, _ in calibration_examples]
     if set(event_ids) & set(metadata["train_events"]):
         raise ValueError("Calibration overlaps training")
+    start = min(f["as_of_utc"] for f, _ in calibration_examples)
+    if timestamp(metadata["train_end_at"]) >= timestamp(start):
+        raise ValueError("Calibration must follow all training outcomes")
+    boundaries = {
+        "calibration_start_at": start,
+        "calibration_end_at": max(r["available_at"] for _, a in calibration_examples for r in a),
+        "calibration_events": event_ids,
+    }
+    if metadata["family"] == "ensemble":
+        count = len(metadata["components"])
+        h, b = np.zeros((count, count)), np.zeros(count)
+        for f, actual in calibration_examples:
+            seed = int(digest(f["event"]["event_id"])[:8], 16)
+            n = len(f["rows"])
+            cdfs = []
+            for m, r in zip(metadata["components"], ranker):
+                p = predict_candidate(f, m, r)
+                samples = sample_prediction(
+                    p,
+                    f["event"]["season"],
+                    4000,
+                    np.random.default_rng(seed),
+                    laps=f["event"].get("scheduled_laps") or 60,
+                    final_round=f["event"].get("double_points", False),
+                )
+                cdfs.append(
+                    (samples["position"][:, :, None] <= np.arange(1, n)[None, None, :]).mean(axis=0).ravel()
+                )
+            c = np.asarray(cdfs)
+            finish, _ = targets(f, actual)
+            observed = (finish[:, None] <= np.arange(1, n)).ravel()
+            h += c @ c.T / c.shape[1]
+            b += c @ observed / c.shape[1]
+        optimum = minimize(
+            lambda w: float(w @ h @ w - 2 * w @ b),
+            np.full(count, 1 / count),
+            jac=lambda w: 2 * h @ w - 2 * b,
+            method="SLSQP",
+            bounds=[(0, 1)] * count,
+            constraints={"type": "eq", "fun": lambda w: w.sum() - 1, "jac": lambda w: np.ones(count)},
+            options={"ftol": 1e-12, "maxiter": 500},
+        )
+        if not optimum.success:
+            raise Unavailable("Mixture calibration did not converge")
+        weights = np.maximum(optimum.x, 0)
+        weights /= weights.sum()
+        return {
+            **metadata,
+            **boundaries,
+            "weights": weights.tolist(),
+            "calibrated": True,
+            "weight_objective": "Race-averaged normalized RPS on independent chronological predictions",
+            "weight_simulations": 4000,
+        }
     predictions = [predict_candidate(f, metadata, ranker) for f, _ in calibration_examples]
 
     def objective(log_temperature):
@@ -79,8 +137,11 @@ def calibrate(metadata, ranker, calibration_examples):
         return loss / max(count, 1)
 
     optimum = minimize_scalar(objective, bounds=(-3, 3), method="bounded")
+    if not optimum.success or not np.isfinite(optimum.fun):
+        raise Unavailable("Ranking calibration did not converge")
     metadata = {
         **metadata,
+        **boundaries,
         "temperature": float(np.exp(optimum.x)),
         "calibration_events": event_ids,
         "calibrated": True,
@@ -103,46 +164,29 @@ def calibrate(metadata, ranker, calibration_examples):
 
 
 def score_samples(frame, actual, samples):
-    finish, dnf = targets(frame, actual)
-    n = len(finish)
+    from .scoring import distribution_metrics
+
     positions = samples["position"]
-    k = len(positions)
-    pmf = np.stack([np.bincount(positions[:, j], minlength=n + 1)[1:] / k for j in range(n)])
-    cdf = np.cumsum(pmf, axis=1)[:, :-1]
-    truth = finish[:, None] <= np.arange(1, n)[None, :]
-    rps = float(np.mean((cdf - truth) ** 2))
-    winner = np.flatnonzero(finish == 1)
-    if len(winner) != 1:
-        raise ValueError("Exactly one race winner required for scoring")
-    # Jeffreys correction only for estimating finite-simulation log loss, never displayed probabilities.
-    win = (np.sum(positions == 1, axis=0) + 0.5) / (k + 0.5 * n)
-    podium = (positions <= min(3, n)).mean(axis=0)
-    points = (samples["points"] > 0).mean(axis=0)
-    dnf_prob = samples["retired"].mean(axis=0)
-    actual_lookup = {r["driver_id"]: r for r in actual}
-    actual_points = np.array([actual_lookup[r["driver_id"]].get("points", 0) > 0 for r in frame["rows"]])
-    low = np.quantile(positions, 0.1, axis=0, method="inverted_cdf")
-    high = np.quantile(positions, 0.9, axis=0, method="inverted_cdf")
+    n = len(frame["rows"])
+    drivers = [
+        {
+            "driver_id": row["driver_id"],
+            "position_probabilities": (
+                np.bincount(positions[:, j], minlength=n + 1)[1:] / len(positions)
+            ).tolist(),
+            "points_probability": float((samples["points"][:, j] > 0).mean()),
+            "retirement_probability": float(samples["retired"][:, j].mean()),
+        }
+        for j, row in enumerate(frame["rows"])
+    ]
     rain = frame["rows"][0].get("rain_probability")
     return {
         "event_id": frame["event"]["event_id"],
         "season": frame["event"]["season"],
         "circuit": frame["event"]["circuit_id"],
+        "stage": frame.get("stage", "unknown"),
         "weather": "unknown" if rain is None else "wet_forecast" if rain >= 0.5 else "dry_forecast",
-        "rps": rps,
-        "winner_log_loss": float(-np.log(win[winner[0]])),
-        "podium_brier": float(np.mean((podium - (finish <= min(3, n))) ** 2)),
-        "points_brier": float(np.mean((points - actual_points) ** 2)),
-        "retirement_brier": float(np.mean((dnf_prob - dnf) ** 2)),
-        "position_mae": float(np.mean(np.abs(positions.mean(axis=0) - finish))),
-        "interval_coverage": float(np.mean((finish >= low) & (finish <= high))),
-        "driver_count": n,
-        "calibration_pairs": {
-            "win": list(zip((positions == 1).mean(axis=0).tolist(), (finish == 1).astype(int).tolist())),
-            "podium": list(zip(podium.tolist(), (finish <= min(3, n)).astype(int).tolist())),
-            "points": list(zip(points.tolist(), actual_points.astype(int).tolist())),
-            "retirement": list(zip(dnf_prob.tolist(), dnf.tolist())),
-        },
+        **distribution_metrics(drivers, actual, len(positions)),
     }
 
 
@@ -152,16 +196,12 @@ def evaluate_model(examples_, model_fn, simulations=2000, check=lambda: None):
         check()
         model = model_fn(frame)
         seed = int(digest(frame["event"]["event_id"])[:8], 16)
-        samples = sample_race(
-            model["scores"],
-            model["retirement"],
+        samples = sample_prediction(
+            model,
             frame["event"]["season"],
             simulations,
             np.random.default_rng(seed),
-            temperature=model["temperature"],
             laps=frame["event"].get("scheduled_laps") or 60,
-            beta=model["retirement_beta"],
-            disqualification=model["disqualification"],
             final_round=frame["event"].get("double_points", False),
         )
         rows.append(score_samples(frame, actual, samples))
@@ -181,13 +221,13 @@ def report(rows: list[dict]) -> dict:
     if not rows:
         return {"races": 0, "metrics": {}, "breakdowns": {}, "calibration": {}}
     breakdowns = {}
-    for key in ["season", "circuit", "weather"]:
+    for key in ["season", "circuit", "weather", "stage"]:
         breakdowns[key] = {
             str(v): {
-                "races": sum(r[key] == v for r in rows),
-                **{m: float(np.mean([r[m] for r in rows if r[key] == v])) for m in metrics},
+                "races": sum(r.get(key, "unknown") == v for r in rows),
+                **{m: float(np.mean([r[m] for r in rows if r.get(key, "unknown") == v])) for m in metrics},
             }
-            for v in sorted({r[key] for r in rows})
+            for v in sorted({r.get(key, "unknown") for r in rows})
         }
     curves = {}
     for target in ("win", "podium", "points", "retirement"):
@@ -258,9 +298,12 @@ def experiment(
         raise Unavailable(
             "Development requires data through 2024 with training and independent 2021–2024 calibration/evaluation coverage"
         )
-    candidates = [("linear", {"alpha": a}) for a in (1.0, 10.0, 100.0)] + [
-        ("xgboost", {"max_depth": d, "learning_rate": lr}) for d in (2, 3, 4) for lr in (0.03, 0.08, 0.12)
-    ]
+    candidates = (
+        [("calibrated_baseline", {"name": name}) for name in BASELINES]
+        + [("linear", {"alpha": a}) for a in (1.0, 10.0)]
+        + [("xgboost", {"max_depth": d, "learning_rate": lr}) for d in (2, 3, 4) for lr in (0.03, 0.08)]
+        + [("ensemble", {})]
+    )
     limit = min(int(parameters.get("candidates", 12)), 12)
     if limit < 1:
         raise ValueError("Candidate count must be positive")
@@ -316,18 +359,30 @@ def experiment(
     test_ab = [ex for ex in all_examples if ex[0]["event"]["season"] == 2024]
     for name, removed in FEATURE_GROUPS.items():
         check()
-        available = sum(any(f["coverage"].get(c, 0) > 0 for c in removed) for f, _ in test_ab)
-        if not available:
+        coverage = {
+            window: {c: sum(f["coverage"].get(c, 0) > 0 for f, _ in cohort) for c in removed}
+            for window, cohort in (("training", train_ab), ("calibration", cal_ab), ("evaluation", test_ab))
+        }
+        supported = [c for c in removed if all(coverage[w][c] >= 4 for w in coverage)]
+        if not supported:
             ablations[name] = {
                 "status": "unverified_missing_inputs",
-                "races_with_group_inputs": 0,
-                "reason": "Cannot establish value of this feature group without its data",
+                "coverage_races": coverage,
+                "reason": "No feature in this group has at least four races of data in every training/calibration/evaluation window; value is unverified",
             }
             continue
         reduced = [c for c in FEATURES if c not in removed]
         am, ar = fit_candidate(train_ab, best["family"], best["parameters"], reduced)
         am = calibrate(am, ar, cal_ab)
-        ablations[name] = report(evaluate_model(test_ab, lambda f: predict_candidate(f, am, ar), check=check))
+        ablations[name] = {
+            "coverage_races": coverage,
+            "supported_features": supported,
+            "unsupported_features": [c for c in removed if c not in supported],
+            "report": report(evaluate_model(test_ab, lambda f: predict_candidate(f, am, ar), check=check)),
+        }
+    opened = HOLDOUT_2025_RETIRED or any(
+        e["kind"] == "holdout_opened" and e.get("season") == 2025 for e in store.evidence()
+    )
     body = {
         "kind": "development_experiment",
         "evidence_kind": "illustrative_scenario"
@@ -338,8 +393,13 @@ def experiment(
         "stage": stage.value,
         "candidates": results,
         "selected_candidate": identifier,
+        "selected_index": best["index"],
         "ablations": ablations,
-        "holdout_policy": "2025 remains unopened. Model is a candidate, not promoted.",
+        "holdout_policy": (
+            "2025 was previously opened and is development evidence for any revised candidate. Promotion requires a newly registered prospective cohort."
+            if opened
+            else "2025 remains unopened. Model is a candidate, not promoted."
+        ),
         "benchmark_limitations": [
             "Historical input publication times are reconstructed.",
             "Calibration bins have finite sample sizes.",
@@ -362,7 +422,9 @@ def experiment(
             "stage": stage.value,
             "development_evidence": evidence_id,
             "baseline": best["strongest_baseline"],
-            "holdout_season": 2025,
+            "holdout_season": None if opened else 2025,
+            "evaluation_policy": "prospective_only" if opened else "sealed_2025",
+            "prospective_policy": "First pair per event; first 15 registered events by race start; one evaluation after all 15 outcomes; same cutoff/data/seed and 10000 simulations for both models",
             "promotion_policy": {
                 "min_paired_races": 15,
                 "rps_upper95_less_than": 0,
@@ -381,6 +443,10 @@ def experiment(
 
 
 def holdout(store: Store, parameters: dict, check=lambda: None, progress=lambda x, m: None):
+    if HOLDOUT_2025_RETIRED:
+        raise ValueError(
+            "The published project already inspected 2025. Restore the frozen original checkpoint to reproduce that report; revised candidates require prospective evidence."
+        )
     freeze_id = parameters.get("freeze_id")
     evidence = store.evidence()
     freeze = next((e for e in evidence if e["id"] == freeze_id and e["kind"] == "candidate_freeze"), None)
@@ -467,40 +533,100 @@ def holdout(store: Store, parameters: dict, check=lambda: None, progress=lambda 
 
 
 def score_ledger(store: Store):
-    results = store.table("results")
-    existing = {e.get("forecast_id") for e in store.evidence() if e["kind"] == "forecast_score"}
-    scored = []
+    from .scoring import distribution_metrics, SCORING_VERSION
+
+    version = store.current_version()
+    results = store.table("results", version, as_of=now_utc())
+    # Evidence is newest first. Keep its identity so corrected outcomes append linked scores.
+    existing = {}
+    for e in store.evidence():
+        if e["kind"] == "forecast_score":
+            existing.setdefault(e["forecast_id"], e)
+    scored, skipped = [], []
     for forecast in store.forecasts(100000):
+        if forecast["kind"] != "race" or forecast["evidence_kind"] == "illustrative_scenario":
+            continue
+        actual = sorted(
+            [r for r in results if r["event_id"] == forecast["event"]["event_id"] and r["session"] == "race"],
+            key=lambda r: r["driver_id"],
+        )
+        if not actual:
+            continue
+        outcome_hash = digest(actual)
+        old = existing.get(forecast["id"])
         if (
-            forecast["kind"] != "race"
-            or forecast["id"] in existing
-            or forecast["evidence_kind"] == "illustrative_scenario"
+            old
+            and old.get("actual_content_hash") == outcome_hash
+            and old.get("scoring_version") == SCORING_VERSION
         ):
             continue
-        actual = [
-            r for r in results if r["event_id"] == forecast["event"]["event_id"] and r["session"] == "race"
-        ]
-        lookup = {r["driver_id"]: r for r in actual}
-        if set(lookup) != {r["driver_id"] for r in forecast["drivers"]}:
+        try:
+            metrics = distribution_metrics(forecast["drivers"], actual, forecast["simulations"])
+        except ValueError as exc:
+            skipped.append({"forecast_id": forecast["id"], "reason": str(exc)})
             continue
-        losses = []
-        for r in forecast["drivers"]:
-            pmf = np.array(r["position_probabilities"])
-            cdf = np.cumsum(pmf)[:-1]
-            losses.append(
-                np.mean((cdf - (lookup[r["driver_id"]]["position"] <= np.arange(1, len(pmf)))) ** 2)
-            )
         scored.append(
             store.add_evidence(
                 {
                     "kind": "forecast_score",
                     "forecast_id": forecast["id"],
+                    "revision_of": old["id"] if old else None,
                     "evidence_kind": forecast["evidence_kind"],
                     "event_id": forecast["event"]["event_id"],
-                    "rps": float(np.mean(losses)),
+                    "stage": forecast["request"]["stage"],
+                    "model_version": forecast["model_version"],
+                    "forecast_code_version": forecast["code_version"],
+                    "actual_data_version": version,
+                    "actual_content_hash": outcome_hash,
                     "actual_source_ids": sorted({r["source_id"] for r in actual}),
                     "forecast_ledger_hash": forecast["ledger_hash"],
+                    **metrics,
                 }
             )
         )
-    return {"scored": len(scored), "evidence_ids": scored}
+    return {"scored": len(scored), "evidence_ids": scored, "unscorable": skipped}
+
+
+def scorecards(store: Store):
+    from collections import defaultdict
+
+    forecasts = {f["id"]: f for f in store.forecasts(100000)}
+    latest = {}
+    for row in store.evidence():
+        if row["kind"] == "forecast_score":
+            latest.setdefault(row["forecast_id"], row)
+    groups = defaultdict(dict)
+    for identifier, score in latest.items():
+        f = forecasts.get(identifier)
+        if not f or "calibration_pairs" not in score:
+            continue
+        key = (
+            f["evidence_kind"],
+            f["request"]["stage"],
+            f["model_version"],
+            f["code_version"],
+            score["scoring_version"],
+        )
+        event = f["event"]["event_id"]
+        old = groups[key].get(event)
+        if not old or f["created_at"] < old[0]["created_at"]:
+            groups[key][event] = (f, score)
+    output = []
+    for key, selected in sorted(groups.items()):
+        rows = [
+            {**s, "season": f["event"]["season"], "circuit": f["event"]["circuit_id"], "weather": "unknown"}
+            for f, s in selected.values()
+        ]
+        output.append(
+            {
+                "evidence_kind": key[0],
+                "stage": key[1],
+                "model_version": key[2],
+                "code_version": key[3],
+                "scoring_version": key[4],
+                "selection_policy": "First recorded forecast per event, stage, model and code version; latest corrected outcome score",
+                "forecast_ids": [f["id"] for f, _ in selected.values()],
+                "report": report(rows),
+            }
+        )
+    return output

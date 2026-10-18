@@ -1,0 +1,20 @@
+{
+  "development_gate": {
+    "bootstrap_replicates": 5000,
+    "bootstrap_unit": "race",
+    "paired_races": 64,
+    "promote": true,
+    "reason": "Supported RPS improvement without >2% winner log-loss degradation",
+    "rps_difference": -0.0024630899328399137,
+    "rps_difference_95ci": [
+      -0.004132414009731359,
+      -0.0006953505290570241
+    ],
+    "winner_log_loss_baseline": 1.646693400452325,
+    "winner_log_loss_candidate": 1.478384788601093
+  },
+  "evidence_id": "769fcced6969b1497bd3133842f4df9f992aaea6056883520053598ffdf0ee68",
+  "freeze_id": "0f7565e176226d5e7879616877efdfccbbb3341e41b989470f9a262627a128ad",
+  "model_version": "988677b2f823bd0bc2adbfc5b7cfa08c295c0c88c76dbf0176512eead0e3a5c6",
+  "status": "candidate_frozen"
+}

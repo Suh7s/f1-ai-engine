@@ -1,9 +1,26 @@
 import numpy as np
 import pytest
+import json
+from pathlib import Path
 from f1engine.simulation import sample_race, forecast, simulate_season, reproduce
 from f1engine.contracts import SeasonRequest, Unavailable
 from f1engine.rules import Rules, countback_order, classification
 from f1engine.demo import DEMO_CUTOFF
+
+
+@pytest.mark.parametrize(
+    "case",
+    json.loads((Path(__file__).parent / "fixtures/sporting_cases.json").read_text()),
+    ids=lambda c: c["case"],
+)
+def test_documented_sporting_cases(case):
+    assert Rules(case["season"]).schedule(20, **case["options"])[: len(case["top"])].tolist() == case["top"]
+
+
+@pytest.mark.parametrize("risk", [[float("nan"), 0], [-0.1, 0], [1.1, 0], [0]])
+def test_invalid_classification_risk_rejected(risk):
+    with pytest.raises(ValueError):
+        sample_race(np.zeros(2), np.zeros(2), 2026, 100, np.random.default_rng(1), disqualification=risk)
 
 
 @pytest.mark.parametrize(
@@ -118,6 +135,22 @@ def test_championship_revisions_are_linked_and_cannot_cross_seasons(store):
         store.save_forecast({**revised, "request": {**revised["request"], "season": 2025}})
     assert len(store.forecasts()) == 2
     assert store.verify_ledger()["valid"]
+
+
+def test_future_standings_correction_cannot_change_old_championship(store):
+    request = SeasonRequest(season=2026, as_of_utc=DEMO_CUTOFF, simulations=200)
+    before = simulate_season(store, request, persist=False)
+    changes = {
+        table: [
+            {**r, "points": 9000, "available_at": "2026-04-20T00:00:00Z"}
+            for r in store.table(table)
+            if r["event_id"] == "2026-02"
+        ]
+        for table in ("standings", "constructor_standings")
+    }
+    store.publish(changes, illustrative=True)
+    after = simulate_season(store, request, persist=False)
+    assert before["prediction_hash"] == after["prediction_hash"]
 
 
 def test_disqualification_distinct_from_retirement():

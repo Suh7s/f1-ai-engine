@@ -10,6 +10,23 @@ from f1engine.models import baseline, publish_model, load_model, fit_candidate
 from f1engine.evaluation import examples, calibrate, promotion_gate
 
 
+def test_missing_raw_source_blocks_forecast_without_erasing_ledger(store, request_):
+    from f1engine.simulation import forecast
+
+    good = forecast(store, request_)
+    (store.root / "raw" / (good["source_ids"][0] + ".json")).write_text("{}")
+    with pytest.raises(Unavailable, match="source integrity"):
+        forecast(store, request_)
+    assert store.forecast(good["id"])["prediction_hash"] == good["prediction_hash"]
+
+
+def test_manifest_corruption_rejected(store):
+    path = store.root / "datasets" / store.current_version() / "manifest.json"
+    path.write_text("{}")
+    with pytest.raises(Unavailable, match="manifest integrity"):
+        store.table("entries")
+
+
 def test_startup_without_files(tmp_path):
     from f1engine.api import create_app
     from fastapi.testclient import TestClient
@@ -83,6 +100,52 @@ def test_training_inference_same_snapshot(store, request_):
     x, med, mean, scale = prepare_array([frame], list(frame["coverage"]))
     y, *_ = prepare_array([build_features(store, request_)], list(frame["coverage"]), med, mean, scale)
     np.testing.assert_array_equal(x, y)
+
+
+def test_future_corrections_preserve_prior_versions_of_existing_records(store, request_):
+    before = build_features(store, request_)
+    changes = {}
+    for table in ("events", "entries", "results", "laps"):
+        eligible = [
+            r
+            for r in store.table(table)
+            if r["event_id"] in {"2026-02", request_.event_id}
+            and timestamp(r["available_at"]) <= request_.as_of_utc
+        ]
+        assert eligible
+        row = dict(eligible[0])
+        row["available_at"] = "2026-04-20T00:00:00Z"
+        if table == "events":
+            row["circuit_id"] = "corrected_circuit"
+        elif table == "entries":
+            row["team_id"] = "corrected_team"
+        elif table == "results":
+            row["position"] = 99
+        else:
+            row["seconds"] = 999
+        changes[table] = [row]
+    store.publish(changes, illustrative=True)
+    after = build_features(store, request_)
+    assert after["feature_hash"] == before["feature_hash"]
+    assert after["source_ids"] == before["source_ids"]
+    # A second correction must not erase either preceding version.
+    row = {**changes["entries"][0], "team_id": "second_team", "available_at": "2026-04-21T00:00:00Z"}
+    store.publish({"entries": [row]}, illustrative=True)
+    assert build_features(store, request_)["feature_hash"] == before["feature_hash"]
+    middle = store.table("entries", as_of="2026-04-20T12:00:00Z")
+    assert (
+        next(r for r in middle if r["driver_id"] == row["driver_id"] and r["event_id"] == row["event_id"])[
+            "team_id"
+        ]
+        == "corrected_team"
+    )
+
+
+def test_unknown_practice_inputs_are_missing_not_zero(store, request_):
+    rows = [{**r, "tyre_age": None} for r in store.table("laps") if r["event_id"] == request_.event_id]
+    store.publish({"laps": rows}, illustrative=True)
+    frame = build_features(store, request_)
+    assert all(r["practice_relative_pace"] is None for r in frame["rows"])
 
 
 def test_transfer_effective_at_event(store, request_):

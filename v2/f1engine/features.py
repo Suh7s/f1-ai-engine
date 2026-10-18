@@ -49,7 +49,9 @@ def build_features(store: Store, request: ForecastRequest) -> dict:
     manifest = store.manifest(version)
     cutoff = request.as_of_utc
     events = {
-        r["event_id"]: r for r in store.table("events", version) if timestamp(r["available_at"]) <= cutoff
+        r["event_id"]: r
+        for r in store.table("events", version, as_of=cutoff)
+        if timestamp(r["available_at"]) <= cutoff
     }
     event = events.get(request.event_id)
     if not event:
@@ -62,7 +64,7 @@ def build_features(store: Store, request: ForecastRequest) -> dict:
     entries = sorted(
         [
             r
-            for r in store.table("entries", version)
+            for r in store.table("entries", version, as_of=cutoff)
             if r["event_id"] == request.event_id and timestamp(r["available_at"]) <= cutoff
         ],
         key=lambda r: r["driver_id"],
@@ -70,7 +72,7 @@ def build_features(store: Store, request: ForecastRequest) -> dict:
     if not entries:
         known_entries = [
             r
-            for r in store.table("entries", version)
+            for r in store.table("entries", version, as_of=cutoff)
             if r["event_id"] in events
             and timestamp(r["available_at"]) <= cutoff
             and timestamp(events[r["event_id"]]["start_at"]) <= cutoff
@@ -91,7 +93,7 @@ def build_features(store: Store, request: ForecastRequest) -> dict:
         raise Unavailable("Entry coverage is incomplete for a full-field F1 forecast")
     if len({e["driver_id"] for e in entries}) != len(entries):
         raise ValueError("Duplicate driver entry")
-    rows = store.table("results", version)
+    rows = store.table("results", version, as_of=cutoff)
     known = [r for r in rows if timestamp(r["available_at"]) <= cutoff]
     history = [
         r
@@ -154,7 +156,7 @@ def build_features(store: Store, request: ForecastRequest) -> dict:
     pole = min([t for t in qualifying_times.values() if t is not None], default=None)
     laps = [
         r
-        for r in store.table("laps", version)
+        for r in store.table("laps", version, as_of=cutoff)
         if r["event_id"] == request.event_id
         and r["session"] in allowed
         and r["session"].startswith("practice")
@@ -166,8 +168,13 @@ def build_features(store: Store, request: ForecastRequest) -> dict:
         if r.get("green")
         and not r.get("pit")
         and r.get("accurate")
-        and r.get("seconds", 0) > 0
-        and 2 <= r.get("tyre_age", 0) <= 25
+        and r.get("seconds") is not None
+        and math.isfinite(r["seconds"])
+        and r["seconds"] > 0
+        and r.get("tyre_age") is not None
+        and math.isfinite(r["tyre_age"])
+        and 2 <= r["tyre_age"] <= 25
+        and r.get("compound") not in {None, "", "UNKNOWN"}
     ]
     # Compare like session/compound/age bins. Relative pace avoids mixing different track evolution.
     bins = defaultdict(list)
@@ -183,18 +190,19 @@ def build_features(store: Store, request: ForecastRequest) -> dict:
                 practice[lap["driver_id"]].append(lap["seconds"] / median - 1)
     weather = [
         r
-        for r in store.table("weather", version)
+        for r in store.table("weather", version, as_of=cutoff)
         if r["event_id"] == request.event_id
         and timestamp(r["issued_at"]) <= cutoff
         and timestamp(r["available_at"]) <= cutoff
-        and r["availability_basis"] == "observed_issue_time"
+        and r["availability_basis"] in {"observed_issue_time", "observed_capture_time"}
+        and timestamp(store.source(r["source_id"])["retrieved_at"]) <= cutoff
     ]
     weather.sort(key=lambda r: r["issued_at"])
     selected_weather = weather[-1] if weather else None
     # No measured race weather is used. Absence remains explicit, not a fictitious dry forecast.
     climate = [
         r
-        for r in store.table("climate", version)
+        for r in store.table("climate", version, as_of=cutoff)
         if r["event_id"] == request.event_id
         and timestamp(r["available_at"]) <= cutoff
         and r["history_end"] < str(cutoff.date())
@@ -288,7 +296,7 @@ def build_features(store: Store, request: ForecastRequest) -> dict:
             "rain_probability": rain,
             "weather_basis": "user_assumption"
             if scenario and scenario.rain_probability is not None
-            else "issued_forecast"
+            else "captured_forecast"
             if selected_weather
             else "climate_prior"
             if selected_climate
@@ -310,14 +318,17 @@ def build_features(store: Store, request: ForecastRequest) -> dict:
         + [event]
     )
     sources = sorted({r["source_id"] for r in used})
+    source_records = store.verify_sources(sources)
     return {
         "event": event,
+        "as_of_utc": cutoff.isoformat(),
         "stage": request.stage.value if hasattr(request.stage, "value") else request.stage,
         "rows": feature_rows,
         "feature_version": FEATURE_VERSION,
         "feature_hash": digest(feature_rows),
         "data_version": version,
         "source_ids": sources,
+        "source_records": source_records,
         "missing": missing,
         "illustrative": manifest["illustrative"],
         "coverage": {

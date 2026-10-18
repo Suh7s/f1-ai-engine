@@ -20,6 +20,7 @@ from .features import build_features
 from .models import predict, load_model
 from .rules import Rules, RULE_VERSION, classification, countback_order
 from .store import Store
+from .scoring import SCORING_VERSION
 
 
 def sample_race(
@@ -40,8 +41,23 @@ def sample_race(
     n = len(scores)
     if n < 2 or simulations < 1 or not np.isfinite(scores).all() or not np.isfinite(retirement).all():
         raise ValueError("Finite inputs and at least two entrants required")
-    if not np.all((np.asarray(retirement) >= 0) & (np.asarray(retirement) <= 1)) or temperature <= 0:
+    if (
+        not np.all((np.asarray(retirement) >= 0) & (np.asarray(retirement) <= 1))
+        or not np.isfinite(temperature)
+        or temperature <= 0
+    ):
         raise ValueError("Invalid probability or temperature")
+    if (
+        np.shape(retirement) != (n,)
+        or not 1 <= laps <= 200
+        or not np.isfinite(beta).all()
+        or np.any(np.asarray(beta) <= 0)
+    ):
+        raise ValueError("Invalid retirement shape, distance or timing parameters")
+    if disqualification is not None:
+        risk = np.asarray(disqualification)
+        if risk.shape != (n,) or not np.isfinite(risk).all() or np.any((risk < 0) | (risk > 1)):
+            raise ValueError("Invalid disqualification probability")
     rules = Rules(season)
     score = (
         np.broadcast_to(np.asarray(scores) / temperature, (simulations, n)).copy()
@@ -79,6 +95,7 @@ def sample_race(
             sprint=sprint,
             distance=distance / laps,
             green_laps=min(int(distance), 2),
+            completed_laps=int(distance),
             final_round=final_round,
         )
     points[~classified] = 0
@@ -101,6 +118,60 @@ def sample_race(
         "laps": completed,
         "classified": classified,
     }
+
+
+def sample_prediction(model, season, simulations, rng, *, choices=None, strength_delta=None, **kwargs):
+    """Mix complete race outcomes, preserving every joint probability identity."""
+    parts = model.get("components", [model])
+    weights = np.asarray(model.get("weights", [1.0]))
+    if (
+        weights.shape != (len(parts),)
+        or not np.isfinite(weights).all()
+        or np.any(weights < 0)
+        or not np.isclose(weights.sum(), 1)
+    ):
+        raise ValueError("Invalid mixture weights")
+    if choices is None:
+        choices = (
+            rng.choice(len(parts), size=simulations, p=weights)
+            if len(parts) > 1
+            else np.zeros(simulations, dtype=int)
+        )
+    choices = np.asarray(choices)
+    if (
+        choices.shape != (simulations,)
+        or not np.issubdtype(choices.dtype, np.integer)
+        or np.any((choices < 0) | (choices >= len(parts)))
+    ):
+        raise ValueError("Invalid component choices")
+    out = {}
+    for index, part in enumerate(parts):
+        selected = np.flatnonzero(choices == index)
+        if not len(selected):
+            continue
+        strengths = None
+        if strength_delta is not None:
+            delta = np.broadcast_to(strength_delta, (simulations, len(part["scores"])))
+            strengths = part["scores"][None, :] + delta[selected]
+        samples = sample_race(
+            part["scores"],
+            part["retirement"],
+            season,
+            len(selected),
+            rng,
+            temperature=part["temperature"],
+            beta=part["retirement_beta"],
+            disqualification=part["disqualification"],
+            strengths=strengths,
+            **kwargs,
+        )
+        for name, values in samples.items():
+            if name not in out:
+                out[name] = np.empty((simulations, *values.shape[1:]), dtype=values.dtype)
+            out[name][selected] = values
+    if len(parts) > 1:
+        out["component"] = choices
+    return out
 
 
 def summarize(frame: dict, model: dict, samples: dict, simulations: int) -> dict:
@@ -154,7 +225,11 @@ def summarize(frame: dict, model: dict, samples: dict, simulations: int) -> dict
         "uncertainty": {
             "outcome": "Position p10/p90 are predictive outcome quantiles.",
             "sampling": "win_sampling_se is Monte Carlo error, not uncertainty about model correctness.",
-            "model": "Not estimated for individual forecasts; use held-out evidence and race-bootstrap comparisons.",
+            "model": (
+                "Complete-outcome mixture of named calibrated models. Component disagreement is represented, but does not cover shared model misspecification."
+                if "components" in model
+                else "Not estimated for individual forecasts; use held-out evidence and race-bootstrap comparisons."
+            ),
             "calibrated": model["calibrated"],
         },
         "assumptions": model["assumptions"],
@@ -177,27 +252,26 @@ def forecast(store: Store, request: ForecastRequest, *, persist=True, live_state
     model = predict(frame, store, request.model_version)
     request = request.model_copy(update={"model_version": model["model_version"]})
     if request.scenario:
-        model["scores"] = model["scores"] + np.array(
-            [request.scenario.strength_delta.get(r["driver_id"], 0) for r in frame["rows"]]
-        )
+        for part in [model] + model.get("components", []):
+            part["scores"] = part["scores"] + np.array(
+                [request.scenario.strength_delta.get(r["driver_id"], 0) for r in frame["rows"]]
+            )
     laps = frame["event"].get("scheduled_laps") or 60
     assumptions = list(model["assumptions"])
     if not frame["event"].get("scheduled_laps"):
+        if live_state is not None:
+            raise Unavailable("Verified scheduled race distance is required for live forecasting")
         assumptions.append(
             "Scheduled distance missing: retirement timing uses a 60-lap normalized distance assumption."
         )
     rng = np.random.default_rng(request.seed)
     if live_state is None:
-        samples = sample_race(
-            model["scores"],
-            model["retirement"],
+        samples = sample_prediction(
+            model,
             frame["event"]["season"],
             request.simulations,
             rng,
-            temperature=model["temperature"],
             laps=laps,
-            beta=model["retirement_beta"],
-            disqualification=model["disqualification"],
             final_round=frame["event"].get("double_points", False),
         )
     else:
@@ -229,9 +303,11 @@ def forecast(store: Store, request: ForecastRequest, *, persist=True, live_state
         "feature_hash": frame["feature_hash"],
         "code_version": code_version(),
         "rules_version": RULE_VERSION,
+        "scoring_version": SCORING_VERSION,
         "seed": request.seed,
         "simulations": request.simulations,
         "source_ids": frame["source_ids"],
+        "source_records": frame["source_records"],
         "availability_bases": frame["availability_bases"],
         "coverage": frame["coverage"],
         "missing_inputs": frame["missing"],
@@ -245,8 +321,9 @@ def forecast(store: Store, request: ForecastRequest, *, persist=True, live_state
     if live_state:
         if live_state.get("source_id"):
             body["source_ids"] = sorted(set(body["source_ids"]) | {live_state["source_id"]})
+            body["source_records"] = store.verify_sources(body["source_ids"])
         body["assumptions"] += [
-            "Live pace prior: 90 seconds minus 0.25 × model strength; weight grows with observed green laps up to 80%. Unvalidated replay model.",
+            "Live pace prior is centered on the observed field median with a provisional 0.25-second normalized-strength slope; clean observed-lap weight grows to 80%. This replay model remains unvalidated for live use.",
             "Unobserved pit stops, neutralizations and weather changes are not modeled in the live baseline.",
         ]
         result["assumptions"] = body["assumptions"]
@@ -293,7 +370,7 @@ def simulate_season(store: Store, request: SeasonRequest, persist=True, model_ve
     events = sorted(
         [
             e
-            for e in store.table("events", version)
+            for e in store.table("events", version, as_of=request.as_of_utc)
             if e["season"] == request.season and timestamp(e["available_at"]) <= request.as_of_utc
         ],
         key=lambda e: e["start_at"],
@@ -302,7 +379,7 @@ def simulate_season(store: Store, request: SeasonRequest, persist=True, model_ve
         raise Unavailable("No season calendar available at the cutoff")
     results = [
         r
-        for r in store.table("results", version)
+        for r in store.table("results", version, as_of=request.as_of_utc)
         if r["event_id"] in {e["event_id"] for e in events}
         and timestamp(r["available_at"]) <= request.as_of_utc
     ]
@@ -319,12 +396,12 @@ def simulate_season(store: Store, request: SeasonRequest, persist=True, model_ve
         )
     standings = [
         r
-        for r in store.table("standings", version)
+        for r in store.table("standings", version, as_of=request.as_of_utc)
         if r["event_id"] in completed and timestamp(r["available_at"]) <= request.as_of_utc
     ]
     constructors = [
         r
-        for r in store.table("constructor_standings", version)
+        for r in store.table("constructor_standings", version, as_of=request.as_of_utc)
         if r["event_id"] in completed and timestamp(r["available_at"]) <= request.as_of_utc
     ]
     last = max(completed, default=None)
@@ -336,7 +413,7 @@ def simulate_season(store: Store, request: SeasonRequest, persist=True, model_ve
         )
     entries = [
         r
-        for r in store.table("entries", version)
+        for r in store.table("entries", version, as_of=request.as_of_utc)
         if r["event_id"] in {e["event_id"] for e in events}
         and timestamp(r["available_at"]) <= request.as_of_utc
     ]
@@ -362,6 +439,19 @@ def simulate_season(store: Store, request: SeasonRequest, persist=True, model_ve
             and row["driver_id"] in di
             and row["team_id"] in ti
             and 1 <= row["position"] <= len(di)
+            and not row.get("disqualified", False)
+            and row.get("laps", 0)
+            >= np.floor(
+                0.9
+                * max(
+                    (
+                        r.get("laps", 0)
+                        for r in results
+                        if r["event_id"] == row["event_id"] and r["session"] == "race"
+                    ),
+                    default=0,
+                )
+            )
         ):
             counts[:, di[row["driver_id"]], row["position"] - 1] += 1
             tc[:, ti[row["team_id"]], row["position"] - 1] += 1
@@ -380,6 +470,7 @@ def simulate_season(store: Store, request: SeasonRequest, persist=True, model_ve
     fixed_model = model_version or (
         load_model(store, "active:pre_weekend")[2] if remaining else "baseline:rating"
     )
+    season_components = None
     for event in remaining:
         frame = build_features(
             store,
@@ -395,41 +486,39 @@ def simulate_season(store: Store, request: SeasonRequest, persist=True, model_ve
         feature_hashes[event["event_id"]] = frame["feature_hash"]
         source_ids.update(frame["source_ids"])
         model = predict(frame, store, fixed_model)
+        if "components" in model and season_components is None:
+            season_components = rng.choice(len(model["components"]), size=n, p=model["weights"])
         model_versions.add(model["model_version"])
         mapping = np.array([di[r["driver_id"]] for r in frame["rows"]])
         team_map = np.array([ti[r["team_id"]] for r in frame["rows"]])
-        strengths = (
-            model["scores"][None, :]
-            + team_shift[:, team_map]
-            + np.column_stack([future_form[r["driver_id"]] for r in frame["rows"]])
+        strength_delta = team_shift[:, team_map] + np.column_stack(
+            [future_form[r["driver_id"]] for r in frame["rows"]]
         )
         # Future qualifying uncertainty is sampled independently of final-race ordering.
-        grid_noise = rng.gumbel(0, 0.2, strengths.shape)
-        strengths = strengths + grid_noise
+        grid_noise = rng.gumbel(0, 0.2, strength_delta.shape)
+        strength_delta = strength_delta + grid_noise
         already_sprint = any(r["event_id"] == event["event_id"] and r["session"] == "sprint" for r in results)
         sessions = ([True] if event.get("sprint") and not already_sprint else []) + [False]
         for sprint in sessions:
-            samples = sample_race(
-                model["scores"],
-                model["retirement"],
+            samples = sample_prediction(
+                model,
                 request.season,
                 n,
                 rng,
-                temperature=model["temperature"],
                 laps=20 if sprint else event.get("scheduled_laps") or 60,
-                beta=model["retirement_beta"],
-                disqualification=model["disqualification"],
                 sprint=sprint,
                 final_round=event.get("double_points", False),
-                strengths=strengths,
+                strength_delta=strength_delta,
+                choices=season_components,
             )
             points[:, mapping] += samples["points"]
             for j, t in enumerate(team_map):
                 tp[:, t] += samples["points"][:, j]
             if not sprint:
                 for j, d in enumerate(mapping):
-                    np.add.at(counts, (np.arange(n), d, samples["position"][:, j] - 1), 1)
-                    np.add.at(tc, (np.arange(n), team_map[j], samples["position"][:, j] - 1), 1)
+                    eligible = np.flatnonzero(samples["classified"][:, j])
+                    np.add.at(counts, (eligible, d, samples["position"][eligible, j] - 1), 1)
+                    np.add.at(tc, (eligible, team_map[j], samples["position"][eligible, j] - 1), 1)
                     future_form[driver_ids[d]] = 0.9 * future_form[driver_ids[d]] + 0.1 * (
                         0.5 - (samples["position"][:, j] - 1) / max(len(mapping) - 1, 1)
                     )
@@ -445,6 +534,8 @@ def simulate_season(store: Store, request: SeasonRequest, persist=True, model_ve
     team_order = countback_order(tp, tc, rng)
     position = np.empty_like(order)
     position[np.arange(n)[:, None], order] = np.arange(1, len(di) + 1)
+    team_position = np.empty_like(team_order)
+    team_position[np.arange(n)[:, None], team_order] = np.arange(1, len(ti) + 1)
     rules = Rules(request.season)
     max_remaining = sum(
         rules.schedule(1, final_round=e.get("double_points", False))[0]
@@ -479,6 +570,7 @@ def simulate_season(store: Store, request: SeasonRequest, persist=True, model_ve
         "data_version": version,
         "code_version": code_version(),
         "rules_version": RULE_VERSION,
+        "scoring_version": SCORING_VERSION,
         "evidence_kind": Evidence.ILLUSTRATIVE.value
         if manifest["illustrative"]
         else (
@@ -489,6 +581,7 @@ def simulate_season(store: Store, request: SeasonRequest, persist=True, model_ve
         "seed": request.seed,
         "simulations": n,
         "source_ids": sorted(source_ids),
+        "source_records": store.verify_sources(source_ids),
         "model_versions": sorted(model_versions),
         "feature_hashes": feature_hashes,
         "feature_version": __import__("f1engine.contracts", fromlist=["FEATURE_VERSION"]).FEATURE_VERSION,
@@ -499,6 +592,9 @@ def simulate_season(store: Store, request: SeasonRequest, persist=True, model_ve
                 "team_id": t,
                 "title_probability": float((team_order[:, 0] == i).mean()),
                 "expected_points": float(tp[:, i].mean()),
+                "position_probabilities": (
+                    np.bincount(team_position[:, i], minlength=len(ti) + 1)[1:] / n
+                ).tolist(),
                 "points_p10": float(np.quantile(tp[:, i], 0.1)),
                 "points_p90": float(np.quantile(tp[:, i], 0.9)),
             }
@@ -519,6 +615,7 @@ def simulate_season(store: Store, request: SeasonRequest, persist=True, model_ve
             "Exact unresolved countback ties use random adjudication.",
             "Elimination uses a conservative maximum-points bound; equality is not declared eliminated.",
             "Full-distance future races are assumed; cancellations and shortened races are not modeled.",
+            "For an ensemble, component identity is sampled once per season trajectory and persists across rounds and sprints.",
         ],
         "number_kinds": {
             "current_points": "observation",

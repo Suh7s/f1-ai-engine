@@ -1,0 +1,34 @@
+
+> f1engine-control-room@2.0.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+✓ 36 modules transformed.
+rendering chunks...
+computing gzip size...
+../v2/f1engine/static/index.html                                                         0.47 kB │ gzip:     0.31 kB
+../v2/f1engine/static/assets/jetbrains-mono-vietnamese-wght-normal-Bt-aOZkq.woff2        7.50 kB
+../v2/f1engine/static/assets/jetbrains-mono-greek-wght-normal-Bw9x6K1M.woff2             9.00 kB
+../v2/f1engine/static/assets/playfair-display-vietnamese-wght-normal-Cabi7G8-.woff2      9.11 kB
+../v2/f1engine/static/assets/playfair-display-vietnamese-wght-italic-DUEcMSM3.woff2      9.57 kB
+../v2/f1engine/static/assets/inter-vietnamese-wght-normal-CBcvBZtf.woff2                10.25 kB
+../v2/f1engine/static/assets/inter-greek-ext-wght-normal-DlzME5K_.woff2                 11.23 kB
+../v2/f1engine/static/assets/jetbrains-mono-cyrillic-wght-normal-D73BlboJ.woff2         12.11 kB
+../v2/f1engine/static/assets/jetbrains-mono-latin-ext-wght-normal-DBQx-q_a.woff2        15.20 kB
+../v2/f1engine/static/assets/inter-cyrillic-wght-normal-DqGufNeO.woff2                  18.75 kB
+../v2/f1engine/static/assets/inter-greek-wght-normal-CkhJZR-_.woff2                     19.00 kB
+../v2/f1engine/static/assets/playfair-display-latin-ext-wght-normal-CT1r92Rl.woff2      21.14 kB
+../v2/f1engine/static/assets/playfair-display-cyrillic-wght-normal-5WvUvBgz.woff2       21.15 kB
+../v2/f1engine/static/assets/playfair-display-cyrillic-wght-italic-D5dBZ3aJ.woff2       23.30 kB
+../v2/f1engine/static/assets/playfair-display-latin-ext-wght-italic-ze_cPdSg.woff2      23.38 kB
+../v2/f1engine/static/assets/inter-cyrillic-ext-wght-normal-BOeWTOD4.woff2              25.96 kB
+../v2/f1engine/static/assets/playfair-display-latin-wght-normal-BOwq7MWX.woff2          38.40 kB
+../v2/f1engine/static/assets/playfair-display-latin-wght-italic-DmbndNpe.woff2          38.80 kB
+../v2/f1engine/static/assets/jetbrains-mono-latin-wght-normal-B9CIFXIH.woff2            40.40 kB
+../v2/f1engine/static/assets/inter-latin-wght-normal-Dx4kXJAl.woff2                     48.26 kB
+../v2/f1engine/static/assets/inter-latin-ext-wght-normal-DO1Apj_S.woff2                 85.07 kB
+../v2/f1engine/static/assets/index-COQcTjsD.css                                         26.09 kB │ gzip:     7.59 kB
+../v2/f1engine/static/assets/index-BOS0RXDv.js                                         259.34 kB │ gzip:    80.29 kB
+../v2/f1engine/static/assets/plotly.min-DThA1rfA.js                                  4,841.33 kB │ gzip: 1,468.02 kB
+✓ built in 6.13s

@@ -1,0 +1,18 @@
+{
+  "wheel_sha256": "13d9f53ff1de9991b3a42f7faa403c8632a97ec05a97d435d821c8805025f57e",
+  "python": "3.13.7 (v3.13.7:bcee1c32211, Aug 14 2025, 19:10:51) [Clang 16.0.0 (clang-1600.0.26.6)]",
+  "installed_package": "/private/tmp/f1engine-pit-wall-install/lib/python3.13/site-packages/f1engine",
+  "working_directory": "/private/tmp",
+  "http_startup": true,
+  "offline_fixture_forecast": true,
+  "reproduction": {
+    "forecast_id": "32c0a2dbca2541e68e5847f4ca1b5ab8",
+    "match": true,
+    "expected": "fc20a11a2223dd6bf9b8f5661f7a0d2427e941e0cf619139162958ba9c28e91b",
+    "actual": "fc20a11a2223dd6bf9b8f5661f7a0d2427e941e0cf619139162958ba9c28e91b"
+  },
+  "served_static_files": 24,
+  "font_files": 20,
+  "font_licenses": 3,
+  "pip_check": "No broken requirements found."
+}

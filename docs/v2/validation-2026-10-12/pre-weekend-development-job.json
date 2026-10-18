@@ -1,0 +1,21 @@
+{
+  "attempt": 1,
+  "budget_seconds": 2700,
+  "cancel_requested": false,
+  "created_at": "2026-10-12T14:20:48.954856+00:00",
+  "elapsed_seconds": 94.77837391698267,
+  "id": "b84d13306b1644719a480c3892265486",
+  "kind": "experiment",
+  "launched_epoch": 1791814848.954881,
+  "message": "Completed",
+  "parameters": {
+    "candidates": 12,
+    "data_version": "33e699d147510a066d774a8997e129b52f0393ff3b60e1178e1157b2bb7b6f5f",
+    "stage": "pre_weekend"
+  },
+  "pid": 68285,
+  "progress": 1,
+  "started_at": "2026-10-12T14:20:48.956584+00:00",
+  "status": "completed",
+  "updated_at": "2026-10-12T14:22:23.763766+00:00"
+}

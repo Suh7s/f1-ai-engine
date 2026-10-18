@@ -1,0 +1,14 @@
+{
+  "kind": "prospective_pair",
+  "evidence_kind": "prospective_forecast",
+  "freeze_id": "3ccac5602e5fed8008a617852b4e369ff4ca72adb787ec231c8a66425072b234",
+  "event_id": "2026-18",
+  "stage": "pre_weekend",
+  "candidate_forecast": "90f0db116b764bf4bdafd8d0e9343210",
+  "baseline_forecast": "d5bbb924e1de498d8f29b547962fc5f5",
+  "as_of_utc": "2026-10-18T15:59:45.378195+00:00",
+  "data_version": "a9a95521c502f9829536b250635e8f7a5a632a3088db92d91ce2834c261ed7c7",
+  "simulations": 10000,
+  "selection_policy": "First recorded pair per event; first 15 registered events ordered by race start; evaluate once when every outcome is available",
+  "id": "561bb88e9ea999250bb9ae3a33674f3118995f20e775cdd729c1d0fb9d18a62f"
+}

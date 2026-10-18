@@ -25,7 +25,14 @@ def main():
     sync.add_argument("season", type=int)
     standings = sub.add_parser("standings")
     standings.add_argument("event_id", help="Official standings after this round, e.g. 2024-17")
-    for name in ("experiment", "holdout"):
+    for name in (
+        "experiment",
+        "holdout",
+        "collect",
+        "prospective",
+        "replay_evaluation",
+        "championship_evaluation",
+    ):
         p = sub.add_parser(name)
         p.add_argument("--parameters", default="{}", help="JSON parameters")
     for name in ("cancel", "resume"):
@@ -47,6 +54,7 @@ def main():
     p.add_argument("--start", required=True)
     sub.add_parser("score")
     sub.add_parser("benchmark")
+    sub.add_parser("repair_identities")
     args = parser.parse_args()
     root = Settings(args.home).root
     if args.command == "app":
@@ -84,7 +92,10 @@ def main():
         except Exception as exc:
             result["xgboost"] = f"unavailable: {exc}"
     elif args.command == "verify":
-        result = store.verify_ledger()
+        result = {
+            "ledger": store.verify_ledger(),
+            "dataset": store.verify_dataset() if store.current_version() else None,
+        }
     elif args.command == "jobs":
         jobs.recover(store)
         result = jobs.jobs(store)
@@ -92,7 +103,14 @@ def main():
         result = jobs.submit(store, "sync_season", {"season": args.season})
     elif args.command == "standings":
         result = jobs.submit(store, "sync_standings", {"event_id": args.event_id})
-    elif args.command in {"experiment", "holdout"}:
+    elif args.command in {
+        "experiment",
+        "holdout",
+        "collect",
+        "prospective",
+        "replay_evaluation",
+        "championship_evaluation",
+    }:
         result = jobs.submit(store, args.command, json.loads(args.parameters))
     elif args.command in {"cancel", "resume"}:
         result = getattr(jobs, args.command)(store, args.job_id)
@@ -116,9 +134,9 @@ def main():
         from .recorder import normalize
 
         envelopes = [json.loads(line) for line in Path(args.input).read_text().splitlines() if line.strip()]
-        number_map = {
-            str(r["number"]): r["driver_id"] for r in store.table("entries") if r["event_id"] == args.event
-        }
+        from .session_data import entry_number_map
+
+        number_map = entry_number_map(store.table("entries"), args.event)
         messages = normalize(envelopes, args.event, args.start, number_map)
         Path(args.output).write_text(canonical(messages))
         result = {"messages": len(messages), "path": str(Path(args.output).resolve())}

@@ -5,7 +5,7 @@ from dataclasses import dataclass
 import numpy as np
 from .contracts import Unavailable
 
-RULE_VERSION = "sporting-2014-2026-v2.0"
+RULE_VERSION = "sporting-2014-2026-v2.1"
 RULE_SOURCE = "https://www.fia.com/regulation/category/110"
 GP_POINTS = np.array([25, 18, 15, 12, 10, 8, 6, 4, 2, 1], dtype=float)
 
@@ -22,13 +22,29 @@ class Rules:
             )
 
     def schedule(
-        self, field: int, *, sprint=False, distance=1.0, green_laps=2, final_round=False
+        self,
+        field: int,
+        *,
+        sprint=False,
+        distance=1.0,
+        green_laps=2,
+        final_round=False,
+        completed_laps=None,
+        suspended_not_resumed=True,
     ) -> np.ndarray:
         if not 0 <= distance <= 1:
             raise ValueError("Distance fraction must be within [0,1]")
         points = np.zeros(field)
-        if green_laps < 2:
+        if distance == 0 or (self.season >= 2022 and green_laps < 2):
             return points
+        # Before 2022, safety-car laps counted towards this threshold (Spa 2021).
+        # The distance for points may differ from the countback classification lap.
+        if self.season <= 2021 and completed_laps is not None and completed_laps <= 2:
+            return points
+        if self.season == 2022 and not sprint and not suspended_not_resumed:
+            # The 2022 reduced-points rule only applied if a suspension ended the race.
+            # The FIA closed this wording gap for 2023 (Japan 2022 received full points).
+            distance = 1.0
         if sprint:
             if self.season < 2021:
                 raise ValueError("Sprint scoring does not exist before 2021")
