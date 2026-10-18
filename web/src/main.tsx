@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
+import "@fontsource-variable/playfair-display/wght.css";
+import "@fontsource-variable/playfair-display/wght-italic.css";
+import "@fontsource-variable/inter/wght.css";
+import "@fontsource-variable/jetbrains-mono/wght.css";
 import "./style.css";
 type Any = Record<string, any>;
 type Workspace =
@@ -8,6 +12,8 @@ const pct = (v: number | undefined) =>
   v == null ? "—" : `${(v * 100).toFixed(1)}%`;
 const num = (v: number | undefined, d = 1) => (v == null ? "—" : v.toFixed(d));
 const label = (s: string) => s.replaceAll("_", " ");
+const humanName = (s: string) =>
+  label(s).replace(/\b\w/g, (c) => c.toUpperCase());
 async function api(path: string, body?: unknown) {
   const response = await fetch(
     "/api/v1" + path,
@@ -50,11 +56,11 @@ function Chart({
           {
             paper_bgcolor: "transparent",
             plot_bgcolor: "transparent",
-            font: { family: "Inter, system-ui", color: "#93a2b5", size: 11 },
+            font: { family: "Inter, system-ui", color: "#60584b", size: 11 },
             margin: { t: 20, b: 40, l: 70, r: 20 },
             height,
-            xaxis: { gridcolor: "#222b38", zeroline: false },
-            yaxis: { gridcolor: "#222b38", zeroline: false },
+            xaxis: { gridcolor: "#d8d0bf", zeroline: false },
+            yaxis: { gridcolor: "#d8d0bf", zeroline: false },
             ...layout,
           },
           { responsive: true, displayModeBar: false },
@@ -105,6 +111,81 @@ function Empty({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+function formatDate(value: string, time = false) {
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) return "Date unavailable";
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    ...(time ? { year: "numeric", hour: "2-digit", minute: "2-digit" } : {}),
+    timeZone: "UTC",
+  });
+}
+function RaceClock({
+  start,
+  illustrative,
+  cutoff,
+}: {
+  start: string;
+  illustrative: boolean;
+  cutoff: string;
+}) {
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    if (illustrative) return;
+    const timer = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(timer);
+  }, [illustrative]);
+  const base = illustrative ? Date.parse(cutoff + ":00Z") : now;
+  const delta = Date.parse(start) - base;
+  const valid = Number.isFinite(delta);
+  const remaining = Math.max(0, Math.floor(delta / 1000));
+  const cells = [
+    Math.floor(remaining / 86400),
+    Math.floor(remaining / 3600) % 24,
+    Math.floor(remaining / 60) % 60,
+    remaining % 60,
+  ];
+  return (
+    <div className="race-clock">
+      <div className="countdown-label">
+        <span className="dot" />
+        {!valid
+          ? "Schedule unavailable"
+          : delta <= 0
+            ? "Scheduled start has passed"
+            : illustrative
+              ? "From the illustrative cutoff"
+              : "Until scheduled lights out"}
+      </div>
+      {valid && delta > 0 ? (
+        <div
+          className="countdown"
+          role="timer"
+          aria-label="Time until scheduled start"
+        >
+          {cells.map((n, i) => (
+            <div className="countdown-cell" key={i}>
+              <strong>{String(n).padStart(2, "0")}</strong>
+              <span>{["Days", "Hours", "Mins", "Secs"][i]}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="clock-past">
+          {valid
+            ? "Explore the race at your chosen cutoff."
+            : "Import a verified calendar to show race timing."}
+        </p>
+      )}
+      <p className="clock-note">
+        {illustrative
+          ? "Illustrative calculation · clock fixed to your selected cutoff."
+          : "Derived from the imported schedule and your device clock. This is not a live timing feed."}
+      </p>
+    </div>
+  );
+}
 function App() {
   const [tab, setTab] = useState<Workspace>("Race"),
     [health, setHealth] = useState<Any | null>(null),
@@ -116,6 +197,8 @@ function App() {
     [season, setSeason] = useState<Any | null>(null),
     [frame, setFrame] = useState<Any | null>(null),
     [evidence, setEvidence] = useState<Any[]>([]),
+    [scorecards, setScorecards] = useState<Any[]>([]),
+    [modelRegistry, setModelRegistry] = useState<Any | null>(null),
     [ledger, setLedger] = useState<Any[]>([]),
     [jobs, setJobs] = useState<Any[]>([]),
     [error, setError] = useState(""),
@@ -134,17 +217,21 @@ function App() {
   const selected = events.find((e) => e.event_id === event);
   const isDemo = health?.illustrative;
   async function refresh() {
-    const [h, ev, le, en, jo] = await Promise.all([
+    const [h, ev, le, en, jo, sc, mr] = await Promise.all([
       api("/health"),
       api("/events"),
       api("/forecasts"),
       api("/evidence"),
       api("/jobs"),
+      api("/scorecards"),
+      api("/models"),
     ]);
     setHealth(h);
     setEvents(ev);
     setLedger(le);
     setEvidence(en);
+    setScorecards(sc);
+    setModelRegistry(mr);
     setJobs(jo);
     return { h, ev };
   }
@@ -182,6 +269,61 @@ function App() {
     stream.onmessage = (e) => setJobs(JSON.parse(e.data));
     return () => stream.close();
   }, []);
+  useEffect(() => {
+    if (!source) return;
+    const previous = document.activeElement as HTMLElement | null;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSource(null);
+      if (e.key === "Tab") {
+        const dialog = document.querySelector<HTMLElement>('[role="dialog"]');
+        const nodes = dialog?.querySelectorAll<HTMLElement>(
+          'button, a[href], input, select, [tabindex="0"]',
+        );
+        if (!nodes?.length) return;
+        const first = nodes[0],
+          last = nodes[nodes.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document
+      .querySelector<HTMLButtonElement>('[role="dialog"] button')
+      ?.focus();
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = overflow;
+      document.removeEventListener("keydown", onKey);
+      previous?.focus();
+    };
+  }, [source]);
+  useEffect(() => {
+    const selectedRound = document.querySelector<HTMLElement>(
+      ".calendar-round.selected",
+    );
+    const strip = selectedRound?.parentElement;
+    if (strip && selectedRound)
+      strip.scrollLeft +=
+        selectedRound.getBoundingClientRect().left -
+        strip.getBoundingClientRect().left -
+        (strip.clientWidth - selectedRound.clientWidth) / 2;
+  }, [event, events, tab]);
+  function selectEvent(id: string) {
+    setEvent(id);
+    const ev = events.find((v) => v.event_id === id);
+    if (ev)
+      setCutoff(
+        new Date(Math.min(Date.now(), Date.parse(ev.start_at) - 7200000))
+          .toISOString()
+          .slice(0, 16),
+      );
+  }
   function request() {
     if (!cutoff) throw Error("Set an information cutoff");
     return {
@@ -218,6 +360,12 @@ function App() {
     });
   }
   const drivers = forecast?.drivers || [];
+  const driverName = (id: string) =>
+    drivers.find((d: Any) => d.driver_id === id)?.name ||
+    frame?.rows?.find((d: Any) => d.driver_id === id)?.name ||
+    humanName(id);
+  const teamName = (id: string) =>
+    drivers.find((d: Any) => d.team_id === id)?.team_name || humanName(id);
   const focus = drivers.find((d: Any) => d.driver_id === driver) || drivers[0];
   const mismatch =
     !!forecast &&
@@ -226,10 +374,16 @@ function App() {
       forecast.request.as_of_utc.slice(0, 16) !== cutoff ||
       forecast.data_version !== health?.data_version);
   const evalEvidence = evidence.find(
-    (e) => e.kind === "holdout_report" || e.kind === "development_experiment",
+    (e) =>
+      e.kind === "holdout_report" ||
+      e.kind === "development_experiment" ||
+      e.kind === "prospective_comparison",
   );
   const modelReport =
-    evalEvidence?.candidate || evalEvidence?.candidates?.[0]?.report;
+    evalEvidence?.candidate ||
+    evalEvidence?.candidates?.find(
+      (c: Any) => c.index === evalEvidence.selected_index,
+    )?.report;
   const frozen = evidence.find((e) => e.kind === "candidate_freeze");
   const last = ledger.find(
     (l) => l.kind === "race" && l.request.event_id === event,
@@ -319,17 +473,50 @@ function App() {
   }
   return (
     <div className="shell">
-      <aside>
-        <a className="brand" href="/" aria-label="F1 Engine home">
-          <span className="brand-symbol">
-            F<span>1</span>
-          </span>
-          <div>
-            ENGINE<small>RACE INTELLIGENCE / V2</small>
+      <a className="skip-link" href="#workspace">
+        Skip to workspace
+      </a>
+      <div className="ticker" aria-label="Engine status">
+        <span>
+          <b>EDITION</b> {isDemo ? "ILLUSTRATIVE DEMO" : "LOCAL RACE CONTROL"}
+        </span>
+        <span>
+          <b>EVENT</b> {selected?.name || "Awaiting dataset"}
+        </span>
+        <span>
+          <b>LEDGER</b>{" "}
+          {health?.ledger.valid ? "INTEGRITY CHECKED" : "NOT VERIFIED"}
+        </span>
+        <span>
+          <b>PRINCIPLE</b> EVIDENCE BEFORE CONFIDENCE
+        </span>
+      </div>
+      <main>
+        <header className={`masthead ${tab !== "Race" ? "compact" : ""}`}>
+          <div className="hero-top">
+            <a className="brand" href="/" aria-label="F1 Engine home">
+              <span className="checker-flag" aria-hidden="true" />
+              <span>Personal edition · F1 Engine</span>
+            </a>
+            <div className="brand-right">
+              <span className="greeting">Welcome to your pit wall, Suhas.</span>
+              <span className="dateline">
+                Observe carefully. Forecast honestly.
+              </span>
+            </div>
           </div>
-        </a>
-        <div className="nav-caption">CONTROL ROOM</div>
-        <nav>
+          <h1 className="hero-title">
+            <span>Suhas’s</span>
+            <em>Pit Wall.</em>
+          </h1>
+          <div className="hero-sub">
+            <span className="edition-badge">
+              {isDemo ? "Illustrative edition" : "Local edition"}
+            </span>
+            <span>Race · Weekend · Championship · Evidence</span>
+          </div>
+        </header>
+        <nav className="workspace-nav" aria-label="Workspaces">
           {(
             [
               "Race",
@@ -342,50 +529,145 @@ function App() {
             <button
               className={tab === name ? "active" : ""}
               key={name}
+              aria-current={tab === name ? "page" : undefined}
               onClick={() => setTab(name)}
             >
-              <span className="nav-icon">{["◈", "▤", "◇", "◉", "▥"][i]}</span>
+              <span className="nav-num" aria-hidden="true">
+                0{i + 1}
+              </span>
               {name}
-              <span className="nav-num">0{i + 1}</span>
+              <span className="nav-arrow" aria-hidden="true">
+                ↗
+              </span>
             </button>
           ))}
         </nav>
-        <div className="sidebar-bottom">
-          <div>
-            <span className="dot" /> LOCAL ENGINE
-          </div>
-          <p>Evidence before confidence.</p>
-          <small>
-            {health?.ledger.valid
-              ? "Ledger integrity checked"
-              : "Checking integrity"}
-          </small>
+        <div id="workspace" tabIndex={-1} className="workspace-anchor" />
+        {tab === "Race" && selected && (
+          <>
+            <section className="race-block" aria-label="Selected race">
+              <div className="race-intro">
+                <div className="race-meta-row">
+                  <span className="race-round">
+                    Round {String(selected.round).padStart(2, "0")} · Selected
+                    event
+                  </span>
+                  <span className="dark-kind">
+                    {isDemo ? "Illustrative scenario" : "Calendar observation"}
+                  </span>
+                </div>
+                <h2 className="race-name">
+                  {selected.name.replace(/ Grand Prix$/i, "")}
+                  <em>
+                    {/Grand Prix$/i.test(selected.name)
+                      ? "Grand Prix"
+                      : "Race weekend"}
+                  </em>
+                </h2>
+                <p className="race-circuit">
+                  {selected.circuit_name ||
+                    label(selected.circuit_id || "Circuit unavailable")}
+                </p>
+                <div className="race-facts">
+                  <div>
+                    <span>Scheduled start · UTC</span>
+                    <strong>{formatDate(selected.start_at, true)}</strong>
+                  </div>
+                  <div>
+                    <span>Prediction stage</span>
+                    <strong>{label(stage)}</strong>
+                  </div>
+                  <button
+                    className="race-source"
+                    onClick={() =>
+                      act("Reading calendar source", async () =>
+                        setSource({
+                          kind: isDemo
+                            ? "illustrative scenario"
+                            : "observation",
+                          event: selected,
+                          data_version: health?.data_version,
+                          source: selected.source_id
+                            ? await api("/sources/" + selected.source_id)
+                            : null,
+                        }),
+                      )
+                    }
+                  >
+                    Calendar evidence ↗
+                  </button>
+                </div>
+              </div>
+              <RaceClock
+                start={selected.start_at}
+                illustrative={!!isDemo}
+                cutoff={cutoff}
+              />
+            </section>
+            <section className="calendar" aria-label="Season calendar">
+              <div className="calendar-heading">
+                <h2>
+                  Season <em>Calendar</em>
+                </h2>
+                <span>
+                  {selected.season} ·{" "}
+                  {isDemo ? "Illustrative schedule" : "Imported schedule"}
+                </span>
+              </div>
+              <div className="calendar-strip">
+                {events
+                  .filter((e) => e.season === selected.season)
+                  .sort((a, b) => a.round - b.round)
+                  .map((e) => (
+                    <button
+                      key={e.event_id}
+                      className={`calendar-round ${e.event_id === event ? "selected" : ""}`}
+                      aria-label={`Select ${e.name}`}
+                      aria-pressed={e.event_id === event}
+                      onClick={() => selectEvent(e.event_id)}
+                    >
+                      <span className="calendar-round-number">
+                        R{String(e.round).padStart(2, "0")}
+                        <span aria-hidden="true">
+                          {e.event_id === event ? "●" : "↗"}
+                        </span>
+                      </span>
+                      <strong>{e.name.replace(/ Grand Prix$/i, "")}</strong>
+                      <span className="calendar-date">
+                        {formatDate(e.start_at)}
+                      </span>
+                    </button>
+                  ))}
+              </div>
+            </section>
+          </>
+        )}
+        <div className="workspace-heading">
+          <span>
+            §{" "}
+            {String(
+              [
+                "Race",
+                "Weekend",
+                "Championship",
+                "Live / replay",
+                "Evidence",
+              ].indexOf(tab) + 1,
+            ).padStart(2, "0")}
+          </span>
+          <h2>
+            {tab === "Race"
+              ? "The race, in probabilities."
+              : tab === "Weekend"
+                ? "Read the weekend."
+                : tab === "Championship"
+                  ? "The season, in perspective."
+                  : tab === "Live / replay"
+                    ? "Rewind. Observe. Reforecast."
+                    : "Confidence needs evidence."}
+          </h2>
+          <span className="workspace-type">{tab}</span>
         </div>
-      </aside>
-      <main>
-        <header>
-          <div>
-            <div className="eyebrow">PERSONAL RACE CONTROL</div>
-            <h1>
-              {tab === "Race"
-                ? "Every position. Every possibility."
-                : tab === "Weekend"
-                  ? "Read the weekend."
-                  : tab === "Championship"
-                    ? "The season, in perspective."
-                    : tab === "Live / replay"
-                      ? "Rewind. Observe. Reforecast."
-                      : "Confidence needs evidence."}
-            </h1>
-          </div>
-          <div className="connection">
-            <span className="dot" />
-            {isDemo ? "OFFLINE DEMO" : "LOCAL DATA"}
-            <small>
-              {isDemo ? "Fictional fixture dataset" : "Free public sources"}
-            </small>
-          </div>
-        </header>
         {isDemo && (
           <div className="demo-banner">
             <b>ILLUSTRATIVE SCENARIO</b> Fictional drivers and results. These
@@ -399,18 +681,7 @@ function App() {
             <select
               aria-label="Event"
               value={event}
-              onChange={(e) => {
-                setEvent(e.target.value);
-                const ev = events.find((v) => v.event_id === e.target.value);
-                if (ev)
-                  setCutoff(
-                    new Date(
-                      Math.min(Date.now(), Date.parse(ev.start_at) - 7200000),
-                    )
-                      .toISOString()
-                      .slice(0, 16),
-                  );
-              }}
+              onChange={(e) => selectEvent(e.target.value)}
             >
               {events
                 .slice()
@@ -522,6 +793,21 @@ function App() {
                   <option value="active">
                     Promoted model, or explicit baseline
                   </option>
+                  {modelRegistry?.candidates?.map((m: Any) => (
+                    <option
+                      key={m.id}
+                      value={m.id}
+                      disabled={
+                        !m.compatible ||
+                        (m.prediction_stage && m.prediction_stage !== stage)
+                      }
+                    >
+                      {label(m.family)} · {m.id.slice(0, 8)} ·{" "}
+                      {m.compatible
+                        ? "research candidate"
+                        : "archived feature version"}
+                    </option>
+                  ))}
                 </select>
               </label>
               <label className="check">
@@ -611,11 +897,11 @@ function App() {
                           y: drivers.map((d: Any) => d.code),
                           x: drivers.map((_: Any, i: number) => i + 1),
                           colorscale: [
-                            [0, "#121a25"],
-                            [0.1, "#153e49"],
-                            [0.3, "#287c86"],
-                            [0.6, "#70cebd"],
-                            [1, "#e6ffc5"],
+                            [0, "#ece5d8"],
+                            [0.1, "#e8b8a5"],
+                            [0.3, "#d75b40"],
+                            [0.6, "#ad2119"],
+                            [1, "#490c09"],
                           ],
                           showscale: false,
                           hovertemplate:
@@ -806,12 +1092,12 @@ function App() {
                               : 100 * r.practice_relative_pace,
                           ),
                           y: frame.rows.map((r: Any) => r.code),
-                          marker: { color: "#78d7be" },
+                          marker: { color: "#c92a1f" },
                         },
                       ]}
                       layout={{
                         title: "Relative pace within comparable lap groups (%)",
-                        yaxis: { autorange: "reversed" },
+                        yaxis: { autorange: "reversed", automargin: true },
                       }}
                     />
                     <p className="muted">
@@ -927,13 +1213,15 @@ function App() {
                           x: season.drivers.map(
                             (d: Any) => d.title_probability,
                           ),
-                          y: season.drivers.map((d: Any) => d.driver_id),
-                          marker: { color: "#78d7be" },
+                          y: season.drivers.map((d: Any) =>
+                            driverName(d.driver_id),
+                          ),
+                          marker: { color: "#c92a1f" },
                         },
                       ]}
                       layout={{
                         title: "Title probabilities",
-                        yaxis: { autorange: "reversed" },
+                        yaxis: { autorange: "reversed", automargin: true },
                         xaxis: { tickformat: ".0%" },
                       }}
                       height={430}
@@ -948,13 +1236,15 @@ function App() {
                           x: season.constructors.map(
                             (d: Any) => d.title_probability,
                           ),
-                          y: season.constructors.map((d: Any) => d.team_id),
-                          marker: { color: "#a6bafc" },
+                          y: season.constructors.map((d: Any) =>
+                            teamName(d.team_id),
+                          ),
+                          marker: { color: "#5d6f81" },
                         },
                       ]}
                       layout={{
                         title: "Title probabilities",
-                        yaxis: { autorange: "reversed" },
+                        yaxis: { autorange: "reversed", automargin: true },
                         xaxis: { tickformat: ".0%" },
                       }}
                       height={430}
@@ -977,7 +1267,7 @@ function App() {
                       <tbody>
                         {season.drivers.map((d: Any) => (
                           <tr key={d.driver_id}>
-                            <td>{d.driver_id}</td>
+                            <td>{driverName(d.driver_id)}</td>
                             <td>{d.current_points}</td>
                             <td>{num(d.expected_points)}</td>
                             <td>
@@ -1121,7 +1411,7 @@ function App() {
                             (r: Any) => r.driver_id,
                           ),
                           textposition: "top center",
-                          marker: { color: "#b7f497", size: 9 },
+                          marker: { color: "#c92a1f", size: 9 },
                         },
                       ]}
                       layout={{
@@ -1189,6 +1479,29 @@ function App() {
                 </Card>
               ))}
             </div>
+            <Card title="Scored forecasts" tag="derived evaluation">
+              <p className="muted">
+                One forecast per event, stage, model and code version. Corrected
+                results create linked score revisions. Evidence categories
+                remain separate.
+              </p>
+              {scorecards.length ? (
+                scorecards.map((s: Any, i: number) => (
+                  <details key={i}>
+                    <summary>
+                      {label(s.evidence_kind)} · {label(s.stage)} ·{" "}
+                      {s.model_version.slice(0, 18)} · {s.report.races} races ·
+                      RPS {num(s.report.metrics.rps, 4)}
+                    </summary>
+                    <Detail value={s} />
+                  </details>
+                ))
+              ) : (
+                <Empty>
+                  No eligible saved forecasts have official outcomes yet.
+                </Empty>
+              )}
+            </Card>
             <Card title="Model comparisons & calibration">
               {modelReport && (
                 <>
@@ -1199,7 +1512,7 @@ function App() {
                         mode: "lines",
                         x: [0, 1],
                         y: [0, 1],
-                        line: { color: "#526578", dash: "dot" },
+                        line: { color: "#8a8172", dash: "dot" },
                         name: "Perfect calibration",
                       },
                       {
@@ -1211,7 +1524,7 @@ function App() {
                         y: modelReport.calibration.win.map(
                           (b: Any) => b.observed,
                         ),
-                        marker: { color: "#b7f497" },
+                        marker: { color: "#c92a1f" },
                         name: "Winner reliability",
                       },
                     ]}
@@ -1228,6 +1541,8 @@ function App() {
                     }}
                   />
                   <p>
+                    {label(evalEvidence.evidence_kind)} ·{" "}
+                    {label(evalEvidence.stage || "registered stage")} ·{" "}
                     {modelReport.races} races · RPS{" "}
                     {num(modelReport.metrics.rps, 4)} · winner log loss{" "}
                     {num(modelReport.metrics.winner_log_loss, 4)}{" "}
@@ -1261,13 +1576,39 @@ function App() {
                 >
                   Run bounded development experiment
                 </button>
-                {frozen && (
-                  <button
-                    disabled={!!busy}
-                    onClick={() => enqueue("holdout", { freeze_id: frozen.id })}
-                  >
-                    Evaluate frozen candidate on 2025
-                  </button>
+                {frozen?.holdout_season === 2025 &&
+                  !evidence.some((e: Any) => e.kind === "holdout_opened") && (
+                    <button
+                      disabled={!!busy}
+                      onClick={() =>
+                        enqueue("holdout", { freeze_id: frozen.id })
+                      }
+                    >
+                      Evaluate frozen candidate on 2025
+                    </button>
+                  )}
+                {frozen && !isDemo && (
+                  <>
+                    <button
+                      disabled={!!busy || !event}
+                      onClick={() =>
+                        enqueue("collect", {
+                          freeze_id: frozen.id,
+                          event_id: event,
+                        })
+                      }
+                    >
+                      Record prospective comparison
+                    </button>
+                    <button
+                      disabled={!!busy}
+                      onClick={() =>
+                        enqueue("prospective", { freeze_id: frozen.id })
+                      }
+                    >
+                      Check registered cohort
+                    </button>
+                  </>
                 )}
                 <button disabled={!!busy} onClick={() => enqueue("score", {})}>
                   Score saved forecasts
@@ -1414,7 +1755,7 @@ function App() {
         )}
         <footer>
           <span>
-            F1 ENGINE <b>V2</b>
+            The <b>Pit Wall.</b>
           </span>
           <p>Observe carefully. Forecast honestly. Verify everything.</p>
           <small>
@@ -1433,9 +1774,7 @@ function App() {
           >
             <div className="card-title">
               <h2>Evidence detail</h2>
-              <button autoFocus onClick={() => setSource(null)}>
-                Close ×
-              </button>
+              <button onClick={() => setSource(null)}>Close ×</button>
             </div>
             <Detail value={source} />
           </div>

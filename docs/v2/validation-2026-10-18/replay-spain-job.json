@@ -1,0 +1,24 @@
+{
+  "attempt": 1,
+  "budget_seconds": 2700,
+  "cancel_requested": false,
+  "created_at": "2026-10-18T15:56:40.552764+00:00",
+  "elapsed_seconds": 5.360874999896623,
+  "id": "2b96cc825ffb4a4a970c97693711fa24",
+  "kind": "replay_evaluation",
+  "launched_epoch": 1792339000.555721,
+  "message": "Completed",
+  "parameters": {
+    "data_version": "a9a95521c502f9829536b250635e8f7a5a632a3088db92d91ce2834c261ed7c7",
+    "distance_source": "https://www.formula1.com/en/racing/2024/spain",
+    "event_id": "2024-10",
+    "scheduled_laps": 66,
+    "source_id": "5a60eade5c1aa42eedc675d28bd34b516528728447fff75c5e6dfd75ee287c73"
+  },
+  "pid": 53042,
+  "progress": 1,
+  "started_at": "2026-10-18T15:56:40.691121+00:00",
+  "status": "completed",
+  "updated_at": "2026-10-18T15:56:46.052352+00:00",
+  "checkpoint_keys": []
+}

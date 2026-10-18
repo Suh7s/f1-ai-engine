@@ -1,0 +1,141 @@
+{
+  "code_version": "3784186cf78fa74bf0fb2ca18c2564a33624bd1a34a500e8b8dbf2b3380b8761",
+  "data_version": "33e699d147510a066d774a8997e129b52f0393ff3b60e1178e1157b2bb7b6f5f",
+  "deterministic": true,
+  "distance_source": "https://www.formula1.com/en/racing/2024/spain",
+  "evaluated_cutoffs": 0,
+  "event_id": "2024-10",
+  "evidence_id": "70a8e03a2585299d6c8b56655090bc4ceafb3d2f559f8d6dee1f85e3fd4519d4",
+  "evidence_kind": "historical_reconstruction",
+  "kind": "replay_reconstruction",
+  "latency_seconds_assumption": 1,
+  "limitations": [
+    "Historical arrival times are reconstructed, not captured live.",
+    "Cutoffs from one race are correlated and are not counted as independent race samples.",
+    "No retirement is inferred from final results or the absence of later laps; missing retirement messages can make forecasts unavailable.",
+    "Future pit strategy, penalties, neutralizations and weather are not modeled. These metrics do not establish live forecasting readiness."
+  ],
+  "messages": 1364,
+  "messages_hash": "71d587108867ac95dd88e6a3e9482154e72ae720f563b548f099be870c94d76f",
+  "prefix_invariant": true,
+  "rows": [],
+  "scheduled_laps": 66,
+  "seed": 42,
+  "simulations": 2000,
+  "source_id": "5a60eade5c1aa42eedc675d28bd34b516528728447fff75c5e6dfd75ee287c73",
+  "source_records": [
+    {
+      "id": "5a60eade5c1aa42eedc675d28bd34b516528728447fff75c5e6dfd75ee287c73",
+      "retrieved_at": "2026-10-12T14:14:24.173718+00:00",
+      "source": "openf1",
+      "url": "openf1://sessions/9539/lap-inputs"
+    }
+  ],
+  "unavailable_cutoffs": [
+    {
+      "as_of_utc": "2024-06-23T13:07:34.241000+00:00",
+      "cutoff_lap": 3,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T13:11:42.509000+00:00",
+      "cutoff_lap": 6,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T13:15:53.162000+00:00",
+      "cutoff_lap": 9,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T13:20:15.966000+00:00",
+      "cutoff_lap": 12,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T13:24:29.019000+00:00",
+      "cutoff_lap": 15,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T13:28:32.475000+00:00",
+      "cutoff_lap": 18,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T13:32:40.219000+00:00",
+      "cutoff_lap": 21,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T13:36:43.845000+00:00",
+      "cutoff_lap": 24,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T13:40:51.258000+00:00",
+      "cutoff_lap": 27,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T13:45:14.386000+00:00",
+      "cutoff_lap": 30,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T13:49:14.197000+00:00",
+      "cutoff_lap": 33,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T13:53:34.004000+00:00",
+      "cutoff_lap": 36,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T13:57:35.121000+00:00",
+      "cutoff_lap": 39,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T14:01:39.019000+00:00",
+      "cutoff_lap": 42,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T14:05:51.301000+00:00",
+      "cutoff_lap": 45,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T14:09:55.277000+00:00",
+      "cutoff_lap": 48,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T14:13:56.559000+00:00",
+      "cutoff_lap": 51,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T14:17:56.924000+00:00",
+      "cutoff_lap": 54,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T14:22:03.726000+00:00",
+      "cutoff_lap": 57,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T14:26:11.452000+00:00",
+      "cutoff_lap": 60,
+      "reason": "Full-field timing is required for a live forecast"
+    },
+    {
+      "as_of_utc": "2024-06-23T14:30:15.708000+00:00",
+      "cutoff_lap": 63,
+      "reason": "Full-field timing is required for a live forecast"
+    }
+  ]
+}

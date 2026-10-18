@@ -1,0 +1,20 @@
+{
+  "development_gate": {
+    "bootstrap_replicates": 5000,
+    "bootstrap_unit": "race",
+    "paired_races": 68,
+    "promote": false,
+    "reason": "Evidence is insufficient; retain the baseline",
+    "rps_difference": -0.00011887472910216673,
+    "rps_difference_95ci": [
+      -0.0008517560594040195,
+      0.0006396891200657905
+    ],
+    "winner_log_loss_baseline": 1.7560351040143014,
+    "winner_log_loss_candidate": 1.7437947872844495
+  },
+  "evidence_id": "1131df049ebdbaaf199a140be1161638d81c20b8f5d1d18fba9a0e88e35ddc49",
+  "freeze_id": "3ccac5602e5fed8008a617852b4e369ff4ca72adb787ec231c8a66425072b234",
+  "model_version": "25e7d1a2d58145dab19323c4b72bab88ef8d1a05bd35fc9d74854ecf3b61df6c",
+  "status": "candidate_frozen"
+}

@@ -132,6 +132,12 @@ def create_app(root=None, demo=False):
     def evidence():
         return store.evidence()
 
+    @app.get("/api/v1/scorecards")
+    def scorecards():
+        from .evaluation import scorecards
+
+        return scorecards(store)
+
     @app.get("/api/v1/models")
     def models():
         with store.db() as db:
@@ -141,23 +147,21 @@ def create_app(root=None, demo=False):
         return {
             "active": active["value"] if active else "baseline:rating",
             "active_by_stage": {r["name"].split(":", 1)[1]: r["value"] for r in stages},
-            "candidates": [{"id": r["id"], **json.loads(r["body"])} for r in rows],
+            "candidates": [
+                {
+                    "id": r["id"],
+                    **json.loads(r["body"]),
+                    "compatible": json.loads(r["body"]).get("feature_version")
+                    == __import__("f1engine.contracts", fromlist=["FEATURE_VERSION"]).FEATURE_VERSION,
+                }
+                for r in rows
+            ],
             "baselines": ["baseline:grid", "baseline:form", "baseline:rating"],
         }
 
     @app.get("/api/v1/sources/{identifier}")
     def source(identifier: str):
-        with store.db() as db:
-            row = db.execute("SELECT body FROM raw_records WHERE id=?", (identifier,)).fetchone()
-        if not row:
-            raise Unavailable("Unknown source")
-        from .contracts import digest
-
-        body = json.loads(row["body"])
-        path = store.root / "raw" / f"{identifier}.json"
-        if digest(body) != identifier or not path.exists() or json.loads(path.read_text()) != body:
-            raise Unavailable("Raw source integrity check failed")
-        return {"id": identifier, **body}
+        return {"id": identifier, **store.source(identifier)}
 
     @app.get("/api/v1/jobs")
     def list_jobs():

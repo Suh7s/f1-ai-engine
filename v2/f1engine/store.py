@@ -97,20 +97,75 @@ class Store:
             row = db.execute("SELECT body FROM datasets WHERE id=?", (version,)).fetchone()
         if not row:
             raise Unavailable("No dataset is available. Sync data or load the illustrative demo first.")
+        body = json.loads(row["body"])
+        path = self.root / "datasets" / version / "manifest.json"
+        if body.get("id") != version or not path.exists() or path.read_text() != row["body"]:
+            raise Unavailable("Dataset manifest integrity failure")
+        return body
+
+    def source(self, identifier: str) -> dict:
+        with self.db() as db:
+            row = db.execute("SELECT body FROM raw_records WHERE id=?", (identifier,)).fetchone()
+        path = self.root / "raw" / f"{identifier}.json"
+        if (
+            not row
+            or hashlib.sha256(row["body"].encode()).hexdigest() != identifier
+            or not path.exists()
+            or hashlib.sha256(path.read_bytes()).hexdigest() != identifier
+        ):
+            raise Unavailable("Raw source integrity check failed")
         return json.loads(row["body"])
 
-    def table(self, name: str, version: str | None = None) -> list[dict]:
+    def verify_sources(self, identifiers):
+        return [
+            {"id": identifier, **{k: v for k, v in self.source(identifier).items() if k != "payload"}}
+            for identifier in sorted(set(identifiers))
+        ]
+
+    def verify_dataset(self, version=None):
+        manifest = self.manifest(version)
+        tables = {name: self.table(name, manifest["id"], include_revisions=True) for name in TABLE_KEYS}
+        if digest({"tables": tables, "illustrative": manifest["illustrative"]}) != manifest["id"]:
+            raise Unavailable("Dataset content identity does not match its version")
+        sources = self.verify_sources(manifest["sources"])
+        return {
+            "valid": True,
+            "data_version": manifest["id"],
+            "records": sum(len(rows) for rows in tables.values()),
+            "sources": len(sources),
+        }
+
+    def table(
+        self, name: str, version: str | None = None, *, as_of=None, include_revisions=False
+    ) -> list[dict]:
         if name not in TABLE_KEYS:
             raise ValueError("Unknown table")
         manifest = self.manifest(version)
         rows = []
         for part in manifest["tables"].get(name, []):
             path = self.root / "datasets" / manifest["id"] / part["path"]
-            if hashlib.sha256(path.read_bytes()).hexdigest() != part["sha256"]:
+            if (
+                not path.resolve().is_relative_to((self.root / "datasets" / manifest["id"]).resolve())
+                or not path.exists()
+                or hashlib.sha256(path.read_bytes()).hexdigest() != part["sha256"]
+            ):
                 raise Unavailable(f"Dataset integrity failure: {name}")
             # ParquetFile avoids accidental Hive type coercion from partition directory names.
             rows.extend(json.loads(r["record"]) for r in pq.ParquetFile(path).read().to_pylist())
-        return rows
+        if include_revisions:
+            return rows
+        cutoff = timestamp(as_of) if as_of is not None else None
+        selected = []
+        for row in rows:
+            current = {k: v for k, v in row.items() if k != "_revisions"}
+            revisions = [*row.get("_revisions", []), current]
+            visible = next(
+                (r for r in reversed(revisions) if cutoff is None or timestamp(r["available_at"]) <= cutoff),
+                None,
+            )
+            if visible is not None:
+                selected.append(visible)
+        return selected
 
     def publish(self, changes: dict[str, list[dict]], *, illustrative: bool = False) -> str:
         """Merge stable keys. Empty updates are no-ops, not destructive replacements."""
@@ -124,9 +179,11 @@ class Store:
             merged = {}
             resolutions = []
             for name, keys in TABLE_KEYS.items():
-                existing = self.table(name, previous) if previous else []
+                existing = self.table(name, previous, include_revisions=True) if previous else []
                 mapping = {tuple(r[k] for k in keys): r for r in existing}
                 for row in changes.get(name, []):
+                    if "_revisions" in row:
+                        raise ValueError("Record revision history is managed by the store")
                     if any(row.get(k) is None for k in keys):
                         raise ValueError(f"Missing stable key for {name}")
                     for required in ("available_at", "source_id", "availability_basis"):
@@ -141,7 +198,7 @@ class Store:
                     key = tuple(row[k] for k in keys)
                     # Compare content, not changing retrieval/provenance wrappers.
                     old = mapping.get(key)
-                    metadata = {"source_id", "available_at", "availability_basis"}
+                    metadata = {"source_id", "available_at", "availability_basis", "_revisions"}
                     if old and {k: v for k, v in old.items() if k not in metadata} != {
                         k: v for k, v in row.items() if k not in metadata
                     }:
@@ -174,6 +231,11 @@ class Store:
                         )
                         if not accept:
                             continue
+                    if old:
+                        prior = {k: v for k, v in old.items() if k != "_revisions"}
+                        if prior == row:
+                            continue
+                        row = {**row, "_revisions": [*old.get("_revisions", []), prior]}
                     mapping[key] = row
                 merged[name] = sorted(mapping.values(), key=lambda r: tuple(str(r[k]) for k in keys))
             if resolutions:
@@ -194,8 +256,16 @@ class Store:
                 "parent": previous,
                 "created_at": now_utc(),
                 "illustrative": illustrative,
+                "record_revision_schema": 1,
                 "tables": {},
-                "sources": sorted({r["source_id"] for rows in merged.values() for r in rows}),
+                "sources": sorted(
+                    {
+                        revision["source_id"]
+                        for rows in merged.values()
+                        for r in rows
+                        for revision in [r, *r.get("_revisions", [])]
+                    }
+                ),
             }
             try:
                 for name, rows in merged.items():

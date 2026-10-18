@@ -1,0 +1,3631 @@
+{
+  "assumptions": [
+    "Baseline coefficients and Beta retirement timing are explicit unvalidated priors.",
+    "Grid is estimated from prior qualifying form where observed grid is unavailable.",
+    "Season team uncertainty uses a 0.15 log-strength prior until calibrated.",
+    "Disqualification risk uses a population Beta(1,499) prior and 100-entry driver shrinkage; not independently calibrated. Retirement includes DNS, but excludes lapped finishers and disqualifications.",
+    "Scheduled distance missing: retirement timing uses a 60-lap normalized distance assumption."
+  ],
+  "availability_bases": [
+    "provisional_previous_roster",
+    "reconstructed_calendar",
+    "reconstructed_session_end"
+  ],
+  "code_version": "f66851c119c59115c27b1f1ec8818a032780fd180e6d2624f1f9105420113f86",
+  "comparison_role": "baseline",
+  "coverage": {
+    "circuit_finish": 0.9545454545454546,
+    "driver_strength": 1.0,
+    "experience": 1.0,
+    "grid_fraction": 0.0,
+    "practice_relative_pace": 0.0,
+    "qualifying_gap": 0.0,
+    "rain_probability": 0.0,
+    "recent_finish": 1.0,
+    "recent_quali": 1.0,
+    "retirement_rate": 1.0,
+    "sprint_fraction": 0.0,
+    "team_retirement_rate": 1.0,
+    "team_strength": 1.0
+  },
+  "created_at": "2026-10-18T15:59:45.783285+00:00",
+  "data_version": "a9a95521c502f9829536b250635e8f7a5a632a3088db92d91ce2834c261ed7c7",
+  "drivers": [
+    {
+      "code": "VER",
+      "disqualification_probability": 0.0008,
+      "driver_id": "max_verstappen",
+      "expected_finish": 6.244,
+      "expected_points": 12.1064,
+      "grid": null,
+      "name": "Max Verstappen",
+      "podium_probability": 0.4446,
+      "points_probability": 0.8427,
+      "position_p10": 1.0,
+      "position_p90": 19.0,
+      "position_probabilities": [
+        0.1639,
+        0.1487,
+        0.132,
+        0.1097,
+        0.095,
+        0.0721,
+        0.0525,
+        0.0353,
+        0.0194,
+        0.0141,
+        0.0059,
+        0.0027,
+        0.001,
+        0.0007,
+        0.001,
+        0.0023,
+        0.0076,
+        0.0128,
+        0.0234,
+        0.0321,
+        0.0349,
+        0.0329
+      ],
+      "retirement_probability": 0.1465,
+      "team_id": "red_bull",
+      "team_name": "Red Bull",
+      "top_factors": [
+        {
+          "contribution": 1.010138267084335,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.57466011103779,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.18571428571428572,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.019047619047619046,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.1639,
+      "win_sampling_se": 0.0037018480519870074
+    },
+    {
+      "code": "ANT",
+      "disqualification_probability": 0.0022,
+      "driver_id": "antonelli",
+      "expected_finish": 6.2793,
+      "expected_points": 10.5644,
+      "grid": null,
+      "name": "Andrea Kimi Antonelli",
+      "podium_probability": 0.3443,
+      "points_probability": 0.8707,
+      "position_p10": 1.0,
+      "position_p90": 12.0,
+      "position_probabilities": [
+        0.118,
+        0.1096,
+        0.1167,
+        0.1035,
+        0.1034,
+        0.0923,
+        0.0836,
+        0.0614,
+        0.0473,
+        0.0349,
+        0.0217,
+        0.0108,
+        0.005,
+        0.0044,
+        0.0018,
+        0.0018,
+        0.0039,
+        0.0075,
+        0.0116,
+        0.0171,
+        0.0197,
+        0.024
+      ],
+      "retirement_probability": 0.0834,
+      "team_id": "mercedes",
+      "team_name": "Mercedes",
+      "top_factors": [
+        {
+          "contribution": 0.7869619519557721,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.693509951134741,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.5571428571428572,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.03333333333333333,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.118,
+      "win_sampling_se": 0.0032260812141048155
+    },
+    {
+      "code": "HAM",
+      "disqualification_probability": 0.0057,
+      "driver_id": "hamilton",
+      "expected_finish": 6.3229,
+      "expected_points": 10.4822,
+      "grid": null,
+      "name": "Lewis Hamilton",
+      "podium_probability": 0.3362,
+      "points_probability": 0.871,
+      "position_p10": 1.0,
+      "position_p90": 12.0,
+      "position_probabilities": [
+        0.1196,
+        0.1103,
+        0.1063,
+        0.1113,
+        0.0966,
+        0.0882,
+        0.0827,
+        0.0657,
+        0.0558,
+        0.0345,
+        0.0202,
+        0.0119,
+        0.0068,
+        0.0023,
+        0.0014,
+        0.0021,
+        0.0042,
+        0.0071,
+        0.0119,
+        0.018,
+        0.019,
+        0.0241
+      ],
+      "retirement_probability": 0.0817,
+      "team_id": "ferrari",
+      "team_name": "Ferrari",
+      "top_factors": [
+        {
+          "contribution": 0.6376345713369024,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.6260280329061715,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.2,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.18095238095238098,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.1196,
+      "win_sampling_se": 0.003244932048595163
+    },
+    {
+      "code": "LEC",
+      "disqualification_probability": 0.009,
+      "driver_id": "leclerc",
+      "expected_finish": 6.5005,
+      "expected_points": 10.9257,
+      "grid": null,
+      "name": "Charles Leclerc",
+      "podium_probability": 0.3736,
+      "points_probability": 0.8505,
+      "position_p10": 1.0,
+      "position_p90": 19.0,
+      "position_probabilities": [
+        0.1252,
+        0.1289,
+        0.1195,
+        0.1052,
+        0.0996,
+        0.0855,
+        0.0717,
+        0.0535,
+        0.035,
+        0.0264,
+        0.0141,
+        0.0064,
+        0.0023,
+        0.0013,
+        0.0013,
+        0.0024,
+        0.0056,
+        0.0115,
+        0.0164,
+        0.0235,
+        0.0268,
+        0.0379
+      ],
+      "retirement_probability": 0.1165,
+      "team_id": "ferrari",
+      "team_name": "Ferrari",
+      "top_factors": [
+        {
+          "contribution": 0.7578687386522747,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.6260280329061715,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.15714285714285714,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.1476190476190476,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.1252,
+      "win_sampling_se": 0.003309455544345625
+    },
+    {
+      "code": "RUS",
+      "disqualification_probability": 0.0051,
+      "driver_id": "russell",
+      "expected_finish": 7.041,
+      "expected_points": 9.6709,
+      "grid": null,
+      "name": "George Russell",
+      "podium_probability": 0.3047,
+      "points_probability": 0.8284,
+      "position_p10": 1.0,
+      "position_p90": 19.0,
+      "position_probabilities": [
+        0.1046,
+        0.0986,
+        0.1015,
+        0.1029,
+        0.0893,
+        0.0885,
+        0.084,
+        0.0686,
+        0.054,
+        0.0364,
+        0.0246,
+        0.0129,
+        0.0073,
+        0.0044,
+        0.0018,
+        0.0028,
+        0.0041,
+        0.0091,
+        0.0164,
+        0.0267,
+        0.027,
+        0.0345
+      ],
+      "retirement_probability": 0.117,
+      "team_id": "mercedes",
+      "team_name": "Mercedes",
+      "top_factors": [
+        {
+          "contribution": 0.6973989272843728,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.693509951134741,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.42857142857142855,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.15238095238095237,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.1046,
+      "win_sampling_se": 0.0030603731798589527
+    },
+    {
+      "code": "NOR",
+      "disqualification_probability": 0.0048,
+      "driver_id": "norris",
+      "expected_finish": 7.7556,
+      "expected_points": 8.997,
+      "grid": null,
+      "name": "Lando Norris",
+      "podium_probability": 0.2827,
+      "points_probability": 0.7832,
+      "position_p10": 2.0,
+      "position_p90": 20.0,
+      "position_probabilities": [
+        0.0895,
+        0.0948,
+        0.0984,
+        0.0914,
+        0.0887,
+        0.0891,
+        0.0812,
+        0.0643,
+        0.0503,
+        0.0355,
+        0.0243,
+        0.0151,
+        0.0088,
+        0.0044,
+        0.0026,
+        0.0025,
+        0.0056,
+        0.0132,
+        0.0232,
+        0.0332,
+        0.0398,
+        0.0441
+      ],
+      "retirement_probability": 0.1581,
+      "team_id": "mclaren",
+      "team_name": "McLaren",
+      "top_factors": [
+        {
+          "contribution": 0.7628881404673278,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.44631741726609514,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.27142857142857135,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.16190476190476188,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0895,
+      "win_sampling_se": 0.002854640958159187
+    },
+    {
+      "code": "PIA",
+      "disqualification_probability": 0.006,
+      "driver_id": "piastri",
+      "expected_finish": 8.2106,
+      "expected_points": 7.8052,
+      "grid": null,
+      "name": "Oscar Piastri",
+      "podium_probability": 0.2268,
+      "points_probability": 0.7549,
+      "position_p10": 2.0,
+      "position_p90": 20.0,
+      "position_probabilities": [
+        0.0721,
+        0.0762,
+        0.0785,
+        0.0793,
+        0.0849,
+        0.0842,
+        0.0785,
+        0.0788,
+        0.0708,
+        0.0516,
+        0.0392,
+        0.0276,
+        0.0152,
+        0.0091,
+        0.0047,
+        0.0037,
+        0.0078,
+        0.0139,
+        0.0198,
+        0.0301,
+        0.0355,
+        0.0385
+      ],
+      "retirement_probability": 0.142,
+      "team_id": "mclaren",
+      "team_name": "McLaren",
+      "top_factors": [
+        {
+          "contribution": 0.4801109438640201,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.44631741726609514,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.3285714285714285,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.15238095238095237,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0721,
+      "win_sampling_se": 0.0025865341675686405
+    },
+    {
+      "code": "HAD",
+      "disqualification_probability": 0.0019,
+      "driver_id": "hadjar",
+      "expected_finish": 9.31,
+      "expected_points": 5.7601,
+      "grid": null,
+      "name": "Isack Hadjar",
+      "podium_probability": 0.1493,
+      "points_probability": 0.6592,
+      "position_p10": 3.0,
+      "position_p90": 19.0,
+      "position_probabilities": [
+        0.0454,
+        0.0514,
+        0.0525,
+        0.0616,
+        0.0592,
+        0.0699,
+        0.0735,
+        0.0843,
+        0.0824,
+        0.079,
+        0.0673,
+        0.048,
+        0.0387,
+        0.0273,
+        0.0141,
+        0.0094,
+        0.0072,
+        0.0137,
+        0.0189,
+        0.0262,
+        0.0336,
+        0.0364
+      ],
+      "retirement_probability": 0.1325,
+      "team_id": "red_bull",
+      "team_name": "Red Bull",
+      "top_factors": [
+        {
+          "contribution": -0.8285714285714286,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.57466011103779,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.38346764132321937,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.11904761904761904,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0454,
+      "win_sampling_se": 0.0020817982611194582
+    },
+    {
+      "code": "LAW",
+      "disqualification_probability": 0.0025,
+      "driver_id": "lawson",
+      "expected_finish": 10.3439,
+      "expected_points": 3.8973,
+      "grid": null,
+      "name": "Liam Lawson",
+      "podium_probability": 0.0896,
+      "points_probability": 0.5181,
+      "position_p10": 4.0,
+      "position_p90": 17.0,
+      "position_probabilities": [
+        0.0253,
+        0.0311,
+        0.0332,
+        0.038,
+        0.0445,
+        0.0532,
+        0.0604,
+        0.0687,
+        0.0795,
+        0.0842,
+        0.0871,
+        0.0852,
+        0.0672,
+        0.0645,
+        0.0467,
+        0.0286,
+        0.0173,
+        0.0148,
+        0.0153,
+        0.014,
+        0.0196,
+        0.0216
+      ],
+      "retirement_probability": 0.0762,
+      "team_id": "rb",
+      "team_name": "RB F1 Team",
+      "top_factors": [
+        {
+          "contribution": -0.7857142857142858,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.24511575024462157,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.1952380952380952,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.15185610020491344,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0253,
+      "win_sampling_se": 0.0015703474137909739
+    },
+    {
+      "code": "LIN",
+      "disqualification_probability": 0.0028,
+      "driver_id": "arvid_lindblad",
+      "expected_finish": 10.9652,
+      "expected_points": 3.2381,
+      "grid": null,
+      "name": "Arvid Lindblad",
+      "podium_probability": 0.0702,
+      "points_probability": 0.4507,
+      "position_p10": 4.0,
+      "position_p90": 17.0,
+      "position_probabilities": [
+        0.0207,
+        0.0237,
+        0.0258,
+        0.0342,
+        0.0367,
+        0.0447,
+        0.0481,
+        0.0652,
+        0.071,
+        0.0806,
+        0.0916,
+        0.0878,
+        0.0825,
+        0.067,
+        0.0591,
+        0.0406,
+        0.0304,
+        0.0202,
+        0.0164,
+        0.0179,
+        0.0175,
+        0.0183
+      ],
+      "retirement_probability": 0.0712,
+      "team_id": "rb",
+      "team_name": "RB F1 Team",
+      "top_factors": [
+        {
+          "contribution": -0.8571428571428571,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.2095238095238095,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.15185610020491344,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.11249821210386897,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0207,
+      "win_sampling_se": 0.00142378053084034
+    },
+    {
+      "code": "GAS",
+      "disqualification_probability": 0.0048,
+      "driver_id": "gasly",
+      "expected_finish": 11.0184,
+      "expected_points": 3.4371,
+      "grid": null,
+      "name": "Pierre Gasly",
+      "podium_probability": 0.078,
+      "points_probability": 0.46,
+      "position_p10": 4.0,
+      "position_p90": 18.0,
+      "position_probabilities": [
+        0.0246,
+        0.0255,
+        0.0279,
+        0.0361,
+        0.0367,
+        0.0454,
+        0.0526,
+        0.0616,
+        0.0696,
+        0.08,
+        0.0849,
+        0.0852,
+        0.0765,
+        0.0667,
+        0.0467,
+        0.0392,
+        0.0261,
+        0.0208,
+        0.0192,
+        0.0214,
+        0.0244,
+        0.0289
+      ],
+      "retirement_probability": 0.1022,
+      "team_id": "alpine",
+      "team_name": "Alpine F1 Team",
+      "top_factors": [
+        {
+          "contribution": -0.4714285714285713,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.28095238095238095,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.028154576378748162,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.025625957327862676,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0246,
+      "win_sampling_se": 0.0015490267912466847
+    },
+    {
+      "code": "COL",
+      "disqualification_probability": 0.002,
+      "driver_id": "colapinto",
+      "expected_finish": 12.2615,
+      "expected_points": 2.3466,
+      "grid": null,
+      "name": "Franco Colapinto",
+      "podium_probability": 0.0523,
+      "points_probability": 0.3368,
+      "position_p10": 5.0,
+      "position_p90": 19.0,
+      "position_probabilities": [
+        0.0158,
+        0.0188,
+        0.0177,
+        0.0215,
+        0.0271,
+        0.0299,
+        0.0358,
+        0.046,
+        0.0565,
+        0.0677,
+        0.0796,
+        0.0831,
+        0.0918,
+        0.0848,
+        0.0752,
+        0.0597,
+        0.0498,
+        0.0362,
+        0.0247,
+        0.0246,
+        0.0275,
+        0.0262
+      ],
+      "retirement_probability": 0.1019,
+      "team_id": "alpine",
+      "team_name": "Alpine F1 Team",
+      "top_factors": [
+        {
+          "contribution": -0.8,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.2952380952380952,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.04433055196351501,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.025625957327862676,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0158,
+      "win_sampling_se": 0.0012470108259353646
+    },
+    {
+      "code": "HUL",
+      "disqualification_probability": 0.011,
+      "driver_id": "hulkenberg",
+      "expected_finish": 12.6021,
+      "expected_points": 2.4417,
+      "grid": null,
+      "name": "Nico H\u00fclkenberg",
+      "podium_probability": 0.0515,
+      "points_probability": 0.3526,
+      "position_p10": 5.0,
+      "position_p90": 20.0,
+      "position_probabilities": [
+        0.0145,
+        0.0173,
+        0.0197,
+        0.0232,
+        0.0314,
+        0.0338,
+        0.0389,
+        0.0482,
+        0.0577,
+        0.0679,
+        0.069,
+        0.0724,
+        0.0755,
+        0.0768,
+        0.0623,
+        0.0493,
+        0.0386,
+        0.0329,
+        0.0361,
+        0.0346,
+        0.0468,
+        0.0531
+      ],
+      "retirement_probability": 0.176,
+      "team_id": "audi",
+      "team_name": "Audi",
+      "top_factors": [
+        {
+          "contribution": -0.8714285714285713,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.22380952380952382,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.09600774697829109,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.0393016247377041,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0145,
+      "win_sampling_se": 0.001195397423453807
+    },
+    {
+      "code": "BOR",
+      "disqualification_probability": 0.0018,
+      "driver_id": "bortoleto",
+      "expected_finish": 13.1858,
+      "expected_points": 1.8658,
+      "grid": null,
+      "name": "Gabriel Bortoleto",
+      "podium_probability": 0.0408,
+      "points_probability": 0.277,
+      "position_p10": 6.0,
+      "position_p90": 20.0,
+      "position_probabilities": [
+        0.0121,
+        0.0126,
+        0.0161,
+        0.0157,
+        0.0216,
+        0.0245,
+        0.0306,
+        0.0393,
+        0.0493,
+        0.0552,
+        0.066,
+        0.0799,
+        0.0809,
+        0.081,
+        0.0865,
+        0.0705,
+        0.0615,
+        0.0475,
+        0.037,
+        0.0368,
+        0.0362,
+        0.0392
+      ],
+      "retirement_probability": 0.1401,
+      "team_id": "audi",
+      "team_name": "Audi",
+      "top_factors": [
+        {
+          "contribution": -0.8285714285714286,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.35238095238095235,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.17933986583843473,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": 0.0393016247377041,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0121,
+      "win_sampling_se": 0.001093324745901235
+    },
+    {
+      "code": "OCO",
+      "disqualification_probability": 0.004,
+      "driver_id": "ocon",
+      "expected_finish": 13.3825,
+      "expected_points": 1.6379,
+      "grid": null,
+      "name": "Esteban Ocon",
+      "podium_probability": 0.0343,
+      "points_probability": 0.2498,
+      "position_p10": 7.0,
+      "position_p90": 19.0,
+      "position_probabilities": [
+        0.0114,
+        0.0108,
+        0.0121,
+        0.0144,
+        0.0175,
+        0.022,
+        0.0289,
+        0.0342,
+        0.0445,
+        0.054,
+        0.0636,
+        0.0745,
+        0.0842,
+        0.0914,
+        0.0911,
+        0.086,
+        0.0678,
+        0.0567,
+        0.0464,
+        0.0334,
+        0.0256,
+        0.0295
+      ],
+      "retirement_probability": 0.0991,
+      "team_id": "haas",
+      "team_name": "Haas F1 Team",
+      "top_factors": [
+        {
+          "contribution": -0.9142857142857141,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.2761904761904762,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.18419081367489348,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.1361585942007294,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0114,
+      "win_sampling_se": 0.001061604446109755
+    },
+    {
+      "code": "BEA",
+      "disqualification_probability": 0.0018,
+      "driver_id": "bearman",
+      "expected_finish": 13.6838,
+      "expected_points": 1.6599,
+      "grid": null,
+      "name": "Oliver Bearman",
+      "podium_probability": 0.0364,
+      "points_probability": 0.2435,
+      "position_p10": 7.0,
+      "position_p90": 20.0,
+      "position_probabilities": [
+        0.0118,
+        0.012,
+        0.0126,
+        0.0132,
+        0.0191,
+        0.0219,
+        0.0277,
+        0.0342,
+        0.0413,
+        0.0497,
+        0.0629,
+        0.0725,
+        0.0755,
+        0.0818,
+        0.0831,
+        0.0791,
+        0.0666,
+        0.0599,
+        0.0457,
+        0.0454,
+        0.0411,
+        0.0429
+      ],
+      "retirement_probability": 0.1622,
+      "team_id": "haas",
+      "team_name": "Haas F1 Team",
+      "top_factors": [
+        {
+          "contribution": -0.9285714285714286,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.29047619047619044,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.1361585942007294,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.080283794575032,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0118,
+      "win_sampling_se": 0.0010798499895818862
+    },
+    {
+      "code": "SAI",
+      "disqualification_probability": 0.0012,
+      "driver_id": "sainz",
+      "expected_finish": 14.5047,
+      "expected_points": 1.2601,
+      "grid": null,
+      "name": "Carlos Sainz",
+      "podium_probability": 0.0265,
+      "points_probability": 0.1914,
+      "position_p10": 8.0,
+      "position_p90": 20.0,
+      "position_probabilities": [
+        0.008,
+        0.0096,
+        0.0089,
+        0.0124,
+        0.0146,
+        0.0153,
+        0.0202,
+        0.026,
+        0.035,
+        0.0414,
+        0.0435,
+        0.0611,
+        0.0701,
+        0.078,
+        0.0901,
+        0.0966,
+        0.0886,
+        0.0753,
+        0.0591,
+        0.0538,
+        0.0474,
+        0.045
+      ],
+      "retirement_probability": 0.1694,
+      "team_id": "williams",
+      "team_name": "Williams",
+      "top_factors": [
+        {
+          "contribution": -0.9714285714285715,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.32380952380952377,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.2723635196606316,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.18009607936041364,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.008,
+      "win_sampling_se": 0.0008908422980528036
+    },
+    {
+      "code": "ALB",
+      "disqualification_probability": 0.0016,
+      "driver_id": "albon",
+      "expected_finish": 15.9837,
+      "expected_points": 0.7335,
+      "grid": null,
+      "name": "Alexander Albon",
+      "podium_probability": 0.0132,
+      "points_probability": 0.1215,
+      "position_p10": 10.0,
+      "position_p90": 21.0,
+      "position_probabilities": [
+        0.0039,
+        0.0039,
+        0.0054,
+        0.0065,
+        0.0104,
+        0.0114,
+        0.012,
+        0.0163,
+        0.0227,
+        0.029,
+        0.0314,
+        0.0392,
+        0.0542,
+        0.0611,
+        0.0716,
+        0.0959,
+        0.1011,
+        0.0979,
+        0.1005,
+        0.0803,
+        0.0765,
+        0.0688
+      ],
+      "retirement_probability": 0.2573,
+      "team_id": "williams",
+      "team_name": "Williams",
+      "top_factors": [
+        {
+          "contribution": -1.1,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.4095238095238095,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.3421841639795549,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.2723635196606316,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0039,
+      "win_sampling_se": 0.0006232808355789547
+    },
+    {
+      "code": "ALO",
+      "disqualification_probability": 0.0011,
+      "driver_id": "alonso",
+      "expected_finish": 16.024,
+      "expected_points": 0.7525,
+      "grid": null,
+      "name": "Fernando Alonso",
+      "podium_probability": 0.015,
+      "points_probability": 0.1186,
+      "position_p10": 10.0,
+      "position_p90": 21.0,
+      "position_probabilities": [
+        0.0043,
+        0.0052,
+        0.0055,
+        0.0066,
+        0.0094,
+        0.0105,
+        0.0136,
+        0.0156,
+        0.0198,
+        0.0281,
+        0.037,
+        0.0447,
+        0.0516,
+        0.0606,
+        0.0791,
+        0.0798,
+        0.0911,
+        0.0951,
+        0.0937,
+        0.0879,
+        0.0851,
+        0.0757
+      ],
+      "retirement_probability": 0.2931,
+      "team_id": "aston_martin",
+      "team_name": "Aston Martin",
+      "top_factors": [
+        {
+          "contribution": -1.2285714285714286,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.37142857142857144,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.2596033352272994,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.15059851151286727,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0043,
+      "win_sampling_se": 0.0006543324842921984
+    },
+    {
+      "code": "PER",
+      "disqualification_probability": 0.0009,
+      "driver_id": "perez",
+      "expected_finish": 16.7111,
+      "expected_points": 0.5461,
+      "grid": null,
+      "name": "Sergio P\u00e9rez",
+      "podium_probability": 0.012,
+      "points_probability": 0.084,
+      "position_p10": 11.0,
+      "position_p90": 21.0,
+      "position_probabilities": [
+        0.0039,
+        0.0044,
+        0.0037,
+        0.004,
+        0.0056,
+        0.0063,
+        0.0093,
+        0.0142,
+        0.0143,
+        0.0183,
+        0.0244,
+        0.0296,
+        0.04,
+        0.05,
+        0.0692,
+        0.0934,
+        0.1087,
+        0.12,
+        0.1179,
+        0.1013,
+        0.0879,
+        0.0736
+      ],
+      "retirement_probability": 0.2732,
+      "team_id": "cadillac",
+      "team_name": "Cadillac F1 Team",
+      "top_factors": [
+        {
+          "contribution": -1.2428571428571429,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.4462847835743067,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.3952380952380953,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.37644414541746557,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0039,
+      "win_sampling_se": 0.0006232808355789547
+    },
+    {
+      "code": "STR",
+      "disqualification_probability": 0.0006,
+      "driver_id": "stroll",
+      "expected_finish": 17.319,
+      "expected_points": 0.4737,
+      "grid": null,
+      "name": "Lance Stroll",
+      "podium_probability": 0.0104,
+      "points_probability": 0.0718,
+      "position_p10": 12.0,
+      "position_p90": 22.0,
+      "position_probabilities": [
+        0.0031,
+        0.0035,
+        0.0038,
+        0.0049,
+        0.0051,
+        0.0059,
+        0.0071,
+        0.0081,
+        0.0139,
+        0.0164,
+        0.0234,
+        0.0276,
+        0.0337,
+        0.042,
+        0.0579,
+        0.0722,
+        0.0961,
+        0.1056,
+        0.1089,
+        0.1223,
+        0.1216,
+        0.1169
+      ],
+      "retirement_probability": 0.4109,
+      "team_id": "aston_martin",
+      "team_name": "Aston Martin",
+      "top_factors": [
+        {
+          "contribution": -1.2999999999999998,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.42857142857142855,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.3613827888270609,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.2596033352272994,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0031,
+      "win_sampling_se": 0.0005559127629403736
+    },
+    {
+      "code": "BOT",
+      "disqualification_probability": 0.0006,
+      "driver_id": "bottas",
+      "expected_finish": 17.3504,
+      "expected_points": 0.3978,
+      "grid": null,
+      "name": "Valtteri Bottas",
+      "podium_probability": 0.0076,
+      "points_probability": 0.0636,
+      "position_p10": 12.0,
+      "position_p90": 21.0,
+      "position_probabilities": [
+        0.0023,
+        0.0031,
+        0.0022,
+        0.0044,
+        0.0036,
+        0.0054,
+        0.0071,
+        0.0105,
+        0.0099,
+        0.0151,
+        0.0183,
+        0.0218,
+        0.0312,
+        0.0404,
+        0.0527,
+        0.0821,
+        0.1103,
+        0.1283,
+        0.1375,
+        0.1194,
+        0.1065,
+        0.0879
+      ],
+      "retirement_probability": 0.3091,
+      "team_id": "cadillac",
+      "team_name": "Cadillac F1 Team",
+      "top_factors": [
+        {
+          "contribution": -1.2285714285714286,
+          "feature": "grid_or_prior",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.6444733001186764,
+          "feature": "driver_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.4462847835743067,
+          "feature": "team_strength",
+          "kind": "model_estimate"
+        },
+        {
+          "contribution": -0.4238095238095238,
+          "feature": "recent_finish_or_prior",
+          "kind": "model_estimate"
+        }
+      ],
+      "win_probability": 0.0023,
+      "win_sampling_se": 0.0004790313142165134
+    }
+  ],
+  "event": {
+    "availability_basis": "reconstructed_calendar",
+    "available_at": "2025-12-01T00:00:00+00:00",
+    "circuit_id": "americas",
+    "country": "USA",
+    "event_id": "2026-18",
+    "latitude": 30.1328,
+    "longitude": -97.6411,
+    "name": "United States Grand Prix",
+    "round": 18,
+    "scheduled_laps": null,
+    "season": 2026,
+    "source_id": "02d7a191a130a65a10e3d00c8fc723e643f0868e7b4dd0790b89a18a938de6af",
+    "sprint": false,
+    "start_at": "2026-10-25T20:00:00Z"
+  },
+  "evidence_kind": "prospective_forecast",
+  "feature_hash": "92adb94789e8717feec685ffe1b5130f08e8e0423d37f59a72fbe9b514944cc5",
+  "feature_version": "pit-v2.4",
+  "features": [
+    {
+      "circuit_finish": 0.5473684210526315,
+      "code": "ALB",
+      "disqualification_rate": 0.0012917841170383604,
+      "driver_id": "albon",
+      "driver_strength": -0.24441725998539637,
+      "experience": 146,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 146,
+      "name": "Alexander Albon",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.819047619047619,
+      "recent_quali": 0.7333333333333334,
+      "retirement_rate": 0.3,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "williams",
+      "team_name": "Williams",
+      "team_retirement_rate": 0.21666666666666667,
+      "team_strength": -0.22696959971719302,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.6210526315789474,
+      "code": "ALO",
+      "disqualification_rate": 0.0009688380877787703,
+      "driver_id": "alonso",
+      "driver_strength": -0.10757036536633377,
+      "experience": 228,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 228,
+      "name": "Fernando Alonso",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.7428571428571429,
+      "recent_quali": 0.819047619047619,
+      "retirement_rate": 0.23333333333333334,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "aston_martin",
+      "team_name": "Aston Martin",
+      "team_retirement_rate": 0.35,
+      "team_strength": -0.2163361126894162,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.631578947368421,
+      "code": "ANT",
+      "disqualification_rate": 0.0022537510127052245,
+      "driver_id": "antonelli",
+      "driver_strength": 0.5621156799684087,
+      "experience": 41,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 41,
+      "name": "Andrea Kimi Antonelli",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.06666666666666667,
+      "recent_quali": 0.37142857142857144,
+      "retirement_rate": 0.06666666666666667,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "mercedes",
+      "team_name": "Mercedes",
+      "team_retirement_rate": 0.1,
+      "team_strength": 0.5779249592789508,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": null,
+      "code": "LIN",
+      "disqualification_rate": 0.002716058912747322,
+      "driver_id": "arvid_lindblad",
+      "driver_strength": 0.08035586578847784,
+      "experience": 17,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 17,
+      "name": "Arvid Lindblad",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.419047619047619,
+      "recent_quali": 0.5714285714285714,
+      "retirement_rate": 0.07407407407407407,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "rb",
+      "team_name": "RB F1 Team",
+      "team_retirement_rate": 0.08333333333333333,
+      "team_strength": 0.1265467501707612,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.42105263157894735,
+      "code": "BEA",
+      "disqualification_rate": 0.002206797866607199,
+      "driver_id": "bearman",
+      "driver_strength": -0.05734556755359429,
+      "experience": 44,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 44,
+      "name": "Oliver Bearman",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.5809523809523809,
+      "recent_quali": 0.6190476190476191,
+      "retirement_rate": 0.2,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "haas",
+      "team_name": "Haas F1 Team",
+      "team_retirement_rate": 0.13333333333333333,
+      "team_strength": -0.1134654951672745,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.8947368421052632,
+      "code": "BOR",
+      "disqualification_rate": 0.0022537510127052245,
+      "driver_id": "bortoleto",
+      "driver_strength": -0.12809990417031053,
+      "experience": 41,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 41,
+      "name": "Gabriel Bortoleto",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.7047619047619047,
+      "recent_quali": 0.5523809523809524,
+      "retirement_rate": 0.13333333333333333,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "audi",
+      "team_name": "Audi",
+      "team_retirement_rate": 0.14814814814814814,
+      "team_strength": 0.03275135394808675,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.5263157894736843,
+      "code": "BOT",
+      "disqualification_rate": 0.0009210982399751788,
+      "driver_id": "bottas",
+      "driver_strength": -0.46033807151334033,
+      "experience": 245,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 245,
+      "name": "Valtteri Bottas",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.8476190476190476,
+      "recent_quali": 0.819047619047619,
+      "retirement_rate": 0.3333333333333333,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "cadillac",
+      "team_name": "Cadillac F1 Team",
+      "team_retirement_rate": 0.2777777777777778,
+      "team_strength": -0.37190398631192223,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.6578947368421052,
+      "code": "COL",
+      "disqualification_rate": 0.002206797866607199,
+      "driver_id": "colapinto",
+      "driver_strength": -0.03166467997393929,
+      "experience": 44,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 44,
+      "name": "Franco Colapinto",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.5904761904761904,
+      "recent_quali": 0.5333333333333333,
+      "retirement_rate": 0.1,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "alpine",
+      "team_name": "Alpine F1 Team",
+      "team_retirement_rate": 0.1,
+      "team_strength": 0.021354964439885563,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.6947368421052631,
+      "code": "GAS",
+      "disqualification_rate": 0.00446704709420826,
+      "driver_id": "gasly",
+      "driver_strength": 0.02011041169910583,
+      "experience": 195,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 195,
+      "name": "Pierre Gasly",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.5619047619047619,
+      "recent_quali": 0.3142857142857142,
+      "retirement_rate": 0.1,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "alpine",
+      "team_name": "Alpine F1 Team",
+      "team_retirement_rate": 0.1,
+      "team_strength": 0.021354964439885563,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.7894736842105263,
+      "code": "HAD",
+      "disqualification_rate": 0.002302745599937947,
+      "driver_id": "hadjar",
+      "driver_strength": 0.27390545808801386,
+      "experience": 38,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 38,
+      "name": "Isack Hadjar",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.23809523809523808,
+      "recent_quali": 0.5523809523809524,
+      "retirement_rate": 0.13333333333333333,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "red_bull",
+      "team_name": "Red Bull",
+      "team_retirement_rate": 0.13333333333333333,
+      "team_strength": 0.478883425864825,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.44210526315789467,
+      "code": "HAM",
+      "disqualification_rate": 0.006298312208672383,
+      "driver_id": "hamilton",
+      "driver_strength": 0.4554532652406446,
+      "experience": 268,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 268,
+      "name": "Lewis Hamilton",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.36190476190476195,
+      "recent_quali": 0.13333333333333333,
+      "retirement_rate": 0.06666666666666667,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "ferrari",
+      "team_name": "Ferrari",
+      "team_retirement_rate": 0.1,
+      "team_strength": 0.5216900274218096,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.3894736842105263,
+      "code": "HUL",
+      "disqualification_rate": 0.010599932564828872,
+      "driver_id": "hulkenberg",
+      "driver_strength": 0.06857696212735079,
+      "experience": 213,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 213,
+      "name": "Nico H\u00fclkenberg",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.44761904761904764,
+      "recent_quali": 0.5809523809523809,
+      "retirement_rate": 0.2,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "audi",
+      "team_name": "Audi",
+      "team_retirement_rate": 0.14814814814814814,
+      "team_strength": 0.03275135394808675,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.47368421052631576,
+      "code": "LAW",
+      "disqualification_rate": 0.0020906506104699783,
+      "driver_id": "lawson",
+      "driver_strength": 0.17508267874615827,
+      "experience": 52,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 52,
+      "name": "Liam Lawson",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.3904761904761904,
+      "recent_quali": 0.5238095238095238,
+      "retirement_rate": 0.06666666666666667,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "rb",
+      "team_name": "RB F1 Team",
+      "team_retirement_rate": 0.08333333333333333,
+      "team_strength": 0.1265467501707612,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.27368421052631575,
+      "code": "LEC",
+      "disqualification_rate": 0.007992341009625644,
+      "driver_id": "leclerc",
+      "driver_strength": 0.5413348133230533,
+      "experience": 190,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 190,
+      "name": "Charles Leclerc",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.2952380952380952,
+      "recent_quali": 0.10476190476190475,
+      "retirement_rate": 0.13333333333333333,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "ferrari",
+      "team_name": "Ferrari",
+      "team_retirement_rate": 0.1,
+      "team_strength": 0.5216900274218096,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.021052631578947368,
+      "code": "VER",
+      "disqualification_rate": 0.0009079396936898191,
+      "driver_id": "max_verstappen",
+      "driver_strength": 0.721527333631668,
+      "experience": 250,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 250,
+      "name": "Max Verstappen",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.03809523809523809,
+      "recent_quali": 0.12380952380952381,
+      "retirement_rate": 0.16666666666666666,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "red_bull",
+      "team_name": "Red Bull",
+      "team_retirement_rate": 0.13333333333333333,
+      "team_strength": 0.478883425864825,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.1789473684210526,
+      "code": "NOR",
+      "disqualification_rate": 0.004898806292904969,
+      "driver_id": "norris",
+      "driver_strength": 0.5449201003338056,
+      "experience": 169,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 169,
+      "name": "Lando Norris",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.32380952380952377,
+      "recent_quali": 0.18095238095238092,
+      "retirement_rate": 0.16666666666666666,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "mclaren",
+      "team_name": "McLaren",
+      "team_retirement_rate": 0.15,
+      "team_strength": 0.3719311810550793,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.8,
+      "code": "OCO",
+      "disqualification_rate": 0.004436965968994736,
+      "driver_id": "ocon",
+      "driver_strength": -0.1315648669106382,
+      "experience": 197,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 197,
+      "name": "Esteban Ocon",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.5523809523809524,
+      "recent_quali": 0.6095238095238095,
+      "retirement_rate": 0.06666666666666667,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "haas",
+      "team_name": "Haas F1 Team",
+      "team_retirement_rate": 0.13333333333333333,
+      "team_strength": -0.1134654951672745,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.24210526315789477,
+      "code": "PER",
+      "disqualification_rate": 0.0009264690751936929,
+      "driver_id": "perez",
+      "driver_strength": -0.2688886752981897,
+      "experience": 243,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 243,
+      "name": "Sergio P\u00e9rez",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.7904761904761906,
+      "recent_quali": 0.8285714285714285,
+      "retirement_rate": 0.26666666666666666,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "cadillac",
+      "team_name": "Cadillac F1 Team",
+      "team_retirement_rate": 0.2777777777777778,
+      "team_strength": -0.37190398631192223,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.42105263157894735,
+      "code": "PIA",
+      "disqualification_rate": 0.007046945950756346,
+      "driver_id": "piastri",
+      "driver_strength": 0.3429363884743001,
+      "experience": 87,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 87,
+      "name": "Oscar Piastri",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.30476190476190473,
+      "recent_quali": 0.21904761904761902,
+      "retirement_rate": 0.13333333333333333,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "mclaren",
+      "team_name": "McLaren",
+      "team_retirement_rate": 0.15,
+      "team_strength": 0.3719311810550793,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.32631578947368417,
+      "code": "RUS",
+      "disqualification_rate": 0.004898806292904969,
+      "driver_id": "russell",
+      "driver_strength": 0.4981420909174092,
+      "experience": 169,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 169,
+      "name": "George Russell",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.30476190476190473,
+      "recent_quali": 0.2857142857142857,
+      "retirement_rate": 0.13333333333333333,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "mercedes",
+      "team_name": "Mercedes",
+      "team_retirement_rate": 0.1,
+      "team_strength": 0.5779249592789508,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.4947368421052632,
+      "code": "SAI",
+      "disqualification_rate": 0.0009105412400900765,
+      "driver_id": "sainz",
+      "driver_strength": -0.12864005668600975,
+      "experience": 249,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 249,
+      "name": "Carlos Sainz",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.6476190476190475,
+      "recent_quali": 0.6476190476190476,
+      "retirement_rate": 0.13333333333333333,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "williams",
+      "team_name": "Williams",
+      "team_retirement_rate": 0.21666666666666667,
+      "team_strength": -0.22696959971719302,
+      "weather_basis": "missing"
+    },
+    {
+      "circuit_finish": 0.6210526315789474,
+      "code": "STR",
+      "disqualification_rate": 0.001031749651920249,
+      "driver_id": "stroll",
+      "driver_strength": -0.25813056344790064,
+      "experience": 208,
+      "grid": null,
+      "grid_basis": "unavailable",
+      "grid_fraction": null,
+      "history_races": 208,
+      "name": "Lance Stroll",
+      "practice_relative_pace": null,
+      "qualifying_gap": null,
+      "rain_probability": null,
+      "recent_finish": 0.8571428571428571,
+      "recent_quali": 0.8666666666666666,
+      "retirement_rate": 0.4666666666666667,
+      "sprint_fraction": null,
+      "sprint_points": null,
+      "team_id": "aston_martin",
+      "team_name": "Aston Martin",
+      "team_retirement_rate": 0.35,
+      "team_strength": -0.2163361126894162,
+      "weather_basis": "missing"
+    }
+  ],
+  "generated_at": "2026-10-18T15:59:45.781606+00:00",
+  "head_to_head": {
+    "albon": {
+      "alonso": 0.5039,
+      "antonelli": 0.1073,
+      "arvid_lindblad": 0.2129,
+      "bearman": 0.3554,
+      "bortoleto": 0.3172,
+      "bottas": 0.6078,
+      "colapinto": 0.2681,
+      "gasly": 0.2188,
+      "hadjar": 0.1878,
+      "hamilton": 0.1055,
+      "hulkenberg": 0.3083,
+      "lawson": 0.1876,
+      "leclerc": 0.1336,
+      "max_verstappen": 0.1428,
+      "norris": 0.1753,
+      "ocon": 0.3237,
+      "perez": 0.5532,
+      "piastri": 0.1694,
+      "russell": 0.1388,
+      "sainz": 0.4022,
+      "stroll": 0.5967
+    },
+    "alonso": {
+      "albon": 0.4961,
+      "antonelli": 0.1053,
+      "arvid_lindblad": 0.2093,
+      "bearman": 0.3493,
+      "bortoleto": 0.3217,
+      "bottas": 0.5935,
+      "colapinto": 0.2727,
+      "gasly": 0.2195,
+      "hadjar": 0.1851,
+      "hamilton": 0.1063,
+      "hulkenberg": 0.3047,
+      "lawson": 0.1934,
+      "leclerc": 0.1313,
+      "max_verstappen": 0.1413,
+      "norris": 0.1742,
+      "ocon": 0.3293,
+      "perez": 0.5423,
+      "piastri": 0.1717,
+      "russell": 0.136,
+      "sainz": 0.393,
+      "stroll": 0.6
+    },
+    "antonelli": {
+      "albon": 0.8927,
+      "alonso": 0.8947,
+      "arvid_lindblad": 0.7888,
+      "bearman": 0.8532,
+      "bortoleto": 0.8422,
+      "bottas": 0.9127,
+      "colapinto": 0.8215,
+      "gasly": 0.7802,
+      "hadjar": 0.684,
+      "hamilton": 0.4984,
+      "hulkenberg": 0.8202,
+      "lawson": 0.7607,
+      "leclerc": 0.4914,
+      "max_verstappen": 0.4431,
+      "norris": 0.5642,
+      "ocon": 0.8499,
+      "perez": 0.9023,
+      "piastri": 0.6078,
+      "russell": 0.5329,
+      "sainz": 0.8674,
+      "stroll": 0.9124
+    },
+    "arvid_lindblad": {
+      "albon": 0.7871,
+      "alonso": 0.7907,
+      "antonelli": 0.2112,
+      "bearman": 0.6683,
+      "bortoleto": 0.6379,
+      "bottas": 0.8598,
+      "colapinto": 0.5846,
+      "gasly": 0.501,
+      "hadjar": 0.3806,
+      "hamilton": 0.2182,
+      "hulkenberg": 0.5902,
+      "lawson": 0.4547,
+      "leclerc": 0.2261,
+      "max_verstappen": 0.2217,
+      "norris": 0.2906,
+      "ocon": 0.6523,
+      "perez": 0.8305,
+      "piastri": 0.3142,
+      "russell": 0.2504,
+      "sainz": 0.7166,
+      "stroll": 0.8481
+    },
+    "bearman": {
+      "albon": 0.6446,
+      "alonso": 0.6507,
+      "antonelli": 0.1468,
+      "arvid_lindblad": 0.3317,
+      "bortoleto": 0.4698,
+      "bottas": 0.7348,
+      "colapinto": 0.406,
+      "gasly": 0.3466,
+      "hadjar": 0.2612,
+      "hamilton": 0.1497,
+      "hulkenberg": 0.4349,
+      "lawson": 0.3017,
+      "leclerc": 0.1704,
+      "max_verstappen": 0.1825,
+      "norris": 0.2179,
+      "ocon": 0.478,
+      "perez": 0.7013,
+      "piastri": 0.2252,
+      "russell": 0.1842,
+      "sainz": 0.5545,
+      "stroll": 0.7237
+    },
+    "bortoleto": {
+      "albon": 0.6828,
+      "alonso": 0.6783,
+      "antonelli": 0.1578,
+      "arvid_lindblad": 0.3621,
+      "bearman": 0.5302,
+      "bottas": 0.7653,
+      "colapinto": 0.4422,
+      "gasly": 0.3643,
+      "hadjar": 0.2815,
+      "hamilton": 0.1579,
+      "hulkenberg": 0.4631,
+      "lawson": 0.3286,
+      "leclerc": 0.1789,
+      "max_verstappen": 0.1801,
+      "norris": 0.2244,
+      "ocon": 0.5172,
+      "perez": 0.7194,
+      "piastri": 0.2418,
+      "russell": 0.1944,
+      "sainz": 0.5892,
+      "stroll": 0.7547
+    },
+    "bottas": {
+      "albon": 0.3922,
+      "alonso": 0.4065,
+      "antonelli": 0.0873,
+      "arvid_lindblad": 0.1402,
+      "bearman": 0.2652,
+      "bortoleto": 0.2347,
+      "colapinto": 0.1895,
+      "gasly": 0.1586,
+      "hadjar": 0.1516,
+      "hamilton": 0.0891,
+      "hulkenberg": 0.2367,
+      "lawson": 0.132,
+      "leclerc": 0.1214,
+      "max_verstappen": 0.135,
+      "norris": 0.1553,
+      "ocon": 0.2237,
+      "perez": 0.4473,
+      "piastri": 0.1496,
+      "russell": 0.1207,
+      "sainz": 0.2992,
+      "stroll": 0.5138
+    },
+    "colapinto": {
+      "albon": 0.7319,
+      "alonso": 0.7273,
+      "antonelli": 0.1785,
+      "arvid_lindblad": 0.4154,
+      "bearman": 0.594,
+      "bortoleto": 0.5578,
+      "bottas": 0.8105,
+      "gasly": 0.4182,
+      "hadjar": 0.3174,
+      "hamilton": 0.1785,
+      "hulkenberg": 0.5102,
+      "lawson": 0.3729,
+      "leclerc": 0.1964,
+      "max_verstappen": 0.1986,
+      "norris": 0.2517,
+      "ocon": 0.5739,
+      "perez": 0.7743,
+      "piastri": 0.266,
+      "russell": 0.2155,
+      "sainz": 0.6494,
+      "stroll": 0.8001
+    },
+    "gasly": {
+      "albon": 0.7812,
+      "alonso": 0.7805,
+      "antonelli": 0.2198,
+      "arvid_lindblad": 0.499,
+      "bearman": 0.6534,
+      "bortoleto": 0.6357,
+      "bottas": 0.8414,
+      "colapinto": 0.5818,
+      "hadjar": 0.3854,
+      "hamilton": 0.2205,
+      "hulkenberg": 0.5896,
+      "lawson": 0.4634,
+      "leclerc": 0.2345,
+      "max_verstappen": 0.2274,
+      "norris": 0.2944,
+      "ocon": 0.6482,
+      "perez": 0.8136,
+      "piastri": 0.3169,
+      "russell": 0.2572,
+      "sainz": 0.7073,
+      "stroll": 0.8304
+    },
+    "hadjar": {
+      "albon": 0.8122,
+      "alonso": 0.8149,
+      "antonelli": 0.316,
+      "arvid_lindblad": 0.6194,
+      "bearman": 0.7388,
+      "bortoleto": 0.7185,
+      "bottas": 0.8484,
+      "colapinto": 0.6826,
+      "gasly": 0.6146,
+      "hamilton": 0.3186,
+      "hulkenberg": 0.6841,
+      "lawson": 0.5879,
+      "leclerc": 0.3126,
+      "max_verstappen": 0.2861,
+      "norris": 0.3861,
+      "ocon": 0.7295,
+      "perez": 0.8366,
+      "piastri": 0.4202,
+      "russell": 0.3414,
+      "sainz": 0.7696,
+      "stroll": 0.8519
+    },
+    "hamilton": {
+      "albon": 0.8945,
+      "alonso": 0.8937,
+      "antonelli": 0.5016,
+      "arvid_lindblad": 0.7818,
+      "bearman": 0.8503,
+      "bortoleto": 0.8421,
+      "bottas": 0.9109,
+      "colapinto": 0.8215,
+      "gasly": 0.7795,
+      "hadjar": 0.6814,
+      "hulkenberg": 0.8194,
+      "lawson": 0.7558,
+      "leclerc": 0.4868,
+      "max_verstappen": 0.4386,
+      "norris": 0.5588,
+      "ocon": 0.8493,
+      "perez": 0.9,
+      "piastri": 0.6035,
+      "russell": 0.5302,
+      "sainz": 0.867,
+      "stroll": 0.9104
+    },
+    "hulkenberg": {
+      "albon": 0.6917,
+      "alonso": 0.6953,
+      "antonelli": 0.1798,
+      "arvid_lindblad": 0.4098,
+      "bearman": 0.5651,
+      "bortoleto": 0.5369,
+      "bottas": 0.7633,
+      "colapinto": 0.4898,
+      "gasly": 0.4104,
+      "hadjar": 0.3159,
+      "hamilton": 0.1806,
+      "lawson": 0.3819,
+      "leclerc": 0.1963,
+      "max_verstappen": 0.1903,
+      "norris": 0.2512,
+      "ocon": 0.5577,
+      "perez": 0.7327,
+      "piastri": 0.2632,
+      "russell": 0.2135,
+      "sainz": 0.6153,
+      "stroll": 0.7572
+    },
+    "lawson": {
+      "albon": 0.8124,
+      "alonso": 0.8066,
+      "antonelli": 0.2393,
+      "arvid_lindblad": 0.5453,
+      "bearman": 0.6983,
+      "bortoleto": 0.6714,
+      "bottas": 0.868,
+      "colapinto": 0.6271,
+      "gasly": 0.5366,
+      "hadjar": 0.4121,
+      "hamilton": 0.2442,
+      "hulkenberg": 0.6181,
+      "leclerc": 0.2483,
+      "max_verstappen": 0.2392,
+      "norris": 0.3128,
+      "ocon": 0.6949,
+      "perez": 0.8462,
+      "piastri": 0.3449,
+      "russell": 0.2813,
+      "sainz": 0.7454,
+      "stroll": 0.8637
+    },
+    "leclerc": {
+      "albon": 0.8664,
+      "alonso": 0.8687,
+      "antonelli": 0.5086,
+      "arvid_lindblad": 0.7739,
+      "bearman": 0.8296,
+      "bortoleto": 0.8211,
+      "bottas": 0.8786,
+      "colapinto": 0.8036,
+      "gasly": 0.7655,
+      "hadjar": 0.6874,
+      "hamilton": 0.5132,
+      "hulkenberg": 0.8037,
+      "lawson": 0.7517,
+      "max_verstappen": 0.4573,
+      "norris": 0.5722,
+      "ocon": 0.8293,
+      "perez": 0.8752,
+      "piastri": 0.6123,
+      "russell": 0.5517,
+      "sainz": 0.8446,
+      "stroll": 0.8849
+    },
+    "max_verstappen": {
+      "albon": 0.8572,
+      "alonso": 0.8587,
+      "antonelli": 0.5569,
+      "arvid_lindblad": 0.7783,
+      "bearman": 0.8175,
+      "bortoleto": 0.8199,
+      "bottas": 0.865,
+      "colapinto": 0.8014,
+      "gasly": 0.7726,
+      "hadjar": 0.7139,
+      "hamilton": 0.5614,
+      "hulkenberg": 0.8097,
+      "lawson": 0.7608,
+      "leclerc": 0.5427,
+      "norris": 0.6125,
+      "ocon": 0.8205,
+      "perez": 0.8617,
+      "piastri": 0.6491,
+      "russell": 0.5888,
+      "sainz": 0.8337,
+      "stroll": 0.8737
+    },
+    "norris": {
+      "albon": 0.8247,
+      "alonso": 0.8258,
+      "antonelli": 0.4358,
+      "arvid_lindblad": 0.7094,
+      "bearman": 0.7821,
+      "bortoleto": 0.7756,
+      "bottas": 0.8447,
+      "colapinto": 0.7483,
+      "gasly": 0.7056,
+      "hadjar": 0.6139,
+      "hamilton": 0.4412,
+      "hulkenberg": 0.7488,
+      "lawson": 0.6872,
+      "leclerc": 0.4278,
+      "max_verstappen": 0.3875,
+      "ocon": 0.7756,
+      "perez": 0.8341,
+      "piastri": 0.5421,
+      "russell": 0.4815,
+      "sainz": 0.8012,
+      "stroll": 0.8515
+    },
+    "ocon": {
+      "albon": 0.6763,
+      "alonso": 0.6707,
+      "antonelli": 0.1501,
+      "arvid_lindblad": 0.3477,
+      "bearman": 0.522,
+      "bortoleto": 0.4828,
+      "bottas": 0.7763,
+      "colapinto": 0.4261,
+      "gasly": 0.3518,
+      "hadjar": 0.2705,
+      "hamilton": 0.1507,
+      "hulkenberg": 0.4423,
+      "lawson": 0.3051,
+      "leclerc": 0.1707,
+      "max_verstappen": 0.1795,
+      "norris": 0.2244,
+      "perez": 0.7279,
+      "piastri": 0.2298,
+      "russell": 0.1836,
+      "sainz": 0.5731,
+      "stroll": 0.7561
+    },
+    "perez": {
+      "albon": 0.4468,
+      "alonso": 0.4577,
+      "antonelli": 0.0977,
+      "arvid_lindblad": 0.1695,
+      "bearman": 0.2987,
+      "bortoleto": 0.2806,
+      "bottas": 0.5527,
+      "colapinto": 0.2257,
+      "gasly": 0.1864,
+      "hadjar": 0.1634,
+      "hamilton": 0.1,
+      "hulkenberg": 0.2673,
+      "lawson": 0.1538,
+      "leclerc": 0.1248,
+      "max_verstappen": 0.1383,
+      "norris": 0.1659,
+      "ocon": 0.2721,
+      "piastri": 0.158,
+      "russell": 0.1287,
+      "sainz": 0.345,
+      "stroll": 0.5558
+    },
+    "piastri": {
+      "albon": 0.8306,
+      "alonso": 0.8283,
+      "antonelli": 0.3922,
+      "arvid_lindblad": 0.6858,
+      "bearman": 0.7748,
+      "bortoleto": 0.7582,
+      "bottas": 0.8504,
+      "colapinto": 0.734,
+      "gasly": 0.6831,
+      "hadjar": 0.5798,
+      "hamilton": 0.3965,
+      "hulkenberg": 0.7368,
+      "lawson": 0.6551,
+      "leclerc": 0.3877,
+      "max_verstappen": 0.3509,
+      "norris": 0.4579,
+      "ocon": 0.7702,
+      "perez": 0.842,
+      "russell": 0.4253,
+      "sainz": 0.7957,
+      "stroll": 0.8541
+    },
+    "russell": {
+      "albon": 0.8612,
+      "alonso": 0.864,
+      "antonelli": 0.4671,
+      "arvid_lindblad": 0.7496,
+      "bearman": 0.8158,
+      "bortoleto": 0.8056,
+      "bottas": 0.8793,
+      "colapinto": 0.7845,
+      "gasly": 0.7428,
+      "hadjar": 0.6586,
+      "hamilton": 0.4698,
+      "hulkenberg": 0.7865,
+      "lawson": 0.7187,
+      "leclerc": 0.4483,
+      "max_verstappen": 0.4112,
+      "norris": 0.5185,
+      "ocon": 0.8164,
+      "perez": 0.8713,
+      "piastri": 0.5747,
+      "sainz": 0.8341,
+      "stroll": 0.881
+    },
+    "sainz": {
+      "albon": 0.5978,
+      "alonso": 0.607,
+      "antonelli": 0.1326,
+      "arvid_lindblad": 0.2834,
+      "bearman": 0.4455,
+      "bortoleto": 0.4108,
+      "bottas": 0.7008,
+      "colapinto": 0.3506,
+      "gasly": 0.2927,
+      "hadjar": 0.2304,
+      "hamilton": 0.133,
+      "hulkenberg": 0.3847,
+      "lawson": 0.2546,
+      "leclerc": 0.1554,
+      "max_verstappen": 0.1663,
+      "norris": 0.1988,
+      "ocon": 0.4269,
+      "perez": 0.655,
+      "piastri": 0.2043,
+      "russell": 0.1659,
+      "stroll": 0.6988
+    },
+    "stroll": {
+      "albon": 0.4033,
+      "alonso": 0.4,
+      "antonelli": 0.0876,
+      "arvid_lindblad": 0.1519,
+      "bearman": 0.2763,
+      "bortoleto": 0.2453,
+      "bottas": 0.4862,
+      "colapinto": 0.1999,
+      "gasly": 0.1696,
+      "hadjar": 0.1481,
+      "hamilton": 0.0896,
+      "hulkenberg": 0.2428,
+      "lawson": 0.1363,
+      "leclerc": 0.1151,
+      "max_verstappen": 0.1263,
+      "norris": 0.1485,
+      "ocon": 0.2439,
+      "perez": 0.4442,
+      "piastri": 0.1459,
+      "russell": 0.119,
+      "sainz": 0.3012
+    }
+  },
+  "historical_comparisons": {
+    "albon": [
+      {
+        "event_id": "2026-13",
+        "position": 17,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 15,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 20,
+        "retired": true
+      },
+      {
+        "event_id": "2026-16",
+        "position": 21,
+        "retired": true
+      },
+      {
+        "event_id": "2026-17",
+        "position": 18,
+        "retired": true
+      }
+    ],
+    "alonso": [
+      {
+        "event_id": "2026-13",
+        "position": 21,
+        "retired": true
+      },
+      {
+        "event_id": "2026-14",
+        "position": 17,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 21,
+        "retired": true
+      },
+      {
+        "event_id": "2026-16",
+        "position": 8,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 16,
+        "retired": false
+      }
+    ],
+    "antonelli": [
+      {
+        "event_id": "2026-13",
+        "position": 1,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 1,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 5,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 2,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 3,
+        "retired": false
+      }
+    ],
+    "arvid_lindblad": [
+      {
+        "event_id": "2026-13",
+        "position": 8,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 9,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 7,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 10,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 15,
+        "retired": false
+      }
+    ],
+    "bearman": [
+      {
+        "event_id": "2026-13",
+        "position": 15,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 16,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 9,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 14,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 12,
+        "retired": false
+      }
+    ],
+    "bortoleto": [
+      {
+        "event_id": "2026-13",
+        "position": 11,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 13,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 15,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 18,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 22,
+        "retired": true
+      }
+    ],
+    "bottas": [
+      {
+        "event_id": "2026-13",
+        "position": 19,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 18,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 16,
+        "retired": true
+      },
+      {
+        "event_id": "2026-16",
+        "position": 22,
+        "retired": true
+      },
+      {
+        "event_id": "2026-17",
+        "position": 19,
+        "retired": false
+      }
+    ],
+    "colapinto": [
+      {
+        "event_id": "2026-13",
+        "position": 9,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 7,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 17,
+        "retired": true
+      },
+      {
+        "event_id": "2026-16",
+        "position": 13,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 21,
+        "retired": true
+      }
+    ],
+    "gasly": [
+      {
+        "event_id": "2026-13",
+        "position": 7,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 12,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 18,
+        "retired": true
+      },
+      {
+        "event_id": "2026-16",
+        "position": 16,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 11,
+        "retired": false
+      }
+    ],
+    "hadjar": [
+      {
+        "event_id": "2026-10",
+        "position": 6,
+        "retired": false
+      },
+      {
+        "event_id": "2026-11",
+        "position": 6,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 3,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 5,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 10,
+        "retired": false
+      }
+    ],
+    "hamilton": [
+      {
+        "event_id": "2026-13",
+        "position": 6,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 22,
+        "retired": true
+      },
+      {
+        "event_id": "2026-15",
+        "position": 6,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 3,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 6,
+        "retired": false
+      }
+    ],
+    "hulkenberg": [
+      {
+        "event_id": "2026-13",
+        "position": 12,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 10,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 11,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 11,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 8,
+        "retired": false
+      }
+    ],
+    "lawson": [
+      {
+        "event_id": "2026-13",
+        "position": 14,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 6,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 12,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 7,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 7,
+        "retired": false
+      }
+    ],
+    "leclerc": [
+      {
+        "event_id": "2026-13",
+        "position": 22,
+        "retired": true
+      },
+      {
+        "event_id": "2026-14",
+        "position": 4,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 4,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 4,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 2,
+        "retired": false
+      }
+    ],
+    "max_verstappen": [
+      {
+        "event_id": "2026-13",
+        "position": 3,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 2,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 2,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 1,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 1,
+        "retired": false
+      }
+    ],
+    "norris": [
+      {
+        "event_id": "2026-13",
+        "position": 4,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 3,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 19,
+        "retired": true
+      },
+      {
+        "event_id": "2026-16",
+        "position": 9,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 4,
+        "retired": false
+      }
+    ],
+    "ocon": [
+      {
+        "event_id": "2026-13",
+        "position": 16,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 11,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 8,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 15,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 13,
+        "retired": false
+      }
+    ],
+    "perez": [
+      {
+        "event_id": "2026-13",
+        "position": 18,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 20,
+        "retired": true
+      },
+      {
+        "event_id": "2026-15",
+        "position": 14,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 19,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 17,
+        "retired": false
+      }
+    ],
+    "piastri": [
+      {
+        "event_id": "2026-13",
+        "position": 5,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 8,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 13,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 6,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 5,
+        "retired": false
+      }
+    ],
+    "russell": [
+      {
+        "event_id": "2026-13",
+        "position": 2,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 5,
+        "retired": false
+      },
+      {
+        "event_id": "2026-15",
+        "position": 1,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 20,
+        "retired": true
+      },
+      {
+        "event_id": "2026-17",
+        "position": 9,
+        "retired": false
+      }
+    ],
+    "sainz": [
+      {
+        "event_id": "2026-13",
+        "position": 13,
+        "retired": false
+      },
+      {
+        "event_id": "2026-14",
+        "position": 19,
+        "retired": true
+      },
+      {
+        "event_id": "2026-15",
+        "position": 10,
+        "retired": false
+      },
+      {
+        "event_id": "2026-16",
+        "position": 17,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 14,
+        "retired": false
+      }
+    ],
+    "stroll": [
+      {
+        "event_id": "2026-13",
+        "position": 20,
+        "retired": true
+      },
+      {
+        "event_id": "2026-14",
+        "position": 21,
+        "retired": true
+      },
+      {
+        "event_id": "2026-15",
+        "position": 22,
+        "retired": true
+      },
+      {
+        "event_id": "2026-16",
+        "position": 12,
+        "retired": false
+      },
+      {
+        "event_id": "2026-17",
+        "position": 20,
+        "retired": true
+      }
+    ]
+  },
+  "id": "d5bbb924e1de498d8f29b547962fc5f5",
+  "kind": "race",
+  "live_state": null,
+  "missing_inputs": [
+    "No issued weather forecast or climate prior: weather remains missing. Capture climate history to supply a prior; training-only imputation is explicit.",
+    "Entry list is provisional from the previous race; transfers and substitutions are not confirmed"
+  ],
+  "model_version": "baseline:rating",
+  "number_kinds": {
+    "expected_finish": "model_estimate",
+    "expected_points": "model_estimate",
+    "grid": "observation_or_user_assumption",
+    "probabilities": "model_estimate",
+    "simulations": "derived_calculation"
+  },
+  "practice_filter": {
+    "eligible_laps": 0,
+    "fuel_load": "unobserved",
+    "received_laps": 0
+  },
+  "prediction_hash": "4362210992fb2adc78a5665634e01d01762c76c1d8dcd4d5aa2f6a6557586afc",
+  "prospective_registration": "3ccac5602e5fed8008a617852b4e369ff4ca72adb787ec231c8a66425072b234",
+  "request": {
+    "as_of_utc": "2026-10-18T15:59:45.378195Z",
+    "data_version": "a9a95521c502f9829536b250635e8f7a5a632a3088db92d91ce2834c261ed7c7",
+    "event_id": "2026-18",
+    "model_version": "baseline:rating",
+    "revision_of": null,
+    "scenario": null,
+    "seed": 42,
+    "simulations": 10000,
+    "stage": "pre_weekend"
+  },
+  "rules_version": "sporting-2014-2026-v2.1",
+  "schema_version": "2.0",
+  "scoring_version": "full-field-rps-v2.1",
+  "seed": 42,
+  "simulations": 10000,
+  "source_ids": [
+    "0251fc31f7d9b133cc4b76f555bd4452f00dd46522ed4b103e11f28d7f48470d",
+    "02c0713edfb96fe09ce1498e6540fff32c7257328202a454498a3d05aa13647b",
+    "02d7a191a130a65a10e3d00c8fc723e643f0868e7b4dd0790b89a18a938de6af",
+    "038a458c04ca903d2f1b66179486327d059a2fb40f44a308d05592eb75997904",
+    "046793aeb5b00ceea78fc251eb5ffde2337e053a6a1ebccf735046e321e6ab02",
+    "060301983c1ad5b630e46f10e1f4d3b68205cf0da787bdd2bcf096dcd1310474",
+    "0606d77f1ffb53d6d0b85fa22478f21190adbdbeaf277c0045a1ee610dc8e76d",
+    "073c23d3a16827e56a97a8b482b24113cb6bc337adc4beeff4a311b19b3b4a57",
+    "0a9745c2e74e856108811a82951d2683ffa82eb71533125b5c457ae239d9696a",
+    "0cce8f7c86913bb10ae3d3064b75b72c4b0bc940ed73160d66feb5774d66a7f7",
+    "1509990e7747abe3b0db3aa0f5664bb303ac039e866022eb9d88de4ba2951de3",
+    "1cd55dbc1af1a3fabb4a1d85d29efd40e36054f40afb963f22d71a88b48504d1",
+    "1dd6885eea8b30ab62125bd38f4bae2aef0921daeadd5c36756dc59bbdc8f170",
+    "1efc1cd55816464d41c272e2eeede560d115dc1186f8778c46fab26ae5544024",
+    "1f3581223638d5a62579e59f7d2ac5d8e1f6ed8f14032835d40db05fe81cffb4",
+    "2b5ce2180218863bf20637409d08d5c1ae692f2149d9aa3164b04c1bdb7ea009",
+    "2da856c607bec4ec4b4b9e806842e8b85f3712d11b3fa3afc02769f7cda2662c",
+    "330780de2d126d044a8084641534711393ecf6e510555dd20fcea09f3f2dfd4b",
+    "34e4d787bf51a4a0721707793122acd7253438c5f35060061b490c3df8c8c02f",
+    "38ed604cef918869e257eaeb6a01a1819f7c1d83a9a1f2df2ceb6fcfa53bea60",
+    "39ca776be1491278fa4b0d6d263990e2a5ade7739221f948984963578cc1446a",
+    "43cba26b02036d16c8e1e263bae03294e812365491b2d475ac06b9b536380395",
+    "46dfe13b327af9f4a1dbaf1fc66ed605b611b14c5f0137e434c3b78f8d2abb63",
+    "489bbac71fcd9c83622140490379abe9ff0b802323eda9d2f1098f2359ac8ccf",
+    "5145425a5573be8c35ddfd2079ace5d25f1eb48a5c64a34ded2b6b57d6a8f575",
+    "557e181d6cbe4dd15a11fc279eafdb3285b465d3673cb6d2b0f6aaf368d76897",
+    "5c8ae729265248cb957917cc9a1d520f2e94d0e99694beb22c7ad02fd12223c9",
+    "66b4218767a8a5ecb054fdc37384f7ac71f06e4a1559b892945306743de7a611",
+    "6f2af7f73fed5510231e0cb5acd9cc9060136bb13f1aa0dc0a59b5bda0ab6c6e",
+    "703383b5c915ffb9816de15845750fe35269eb62813fd5f3096ba6a93b50a824",
+    "796667e209c772646a71c6019d4c5f2a6feaf1b891a35d98ab11111b79bba265",
+    "7baed8a4236c71be1aff72f7d85c2116fb4641f09da29fe9edcbfbea1f66984f",
+    "7bdafb410784bf730ad4d05fae07f699eb5ef55af347ae040cfa19630260ff42",
+    "861de0450791d64258d417792796a594d45ecc5120d3e00682f5859d4630af96",
+    "89047b798aa4514a5f2b6736c7e16bbca3a461337d9361506bc3b151f6ff2fe9",
+    "891bfc89e44d228a4746ef98111ba8e832195c64b156bc31f334cbd58768d91a",
+    "93487f8f73280b737241eb711d865de1bfdc0174a87c267d3ab5107878f84217",
+    "9a85627ce8082797ca1ebabf1b813bf8faefa6e7e82bf3986eb0c5c5a1b9a99f",
+    "9dcf27a086563588b2945f9157b6cac3fdb001e6cbaafce652dac36242986324",
+    "9fdd06d88896149268dbdfa92c02c641fae6d17b96544424f26f9ce8978c29c3",
+    "a3bb40d720e438fe5c76c20f8312479084c3836d342ac49ab2c2c6c854ad7f43",
+    "a41346082d6fd3e0162c355701622aeb9b9178bae35b314ca5ef1507b9e0acb3",
+    "a9d4409e0adb02dc25ddd6e2a3db652a18a737be1fedef7d3ff922c925b40764",
+    "ad448416fa043f287f4caabf08a799df163a4dad4365af384cdd30d268354e20",
+    "ae1ab95c85517940613a78225717e049fab009b8848e334da5e4963e9d6e392e",
+    "af29a10dbe52f4e4a6a6286ba86edef1c2cfcd4b58c865972d4da7f0492d2821",
+    "b22e629cb6c80ed9aae4479e90d26fc7be39e6a11c0846fdc048a57a56ed5822",
+    "bf2e0e63a40ee2f82fd43c3bf84ced690c2e25b483394af4a4a41f57172b81a9",
+    "c514388617f86dac3428c4e27ffc76b0613b9f62fc9c093b507f76d2a8953b86",
+    "cad98e1475c220d2e725482ea6a9873d20b8e1c7821aa0dc61fbaf2cd422162f",
+    "ce97496416a65d72ca5d13265b6b96d851c84566b7f7a838229032e9b22e1569",
+    "d10696fd06965da45337a339990326dc8ad3543c31f39b55cfd406ab79f2a35a",
+    "d2468a9cbbc3434a83b4f968c0faa527c633284f5bb7d2673f9e31607e93255f",
+    "db322e8820a6f14b216d7b30d299958d19d3302a85f1044928b071ce3a2d7f26",
+    "deee3380b92ca44bea8b9afab13a69cd490a181d77b5a7e7e1b4fcb832758f68",
+    "e3d0610034a913e5851fb9a5d2f270c95ee2bef92aba3c1ccc45a8a28e6e5720",
+    "e8ce9d11b2508e66440e4fb2fb0ac1b8d45b1a138bf2cfe6f6a863385386299e",
+    "eee476c7ea95ae7cc4666852905018b28d7665760607038523a644b88fd6191b",
+    "f694c95d181300db5b0ac08b1b1c1806da9c5b39d7d643319ec0211f8a107c25",
+    "f7fc0f85d35483243b05aeacfb70ca0c6140013fcb1fbcf29342e408015379c4",
+    "f83bd51646d85404da77833422e1c4d0c36de9fd8d4e9553e83075d48ac3556c",
+    "fa274bdc5f14db75152969d7af4667f2e39cb5b6695644fdbebb1d1b526fd49c",
+    "ffac16c879b09878b15d71b58e362b6472d95d6dceb75e22a31a5fa48a10ab7b"
+  ],
+  "source_records": [
+    {
+      "id": "0251fc31f7d9b133cc4b76f555bd4452f00dd46522ed4b103e11f28d7f48470d",
+      "retrieved_at": "2026-10-11T18:49:45.091304+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2016/results.json?limit=100&offset=400"
+    },
+    {
+      "id": "02c0713edfb96fe09ce1498e6540fff32c7257328202a454498a3d05aa13647b",
+      "retrieved_at": "2026-10-11T18:55:19.879172+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2023/results.json?limit=100&offset=400"
+    },
+    {
+      "id": "02d7a191a130a65a10e3d00c8fc723e643f0868e7b4dd0790b89a18a938de6af",
+      "retrieved_at": "2026-10-11T18:41:23.757529+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2026.json?limit=100&offset=0"
+    },
+    {
+      "id": "038a458c04ca903d2f1b66179486327d059a2fb40f44a308d05592eb75997904",
+      "retrieved_at": "2026-10-11T18:48:00.725312+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2019/results.json?limit=100&offset=300"
+    },
+    {
+      "id": "046793aeb5b00ceea78fc251eb5ffde2337e053a6a1ebccf735046e321e6ab02",
+      "retrieved_at": "2026-10-11T18:56:35.729689+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2014/results.json?limit=100&offset=0"
+    },
+    {
+      "id": "060301983c1ad5b630e46f10e1f4d3b68205cf0da787bdd2bcf096dcd1310474",
+      "retrieved_at": "2026-10-11T18:43:25.428776+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2021/results.json?limit=100&offset=300"
+    },
+    {
+      "id": "0606d77f1ffb53d6d0b85fa22478f21190adbdbeaf277c0045a1ee610dc8e76d",
+      "retrieved_at": "2026-10-11T18:47:53.243351+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2019/results.json?limit=100&offset=200"
+    },
+    {
+      "id": "073c23d3a16827e56a97a8b482b24113cb6bc337adc4beeff4a311b19b3b4a57",
+      "retrieved_at": "2026-10-12T02:55:22.952971+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2025/results.json?limit=100&offset=0"
+    },
+    {
+      "id": "0a9745c2e74e856108811a82951d2683ffa82eb71533125b5c457ae239d9696a",
+      "retrieved_at": "2026-10-11T18:49:37.980374+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2016/results.json?limit=100&offset=300"
+    },
+    {
+      "id": "0cce8f7c86913bb10ae3d3064b75b72c4b0bc940ed73160d66feb5774d66a7f7",
+      "retrieved_at": "2026-10-11T19:01:52.188030+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2017/results.json?limit=100&offset=300"
+    },
+    {
+      "id": "1509990e7747abe3b0db3aa0f5664bb303ac039e866022eb9d88de4ba2951de3",
+      "retrieved_at": "2026-10-11T18:41:52.779764+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2026/results.json?limit=100&offset=300"
+    },
+    {
+      "id": "1cd55dbc1af1a3fabb4a1d85d29efd40e36054f40afb963f22d71a88b48504d1",
+      "retrieved_at": "2026-10-11T18:45:54.411765+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2022/results.json?limit=100&offset=0"
+    },
+    {
+      "id": "1dd6885eea8b30ab62125bd38f4bae2aef0921daeadd5c36756dc59bbdc8f170",
+      "retrieved_at": "2026-10-11T18:40:01.709324+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2024/results.json?limit=100&offset=200"
+    },
+    {
+      "id": "1efc1cd55816464d41c272e2eeede560d115dc1186f8778c46fab26ae5544024",
+      "retrieved_at": "2026-10-11T18:49:23.434653+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2016/results.json?limit=100&offset=100"
+    },
+    {
+      "id": "1f3581223638d5a62579e59f7d2ac5d8e1f6ed8f14032835d40db05fe81cffb4",
+      "retrieved_at": "2026-10-11T18:51:07.152127+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2020/results.json?limit=100&offset=200"
+    },
+    {
+      "id": "2b5ce2180218863bf20637409d08d5c1ae692f2149d9aa3164b04c1bdb7ea009",
+      "retrieved_at": "2026-10-11T18:56:50.359129+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2014/results.json?limit=100&offset=200"
+    },
+    {
+      "id": "2da856c607bec4ec4b4b9e806842e8b85f3712d11b3fa3afc02769f7cda2662c",
+      "retrieved_at": "2026-10-11T18:43:10.921837+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2021/results.json?limit=100&offset=100"
+    },
+    {
+      "id": "330780de2d126d044a8084641534711393ecf6e510555dd20fcea09f3f2dfd4b",
+      "retrieved_at": "2026-10-11T18:54:50.955789+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2023/results.json?limit=100&offset=0"
+    },
+    {
+      "id": "34e4d787bf51a4a0721707793122acd7253438c5f35060061b490c3df8c8c02f",
+      "retrieved_at": "2026-10-11T18:53:50.748806+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2015/results.json?limit=100&offset=300"
+    },
+    {
+      "id": "38ed604cef918869e257eaeb6a01a1819f7c1d83a9a1f2df2ceb6fcfa53bea60",
+      "retrieved_at": "2026-10-11T18:39:54.325957+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2024/results.json?limit=100&offset=100"
+    },
+    {
+      "id": "39ca776be1491278fa4b0d6d263990e2a5ade7739221f948984963578cc1446a",
+      "retrieved_at": "2026-10-12T02:55:30.254504+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2025/results.json?limit=100&offset=100"
+    },
+    {
+      "id": "43cba26b02036d16c8e1e263bae03294e812365491b2d475ac06b9b536380395",
+      "retrieved_at": "2026-10-11T18:41:38.087717+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2026/results.json?limit=100&offset=100"
+    },
+    {
+      "id": "46dfe13b327af9f4a1dbaf1fc66ed605b611b14c5f0137e434c3b78f8d2abb63",
+      "retrieved_at": "2026-10-11T18:49:15.917257+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2016/results.json?limit=100&offset=0"
+    },
+    {
+      "id": "489bbac71fcd9c83622140490379abe9ff0b802323eda9d2f1098f2359ac8ccf",
+      "retrieved_at": "2026-10-11T19:01:37.475751+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2017/results.json?limit=100&offset=100"
+    },
+    {
+      "id": "5145425a5573be8c35ddfd2079ace5d25f1eb48a5c64a34ded2b6b57d6a8f575",
+      "retrieved_at": "2026-10-11T18:41:45.403429+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2026/results.json?limit=100&offset=200"
+    },
+    {
+      "id": "557e181d6cbe4dd15a11fc279eafdb3285b465d3673cb6d2b0f6aaf368d76897",
+      "retrieved_at": "2026-10-11T18:58:42.919225+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2018/results.json?limit=100&offset=400"
+    },
+    {
+      "id": "5c8ae729265248cb957917cc9a1d520f2e94d0e99694beb22c7ad02fd12223c9",
+      "retrieved_at": "2026-10-11T18:43:32.796282+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2021/results.json?limit=100&offset=400"
+    },
+    {
+      "id": "66b4218767a8a5ecb054fdc37384f7ac71f06e4a1559b892945306743de7a611",
+      "retrieved_at": "2026-10-12T02:55:44.876536+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2025/results.json?limit=100&offset=300"
+    },
+    {
+      "id": "6f2af7f73fed5510231e0cb5acd9cc9060136bb13f1aa0dc0a59b5bda0ab6c6e",
+      "retrieved_at": "2026-10-11T18:43:03.611153+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2021/results.json?limit=100&offset=0"
+    },
+    {
+      "id": "703383b5c915ffb9816de15845750fe35269eb62813fd5f3096ba6a93b50a824",
+      "retrieved_at": "2026-10-11T18:47:46.041554+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2019/results.json?limit=100&offset=100"
+    },
+    {
+      "id": "796667e209c772646a71c6019d4c5f2a6feaf1b891a35d98ab11111b79bba265",
+      "retrieved_at": "2026-10-11T18:49:30.539305+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2016/results.json?limit=100&offset=200"
+    },
+    {
+      "id": "7baed8a4236c71be1aff72f7d85c2116fb4641f09da29fe9edcbfbea1f66984f",
+      "retrieved_at": "2026-10-11T18:46:16.492175+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2022/results.json?limit=100&offset=300"
+    },
+    {
+      "id": "7bdafb410784bf730ad4d05fae07f699eb5ef55af347ae040cfa19630260ff42",
+      "retrieved_at": "2026-10-11T18:46:01.969554+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2022/results.json?limit=100&offset=100"
+    },
+    {
+      "id": "861de0450791d64258d417792796a594d45ecc5120d3e00682f5859d4630af96",
+      "retrieved_at": "2026-10-11T19:01:44.755672+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2017/results.json?limit=100&offset=200"
+    },
+    {
+      "id": "89047b798aa4514a5f2b6736c7e16bbca3a461337d9361506bc3b151f6ff2fe9",
+      "retrieved_at": "2026-10-11T18:55:05.436701+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2023/results.json?limit=100&offset=200"
+    },
+    {
+      "id": "891bfc89e44d228a4746ef98111ba8e832195c64b156bc31f334cbd58768d91a",
+      "retrieved_at": "2026-10-11T18:55:12.744933+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2023/results.json?limit=100&offset=300"
+    },
+    {
+      "id": "93487f8f73280b737241eb711d865de1bfdc0174a87c267d3ab5107878f84217",
+      "retrieved_at": "2026-10-11T18:56:57.806375+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2014/results.json?limit=100&offset=300"
+    },
+    {
+      "id": "9a85627ce8082797ca1ebabf1b813bf8faefa6e7e82bf3986eb0c5c5a1b9a99f",
+      "retrieved_at": "2026-10-11T18:51:14.311601+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2020/results.json?limit=100&offset=300"
+    },
+    {
+      "id": "9dcf27a086563588b2945f9157b6cac3fdb001e6cbaafce652dac36242986324",
+      "retrieved_at": "2026-10-11T18:58:19.924452+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2018/results.json?limit=100&offset=100"
+    },
+    {
+      "id": "9fdd06d88896149268dbdfa92c02c641fae6d17b96544424f26f9ce8978c29c3",
+      "retrieved_at": "2026-10-11T18:46:23.648300+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2022/results.json?limit=100&offset=400"
+    },
+    {
+      "id": "a3bb40d720e438fe5c76c20f8312479084c3836d342ac49ab2c2c6c854ad7f43",
+      "retrieved_at": "2026-10-11T18:50:52.619684+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2020/results.json?limit=100&offset=0"
+    },
+    {
+      "id": "a41346082d6fd3e0162c355701622aeb9b9178bae35b314ca5ef1507b9e0acb3",
+      "retrieved_at": "2026-10-11T18:43:18.136309+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2021/results.json?limit=100&offset=200"
+    },
+    {
+      "id": "a9d4409e0adb02dc25ddd6e2a3db652a18a737be1fedef7d3ff922c925b40764",
+      "retrieved_at": "2026-10-11T18:41:30.796107+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2026/results.json?limit=100&offset=0"
+    },
+    {
+      "id": "ad448416fa043f287f4caabf08a799df163a4dad4365af384cdd30d268354e20",
+      "retrieved_at": "2026-10-11T18:58:34.865405+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2018/results.json?limit=100&offset=300"
+    },
+    {
+      "id": "ae1ab95c85517940613a78225717e049fab009b8848e334da5e4963e9d6e392e",
+      "retrieved_at": "2026-10-11T18:58:12.850829+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2018/results.json?limit=100&offset=0"
+    },
+    {
+      "id": "af29a10dbe52f4e4a6a6286ba86edef1c2cfcd4b58c865972d4da7f0492d2821",
+      "retrieved_at": "2026-10-11T18:53:28.631194+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2015/results.json?limit=100&offset=0"
+    },
+    {
+      "id": "b22e629cb6c80ed9aae4479e90d26fc7be39e6a11c0846fdc048a57a56ed5822",
+      "retrieved_at": "2026-10-11T18:56:43.106198+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2014/results.json?limit=100&offset=100"
+    },
+    {
+      "id": "bf2e0e63a40ee2f82fd43c3bf84ced690c2e25b483394af4a4a41f57172b81a9",
+      "retrieved_at": "2026-10-11T19:01:30.257491+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2017/results.json?limit=100&offset=0"
+    },
+    {
+      "id": "c514388617f86dac3428c4e27ffc76b0613b9f62fc9c093b507f76d2a8953b86",
+      "retrieved_at": "2026-10-11T18:40:16.420991+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2024/results.json?limit=100&offset=400"
+    },
+    {
+      "id": "cad98e1475c220d2e725482ea6a9873d20b8e1c7821aa0dc61fbaf2cd422162f",
+      "retrieved_at": "2026-10-11T18:51:00.252158+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2020/results.json?limit=100&offset=100"
+    },
+    {
+      "id": "ce97496416a65d72ca5d13265b6b96d851c84566b7f7a838229032e9b22e1569",
+      "retrieved_at": "2026-10-12T02:55:52.021667+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2025/results.json?limit=100&offset=400"
+    },
+    {
+      "id": "d10696fd06965da45337a339990326dc8ad3543c31f39b55cfd406ab79f2a35a",
+      "retrieved_at": "2026-10-12T02:55:37.545347+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2025/results.json?limit=100&offset=200"
+    },
+    {
+      "id": "d2468a9cbbc3434a83b4f968c0faa527c633284f5bb7d2673f9e31607e93255f",
+      "retrieved_at": "2026-10-11T18:48:07.604352+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2019/results.json?limit=100&offset=400"
+    },
+    {
+      "id": "db322e8820a6f14b216d7b30d299958d19d3302a85f1044928b071ce3a2d7f26",
+      "retrieved_at": "2026-10-11T18:53:36.116975+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2015/results.json?limit=100&offset=100"
+    },
+    {
+      "id": "deee3380b92ca44bea8b9afab13a69cd490a181d77b5a7e7e1b4fcb832758f68",
+      "retrieved_at": "2026-10-11T18:47:38.129721+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2019/results.json?limit=100&offset=0"
+    },
+    {
+      "id": "e3d0610034a913e5851fb9a5d2f270c95ee2bef92aba3c1ccc45a8a28e6e5720",
+      "retrieved_at": "2026-10-11T18:46:08.957445+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2022/results.json?limit=100&offset=200"
+    },
+    {
+      "id": "e8ce9d11b2508e66440e4fb2fb0ac1b8d45b1a138bf2cfe6f6a863385386299e",
+      "retrieved_at": "2026-10-11T18:58:27.416686+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2018/results.json?limit=100&offset=200"
+    },
+    {
+      "id": "eee476c7ea95ae7cc4666852905018b28d7665760607038523a644b88fd6191b",
+      "retrieved_at": "2026-10-11T18:42:36.517448+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2026/sprint.json?limit=100&offset=100"
+    },
+    {
+      "id": "f694c95d181300db5b0ac08b1b1c1806da9c5b39d7d643319ec0211f8a107c25",
+      "retrieved_at": "2026-10-11T18:40:08.971581+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2024/results.json?limit=100&offset=300"
+    },
+    {
+      "id": "f7fc0f85d35483243b05aeacfb70ca0c6140013fcb1fbcf29342e408015379c4",
+      "retrieved_at": "2026-10-11T18:57:04.799973+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2014/results.json?limit=100&offset=400"
+    },
+    {
+      "id": "f83bd51646d85404da77833422e1c4d0c36de9fd8d4e9553e83075d48ac3556c",
+      "retrieved_at": "2026-10-11T18:39:47.199551+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2024/results.json?limit=100&offset=0"
+    },
+    {
+      "id": "fa274bdc5f14db75152969d7af4667f2e39cb5b6695644fdbebb1d1b526fd49c",
+      "retrieved_at": "2026-10-11T18:54:58.317983+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2023/results.json?limit=100&offset=100"
+    },
+    {
+      "id": "ffac16c879b09878b15d71b58e362b6472d95d6dceb75e22a31a5fa48a10ab7b",
+      "retrieved_at": "2026-10-11T18:53:43.625819+00:00",
+      "source": "jolpica",
+      "url": "https://api.jolpi.ca/ergast/f1/2015/results.json?limit=100&offset=200"
+    }
+  ],
+  "uncertainty": {
+    "calibrated": false,
+    "model": "Not estimated for individual forecasts; use held-out evidence and race-bootstrap comparisons.",
+    "outcome": "Position p10/p90 are predictive outcome quantiles.",
+    "sampling": "win_sampling_se is Monte Carlo error, not uncertainty about model correctness."
+  },
+  "ledger_hash": "b56761d976b9c8cb93fcdc94ff10b20bcacba8debbfde1e13dda2390e5863820"
+}

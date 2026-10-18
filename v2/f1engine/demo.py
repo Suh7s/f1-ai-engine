@@ -195,6 +195,7 @@ def replay_fixture(event_id=DEMO_EVENT, drivers=20):
                     "lap": lap,
                     "elapsed": lap * 90 + i * 0.6,
                     "lap_seconds": 90 + i * 0.02,
+                    "pace_valid": True,
                     "compound": "MEDIUM",
                     "tyre_age": lap,
                     "retired": False,

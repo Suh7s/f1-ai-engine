@@ -85,10 +85,12 @@ def normalize(envelopes, event_id, session_start, number_map):
     start = timestamp(session_start)
     state = {}
     tyres = {}
-    status = "green"
+    status = "unknown"
     output = []
     counts = {}
     xy = {}
+    crossings = {}
+    dirty = set()
     for env in sorted(envelopes, key=lambda e: timestamp(e["received_at"])):
         received = timestamp(env["received_at"])
         payload = env["payload"]
@@ -113,6 +115,18 @@ def normalize(envelopes, event_id, session_start, number_map):
                 "6": "safety_car",
                 "7": "green",
             }.get(str(data.get("Status")), status)
+            if status != "green":
+                dirty.update(state)
+            output.append(
+                {
+                    "id": "track:" + occurred.isoformat(),
+                    "event_id": event_id,
+                    "kind": "race_control",
+                    "occurred_at": occurred.isoformat(),
+                    "received_at": received.isoformat(),
+                    "status": status,
+                }
+            )
             continue
         if topic == "TimingAppData":
             for number, line in data.get("Lines", {}).items():
@@ -134,6 +148,8 @@ def normalize(envelopes, event_id, session_start, number_map):
                 continue
             state[number] = merge(state.get(number, {}), delta)
             current = state[number]
+            if current.get("InPit") or current.get("PitOut"):
+                dirty.add(number)
             # Timestamp lap completions only. Other deltas cannot create fictitious lap crossings.
             if "NumberOfLaps" not in delta and not delta.get("Retired"):
                 continue
@@ -148,17 +164,30 @@ def normalize(envelopes, event_id, session_start, number_map):
             identifier = f"{number}:{lap}"
             revision = counts.get(identifier, -1) + 1
             counts[identifier] = revision
+            previous = crossings.get(number)
+            same_crossing = previous is not None and previous["lap"] == lap
+            crossing_at = timestamp(previous["occurred_at"]) if same_crossing else occurred
+            # Never reuse a previous lap's LastLapTime after a partial timing delta.
+            seconds = lap_seconds(delta.get("LastLapTime", {}).get("Value"))
+            if seconds is None and previous is not None and previous["lap"] == lap - 1:
+                seconds = (crossing_at - timestamp(previous["occurred_at"])).total_seconds()
+            if seconds is None and same_crossing:
+                seconds = previous["lap_seconds"]
+            pit = number in dirty or bool(current.get("InPit") or current.get("PitOut"))
+            valid = seconds is not None and status == "green" and not pit and "InPit" in current
             out = {
                 "id": identifier,
                 "revision": revision,
                 "event_id": event_id,
-                "occurred_at": occurred.isoformat(),
+                "occurred_at": crossing_at.isoformat(),
                 "received_at": received.isoformat(),
                 "kind": "timing",
                 "driver_id": number_map[number],
                 "lap": lap,
-                "elapsed": elapsed,
-                "lap_seconds": lap_seconds(current.get("LastLapTime", {}).get("Value")),
+                "elapsed": (crossing_at - start).total_seconds(),
+                "lap_seconds": seconds,
+                "pit": pit,
+                "pace_valid": valid,
                 "compound": stint.get("Compound"),
                 "tyre_age": int(stint.get("TotalLaps", 0)) if stint else None,
                 "retired": bool(current.get("Retired", False)),
@@ -167,6 +196,9 @@ def normalize(envelopes, event_id, session_start, number_map):
             if number in xy:
                 out.update(x=xy[number][0], y=xy[number][1])
             output.append(out)
-    if not output:
+            crossings[number] = out
+            if not same_crossing:
+                dirty.discard(number)
+    if not any(m["kind"] == "timing" for m in output):
         raise Unavailable("Recording has no identifiable, timestamped timing observations")
     return output

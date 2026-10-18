@@ -1,0 +1,14 @@
+{
+  "ledger": {
+    "valid": true,
+    "records": 12,
+    "head": "abf18a4222deeb2d5034943e1127db25766552ebb378108dfa99adeefe4d72c8",
+    "limitation": "Local integrity check, not an external timestamp attestation."
+  },
+  "dataset": {
+    "valid": true,
+    "data_version": "a9a95521c502f9829536b250635e8f7a5a632a3088db92d91ce2834c261ed7c7",
+    "records": 21090,
+    "sources": 174
+  }
+}

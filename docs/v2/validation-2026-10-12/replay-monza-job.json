@@ -1,0 +1,23 @@
+{
+  "attempt": 1,
+  "budget_seconds": 2700,
+  "cancel_requested": false,
+  "created_at": "2026-10-12T14:23:53.958665+00:00",
+  "elapsed_seconds": 2.827862082980573,
+  "id": "4d244debf747421999b86180619b1950",
+  "kind": "replay_evaluation",
+  "launched_epoch": 1791815033.9586759,
+  "message": "Completed",
+  "parameters": {
+    "data_version": "33e699d147510a066d774a8997e129b52f0393ff3b60e1178e1157b2bb7b6f5f",
+    "distance_source": "https://www.formula1.com/en/racing/2024/italy",
+    "event_id": "2024-16",
+    "scheduled_laps": 53,
+    "source_id": "76423d94b0e59a8cb5af98212837ddd7f23191abe47fa53404da9493428f6e2f"
+  },
+  "pid": 68285,
+  "progress": 1,
+  "started_at": "2026-10-12T14:23:53.961085+00:00",
+  "status": "completed",
+  "updated_at": "2026-10-12T14:23:56.789172+00:00"
+}

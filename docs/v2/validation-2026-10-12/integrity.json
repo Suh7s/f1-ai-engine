@@ -1,0 +1,15 @@
+{
+  "code_version": "3784186cf78fa74bf0fb2ca18c2564a33624bd1a34a500e8b8dbf2b3380b8761",
+  "dataset": {
+    "valid": true,
+    "data_version": "33e699d147510a066d774a8997e129b52f0393ff3b60e1178e1157b2bb7b6f5f",
+    "records": 20948,
+    "sources": 174
+  },
+  "ledger": {
+    "valid": true,
+    "records": 6,
+    "head": "ef67f08f7ca0e8aeaed618af44ec666039b63d5f91891c2158471905b1f56380",
+    "limitation": "Local integrity check, not an external timestamp attestation."
+  }
+}

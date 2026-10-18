@@ -1,0 +1,125 @@
+[
+  {
+    "case": "2014 Abu Dhabi double points",
+    "season": 2014,
+    "options": {
+      "final_round": true
+    },
+    "top": [
+      50,
+      36,
+      30
+    ],
+    "source": "https://www.formula1.com/en/results/2014/races/916/abu-dhabi/race-result"
+  },
+  {
+    "case": "2021 Belgian GP counted three crossings although classification used lap one",
+    "season": 2021,
+    "options": {
+      "distance": 0.06818181818181818,
+      "completed_laps": 3,
+      "green_laps": 0
+    },
+    "top": [
+      12.5,
+      9,
+      7.5
+    ],
+    "source": "https://www.formula1.com/en/results/2021/races/1074/belgium/race-result"
+  },
+  {
+    "case": "2021 two completed laps do not satisfy more-than-two requirement",
+    "season": 2021,
+    "options": {
+      "distance": 0.05,
+      "completed_laps": 2,
+      "green_laps": 0
+    },
+    "top": [
+      0,
+      0,
+      0
+    ],
+    "source": "https://www.formula1.com/en/results/2021/races/1074/belgium/race-result"
+  },
+  {
+    "case": "2022 Japan restarted and finished under the time limit",
+    "season": 2022,
+    "options": {
+      "distance": 0.5283018867924528,
+      "completed_laps": 28,
+      "green_laps": 20,
+      "suspended_not_resumed": false
+    },
+    "top": [
+      25,
+      18,
+      15
+    ],
+    "source": "https://www.formula1.com/en/latest/article/verstappen-crowned-world-champion-with-japanese-gp-victory-after-late.7g1xgGHHew3f2If32u8U1z"
+  },
+  {
+    "case": "2023 equivalent shortened distance earns reduced points",
+    "season": 2023,
+    "options": {
+      "distance": 0.5283018867924528,
+      "completed_laps": 28,
+      "green_laps": 20,
+      "suspended_not_resumed": false
+    },
+    "top": [
+      19,
+      14,
+      12
+    ],
+    "source": "https://www.fia.com/news/2023-fia-formula-one-world-championship-formula-1-commission-meeting-210223"
+  },
+  {
+    "case": "2022+ requires two green laps",
+    "season": 2024,
+    "options": {
+      "distance": 0.6,
+      "completed_laps": 30,
+      "green_laps": 1
+    },
+    "top": [
+      0,
+      0,
+      0
+    ],
+    "source": "https://www.fia.com/sites/default/files/fia_2023_formula_1_sporting_regulations_-_issue_7_-_2023-10-25_-.pdf"
+  },
+  {
+    "case": "2021 sprint top three",
+    "season": 2021,
+    "options": {
+      "sprint": true
+    },
+    "top": [
+      3,
+      2,
+      1,
+      0
+    ],
+    "source": "https://www.formula1.com/en/results/2021/races/1072/greatbritain/sprint-results"
+  },
+  {
+    "case": "2023 sprint top eight",
+    "season": 2023,
+    "options": {
+      "sprint": true
+    },
+    "top": [
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1,
+      0
+    ],
+    "source": "https://www.formula1.com/en/latest/article/formula-1-confirms-f1-sprint-format-tweaks-for-2023-season.6v1c2lGggpLNEom2MMtjj0"
+  }
+]

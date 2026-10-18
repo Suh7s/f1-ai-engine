@@ -54,6 +54,40 @@ def test_conflicting_duplicate_rejected():
         replay(m + [{**m[0], "elapsed": 3}], DEMO_EVENT, m[-1]["received_at"])
 
 
+def test_control_updates_without_a_new_lap_and_pit_laps_excluded():
+    m = replay_fixture(drivers=12)[:24]
+    m[-1] = {**m[-1], "pit": True, "lap_seconds": 300}
+    at = (timestamp(m[-1]["received_at"]) + timedelta(seconds=1)).isoformat()
+    control = {
+        "id": "red",
+        "kind": "race_control",
+        "event_id": DEMO_EVENT,
+        "occurred_at": at,
+        "received_at": at,
+        "status": "red",
+    }
+    state = replay(m + [control], DEMO_EVENT, at)
+    assert state["status"] == "red"
+    driver = next(r for r in state["drivers"] if r["driver_id"] == m[-1]["driver_id"])
+    assert driver["pace_laps"] == 1 and driver["pace_seconds"] < 100
+
+
+def test_missing_distance_and_individual_stale_driver_block_live(store):
+    messages = replay_fixture(drivers=12)
+    cutoff = messages[-1]["received_at"]
+    # One driver's stream disappears while everybody else continues to update.
+    m = [r for r in messages if r["driver_id"] != "driver_00" or r["lap"] == 1]
+    state = replay(m, DEMO_EVENT, cutoff)
+    req = ForecastRequest(event_id=DEMO_EVENT, stage="live", as_of_utc=cutoff, simulations=100)
+    assert not state["stale"]
+    with pytest.raises(Unavailable, match="stale timing"):
+        forecast(store, req, live_state=state)
+    event = next(e for e in store.table("events") if e["event_id"] == DEMO_EVENT)
+    store.publish({"events": [{**event, "scheduled_laps": None}]}, illustrative=True)
+    with pytest.raises(Unavailable, match="scheduled race distance"):
+        forecast(store, req, live_state=replay(messages, DEMO_EVENT, cutoff))
+
+
 def test_replay_stale_and_reconnect(store):
     m = replay_fixture(drivers=12)
     state = replay(m, DEMO_EVENT, m[11]["received_at"])

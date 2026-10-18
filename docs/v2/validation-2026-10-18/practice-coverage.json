@@ -1,0 +1,103 @@
+{
+  "event_id": "2024-16",
+  "stage": "post_practice",
+  "as_of_utc": "2024-08-30T20:00:00Z",
+  "data_version": "a9a95521c502f9829536b250635e8f7a5a632a3088db92d91ce2834c261ed7c7",
+  "coverage": {
+    "grid_fraction": 0.0,
+    "driver_strength": 1.0,
+    "team_strength": 1.0,
+    "recent_finish": 0.95,
+    "recent_quali": 0.95,
+    "circuit_finish": 0.95,
+    "retirement_rate": 1.0,
+    "team_retirement_rate": 1.0,
+    "practice_relative_pace": 1.0,
+    "qualifying_gap": 0.0,
+    "sprint_fraction": 0.0,
+    "rain_probability": 0.0,
+    "experience": 1.0
+  },
+  "practice_drivers": [
+    {
+      "driver_id": "albon",
+      "practice_relative_pace": -0.004787085352217724
+    },
+    {
+      "driver_id": "alonso",
+      "practice_relative_pace": 0.0009900298173686206
+    },
+    {
+      "driver_id": "bottas",
+      "practice_relative_pace": 0.00038436451733137034
+    },
+    {
+      "driver_id": "colapinto",
+      "practice_relative_pace": -0.008626096948029738
+    },
+    {
+      "driver_id": "gasly",
+      "practice_relative_pace": -0.04053983486994406
+    },
+    {
+      "driver_id": "hamilton",
+      "practice_relative_pace": 0.001772779929556878
+    },
+    {
+      "driver_id": "hulkenberg",
+      "practice_relative_pace": 0.00018635855385773503
+    },
+    {
+      "driver_id": "kevin_magnussen",
+      "practice_relative_pace": -0.026047578370914648
+    },
+    {
+      "driver_id": "leclerc",
+      "practice_relative_pace": -0.009248043235184467
+    },
+    {
+      "driver_id": "max_verstappen",
+      "practice_relative_pace": -0.0032552609403316835
+    },
+    {
+      "driver_id": "norris",
+      "practice_relative_pace": -0.004793544179468201
+    },
+    {
+      "driver_id": "ocon",
+      "practice_relative_pace": -0.019901610323023067
+    },
+    {
+      "driver_id": "perez",
+      "practice_relative_pace": -0.0005148667782211014
+    },
+    {
+      "driver_id": "piastri",
+      "practice_relative_pace": -0.0037557469353577955
+    },
+    {
+      "driver_id": "ricciardo",
+      "practice_relative_pace": 0.00265849923430328
+    },
+    {
+      "driver_id": "russell",
+      "practice_relative_pace": -0.0028043700312340714
+    },
+    {
+      "driver_id": "sainz",
+      "practice_relative_pace": -0.007826478431010364
+    },
+    {
+      "driver_id": "stroll",
+      "practice_relative_pace": 0.000966734998136376
+    },
+    {
+      "driver_id": "tsunoda",
+      "practice_relative_pace": 0.001378481451758895
+    },
+    {
+      "driver_id": "zhou",
+      "practice_relative_pace": 0.011670687526077361
+    }
+  ]
+}

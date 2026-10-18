@@ -1,0 +1,20 @@
+{
+  "id": "0a3174e731f3f8285a74f566a56aa1e259a2fc28733577a47cffeb3bf45918c8",
+  "baseline": "baseline:rating",
+  "code_version": "3784186cf78fa74bf0fb2ca18c2564a33624bd1a34a500e8b8dbf2b3380b8761",
+  "created_at": "2026-10-12T14:23:53.454214+00:00",
+  "data_version": "33e699d147510a066d774a8997e129b52f0393ff3b60e1178e1157b2bb7b6f5f",
+  "development_evidence": "7a8a6206236a5f80d0b2133b8cc5f61051cfbdcc9022f608d25772f1e97ccb25",
+  "evaluation_policy": "prospective_only",
+  "holdout_season": null,
+  "illustrative": false,
+  "kind": "candidate_freeze",
+  "model_version": "4ac1cd26d7062c77bd96e995bdf847937323b304607bf583bc39c58ab7b72422",
+  "promotion_policy": {
+    "min_paired_races": 15,
+    "rps_upper95_less_than": 0,
+    "winner_log_loss_max_ratio": 1.02
+  },
+  "prospective_policy": "First pair per event; first 15 registered events by race start; one evaluation after all 15 outcomes; same cutoff/data/seed and 10000 simulations for both models",
+  "stage": "post_qualifying"
+}

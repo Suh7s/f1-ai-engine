@@ -12,7 +12,7 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 SCHEMA_VERSION = "2.0"
-FEATURE_VERSION = "pit-v2.3"
+FEATURE_VERSION = "pit-v2.4"
 
 
 class Stage(StrEnum):

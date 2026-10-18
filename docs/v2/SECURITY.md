@@ -1,6 +1,6 @@
 # Dependency exception and local operating boundary
 
-The recorded audit is in `dependency-audit-python.json`; the frontend audit is in `dependency-audit-web.json`.
+The current audits, refreshed on 18 October 2026, are in [Python scan](validation-2026-10-18/python-audit.json) and [frontend scan](validation-2026-10-18/npm-audit.json). The latter reports zero known findings. Earlier scans remain preserved.
 
 The initial Python audit identified vulnerabilities in the environment's pip and msgpack. Pip was upgraded to 26.2.1. The remaining advisory, **PYSEC-2026-3625**, affects msgpack 1.1.2: reusing a streaming `Unpacker` after a parsing error may cause an out-of-bounds read/process crash. The public audit returns two entries for that same advisory; these are not two distinct issues.
 

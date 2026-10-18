@@ -1,0 +1,7 @@
+Processing /tmp/f1engine-dist/f1engine-2.0.0-py3-none-any.whl
+Installing collected packages: f1engine
+  Attempting uninstall: f1engine
+    Found existing installation: f1engine 2.0.0
+    Uninstalling f1engine-2.0.0:
+      Successfully uninstalled f1engine-2.0.0
+Successfully installed f1engine-2.0.0

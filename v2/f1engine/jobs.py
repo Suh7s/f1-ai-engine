@@ -22,6 +22,11 @@ KINDS = {
     "championship",
     "experiment",
     "holdout",
+    "collect",
+    "prospective",
+    "replay_evaluation",
+    "championship_evaluation",
+    "repair_identities",
     "score",
     "benchmark",
 }
@@ -246,6 +251,24 @@ def run(store, identifier):
 
 def dispatch(store, kind, p, check, progress, checkpoint):
     from .contracts import ForecastRequest, SeasonRequest
+
+    if kind == "repair_identities":
+        from .repairs import repair_identities
+
+        return repair_identities(store, check)
+
+    if kind == "replay_evaluation":
+        from .replay_evaluation import evaluate_archive
+
+        return evaluate_archive(store, p, check, progress)
+    if kind == "championship_evaluation":
+        from .championship_evaluation import evaluate_championship
+
+        return evaluate_championship(store, p, check, progress)
+    if kind in {"collect", "prospective"}:
+        from .prospective import collect_pair, evaluate_prospective
+
+        return collect_pair(store, p, checkpoint) if kind == "collect" else evaluate_prospective(store, p)
 
     if kind in {"sync_season", "sync_standings", "weather", "climate", "fastf1", "openf1"}:
         from .sources import sync_season, sync_standings, sync_weather, sync_fastf1, sync_openf1, sync_climate

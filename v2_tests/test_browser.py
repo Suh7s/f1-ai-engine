@@ -81,3 +81,63 @@ def test_evidence_and_failed_request_retains_forecast(page):
     assert page.get_by_text("Previous snapshot", exact=False).is_visible()
     page.get_by_role("button", name="Evidence", exact=False).first.click()
     assert page.get_by_role("heading", name="Append-only forecast ledger").is_visible()
+
+
+def test_calendar_selection_and_keyboard_evidence(page):
+    page.get_by_role("button", name="Select Illustrative Grand Prix 4", exact=True).click()
+    assert page.get_by_label("Event", exact=True).input_value() == "2026-04"
+    assert (
+        page.get_by_role("button", name="Select Illustrative Grand Prix 4", exact=True).get_attribute(
+            "aria-pressed"
+        )
+        == "true"
+    )
+    trigger = page.get_by_role("button", name="Calendar evidence")
+    trigger.click()
+    dialog = page.get_by_role("dialog")
+    assert '"event_id": "2026-04"' in dialog.inner_text()
+    page.keyboard.press("Tab")
+    assert page.get_by_role("button", name="Close ×").evaluate("el => el === document.activeElement")
+    page.keyboard.press("Escape")
+    assert dialog.count() == 0
+    assert trigger.evaluate("el => el === document.activeElement")
+    page.get_by_label("Event", exact=True).select_option("2026-03")
+    assert (
+        page.get_by_role("button", name="Select Illustrative Grand Prix 3", exact=True).get_attribute(
+            "aria-pressed"
+        )
+        == "true"
+    )
+    page.get_by_label("Information cutoff UTC").fill("2026-04-06T12:00")
+    assert page.get_by_text("Scheduled start has passed", exact=True).is_visible()
+    assert page.get_by_role("timer").count() == 0
+
+
+def test_mobile_offline_fonts_and_workspaces(page):
+    page.set_viewport_size({"width": 390, "height": 844})
+    page.emulate_media(reduced_motion="reduce")
+    external = []
+
+    def local_only(route):
+        if not route.request.url.startswith(os.environ["F1ENGINE_E2E_URL"]):
+            external.append(route.request.url)
+            route.abort()
+        else:
+            route.continue_()
+
+    page.route("**/*", local_only)
+    page.reload()
+    page.get_by_role("button", name="Generate forecast").wait_for()
+    page.evaluate("document.fonts.ready")
+    assert page.evaluate("document.fonts.check('800 64px \"Playfair Display Variable\"')")
+    generate(page)
+    page.locator(".js-plotly-plot").first.wait_for()
+    for workspace in ["Race", "Weekend", "Championship", "Live / replay", "Evidence"]:
+        page.get_by_role("navigation", name="Workspaces").get_by_role(
+            "button", name=workspace, exact=True
+        ).click()
+        assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), workspace
+    page.get_by_role("navigation", name="Workspaces").get_by_role("button", name="Race", exact=True).click()
+    page.evaluate("window.scrollTo(0, 0)")
+    page.screenshot(path="docs/v2/pit-wall-mobile.png", full_page=True)
+    assert not external, external
