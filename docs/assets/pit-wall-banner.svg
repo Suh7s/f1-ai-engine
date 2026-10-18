@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="520" viewBox="0 0 1600 520" role="img" aria-labelledby="title desc">
+  <title id="title">The Pit Wall — F1 Engine</title>
+  <desc id="desc">A personal Formula 1 control room. Observe carefully. Forecast honestly.</desc>
+  <defs><pattern id="check" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#f2ece0"/><path d="M0 0h12v12H0zM12 12h12v12H12z" fill="#0a0a0a"/></pattern></defs>
+  <rect width="1600" height="520" fill="#f2ece0"/>
+  <rect width="1600" height="42" fill="#0a0a0a"/>
+  <text x="60" y="27" fill="#f2ece0" font-family="monospace" font-size="13" letter-spacing="3">PERSONAL RACE CONTROL</text>
+  <text x="1540" y="27" text-anchor="end" fill="#f2ece0" font-family="monospace" font-size="13" letter-spacing="3">F1 ENGINE / V2</text>
+  <rect y="42" width="1600" height="3" fill="#d40802"/>
+  <rect x="62" y="91" width="60" height="36" fill="url(#check)"/>
+  <text x="145" y="116" fill="#4a4438" font-family="monospace" font-size="14" letter-spacing="3">EVERY POSITION. EVERY POSSIBILITY.</text>
+  <text x="56" y="290" fill="#0a0a0a" font-family="Georgia,serif" font-size="156" font-weight="700" letter-spacing="-7">The <tspan fill="#d40802" font-style="italic">Pit Wall.</tspan></text>
+  <text x="63" y="349" fill="#4a4438" font-family="Arial,sans-serif" font-size="25">A personal Formula 1 control room, built around verifiable evidence.</text>
+  <path d="M60 395H1540" stroke="#d40802" stroke-width="5"/>
+  <text x="63" y="451" fill="#4a4438" font-family="monospace" font-size="14" letter-spacing="2">RACE · WEEKEND · CHAMPIONSHIP · REPLAY · EVIDENCE</text>
+  <text x="1538" y="451" text-anchor="end" fill="#d40802" font-family="Georgia,serif" font-style="italic" font-size="24">Forecast honestly.</text>
+</svg>

@@ -2,7 +2,7 @@
 
 A local race-control application built around inspectable forecasts, immutable inputs and separately reported evidence. V2 is a research release: running software and passing regression checks do not establish superior predictive accuracy.
 
-The replacement lives in `v2/f1engine/` and `web/`, on `codex/f1-engine-v2`. The original implementation and its artifacts remain reference material. V2 never loads legacy trained models or imports the legacy startup modules.
+The replacement lives in `v2/f1engine/` and `web/`. The original implementation and its artifacts remain reference material. V2 never loads legacy trained models or imports the legacy startup modules.
 
 ## Install and launch
 

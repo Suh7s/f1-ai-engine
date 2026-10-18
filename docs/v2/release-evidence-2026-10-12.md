@@ -1,6 +1,6 @@
 # F1 Engine V2 — release evidence
 
-Recorded on **12 October 2026**. This is a usable local baseline and research release on `codex/f1-engine-v2`. The complete five-milestone plan has **not** passed every release gate. The active pre-weekend model is `baseline:rating`; the challenger did not earn promotion. Nothing here establishes worldwide superiority or perfect predictions.
+Recorded on **12 October 2026**. This is a usable local baseline and research release. The complete five-milestone plan has **not** passed every release gate. The active pre-weekend model is `baseline:rating`; the challenger did not earn promotion. Nothing here establishes worldwide superiority or perfect predictions.
 
 ## Runnable artifact and source checkpoints
 

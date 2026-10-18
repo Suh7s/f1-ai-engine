@@ -1,168 +1,128 @@
-# F1 Engine V2 — evidence-first local race control
+<p align="center">
+  <img src="docs/assets/pit-wall-banner.svg" alt="The Pit Wall — a personal Formula 1 control room built around verifiable evidence" width="100%" />
+</p>
 
-The replacement implementation is on this branch in `v2/f1engine/` and `web/`. Start with the [V2 guide](docs/v2/README.md) and [release evidence](docs/v2/release-evidence.md).
+<p align="center">
+  <strong>Whole-field race forecasts. Championship simulations. Evidence you can inspect.</strong>
+</p>
 
-```sh
-./scripts/setup-v2.sh
-. .venv-v2/bin/activate
-f1engine app
-```
+<p align="center">
+  <a href="#start-your-engine">Get started</a> ·
+  <a href="#inside-the-pit-wall">Explore the app</a> ·
+  <a href="docs/v2/release-evidence.md">Validation report</a> ·
+  <a href="docs/v2/README.md">Technical guide</a>
+</p>
 
-Use `f1engine app --demo` for fictional offline fixtures. Predictive superiority is not claimed without a named evaluation and a passed promotion gate.
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.13-0a0a0a?style=flat-square" alt="Python 3.13" />
+  <img src="https://img.shields.io/badge/React-TypeScript-0a0a0a?style=flat-square" alt="React and TypeScript" />
+  <img src="https://img.shields.io/badge/Data-free_public_sources-d40802?style=flat-square" alt="Free public data sources" />
+  <img src="https://img.shields.io/badge/Runs-locally-0a0a0a?style=flat-square" alt="Runs locally" />
+</p>
 
 ---
 
-The original README and implementation below are preserved as historical reference. Their previous “production-ready” description is not a V2 release claim.
+## Your race weekend, in one place
 
-# F1 AI Prediction Engine
+**The Pit Wall** is a personal Formula 1 forecasting application by Suhas Nannapaneni. It brings race distributions, championship outlooks, weekend inputs and replay analysis into a single local workspace.
 
-Production-ready Python project for end-to-end Formula 1 race and championship prediction:
+The interface pairs warm paper, editorial typography and racing red with detailed probability charts. Underneath, each saved forecast retains its inputs, sources, cutoff, model version and simulation settings.
 
-- Data ingestion from the Jolpica Ergast mirror and OpenF1
-- Unified race-result dataset construction
-- Driver and constructor ELO ratings
-- Feature engineering with rolling, career, team, and circuit features
-- XGBoost model training with validation and test evaluation
-- Monte Carlo race simulation
-- Monte Carlo season simulation
-- Streamlit dashboard for prediction, analytics, and model diagnostics
+<p align="center">
+  <img src="docs/v2/control-room.png" alt="Pit Wall interface with paper background, racing-red typography, workspace navigation and a black race panel" width="100%" />
+  <br />
+  <sub>Offline demo shown. Its drivers, schedule and results are explicitly illustrative.</sub>
+</p>
 
-## Project Structure
+## Inside the Pit Wall
 
-```text
-f1-ai-engine/
-  data/
-    raw/
-    processed/
-  src/
-    data_pipeline.py
-    feature_engineering.py
-    elo_rating.py
-    model_training.py
-    race_simulator.py
-    season_simulator.py
-    utils.py
-  dashboard/
-    app.py
-  scripts/
-    run_pipeline.py
-  requirements.txt
-  README.md
+| Workspace | What you can do |
+| :--- | :--- |
+| **Race** | Explore every finishing position, win and podium probabilities, head-to-heads and scenario changes. |
+| **Weekend** | Inspect practice pace, qualifying, tyres, weather inputs and missing-data coverage. |
+| **Championship** | Simulate the remaining season from official standings, including sprints and countback. |
+| **Live / replay** | Replay arrival-ordered timing and inspect how remaining-race forecasts change. |
+| **Evidence** | Examine sources, calibration, candidate comparisons, forecast history and background jobs. |
+
+<details>
+<summary><strong>See the forecast and championship workspaces</strong></summary>
+
+### Race probabilities
+
+![Race probabilities and model controls](docs/v2/pit-wall-forecast.png)
+
+### Championship outlook
+
+![Championship distributions and points outlook](docs/v2/pit-wall-championship.png)
+
+These screenshots show saved model estimates from the recorded dataset. They are not current standings, guaranteed outcomes or accuracy claims.
+
+</details>
+
+## Start your engine
+
+**Requirements:** Python 3.13. The validated platform is macOS ARM64; Windows is not currently supported. Node is only needed when changing the frontend.
+
+```sh
+git clone https://github.com/Suh7s/f1-aii-engine.git
+cd f1-aii-engine
+./scripts/setup-v2.sh
+source .venv-v2/bin/activate
+f1engine app
 ```
 
-## Setup
+Open **[localhost:8765](http://127.0.0.1:8765)**.
 
-```bash
-pip install -r requirements.txt
-python scripts/run_pipeline.py --mode full
+For a fully offline tour with fictional fixtures:
+
+```sh
+f1engine app --demo
 ```
 
-The full pipeline will:
+To import a season from public sources:
 
-1. Fetch and cache raw Jolpica/OpenF1 API data to `data/raw/`
-2. Build processed tables in `data/processed/`
-3. Generate driver and constructor ELO histories
-4. Build the feature matrix
-5. Train and evaluate four XGBoost models
-6. Save model artifacts, metrics, predictions, and feature-importance outputs
-
-Logs are written to `logs/pipeline.log` and echoed to the console.
-
-## CLI Usage
-
-Run the complete pipeline:
-
-```bash
-python scripts/run_pipeline.py --mode full
+```sh
+f1engine sync 2024
 ```
 
-Refresh cached API data and rebuild:
+The UI, charts and fonts are bundled. Baseline forecasts run locally on CPU. Experiments use four training threads, up to twelve candidates and resumable jobs capped at 45 minutes. Optional XGBoost training on macOS needs `brew install libomp`.
 
-```bash
-python scripts/run_pipeline.py --mode full --refresh
-```
+## Evidence before confidence
 
-Predict a specific race:
+Every number has a role: **observation, model estimate, user assumption, derived calculation or illustrative scenario**. Historical reconstruction, held-out evaluation and prospective forecasting remain separate.
 
-```bash
-python scripts/run_pipeline.py --mode predict --race "Bahrain" --season 2024 --round 1
-```
+- **Traceable forecasts.** Sources, retrieval times, versions, seeds, simulation counts and missing inputs travel with the result.
+- **Preserved history.** Corrections create linked revisions in an append-only ledger.
+- **Honest failures.** Missing inputs stay missing. Stale timing stops new live forecasts.
+- **Measured promotion.** More complex models must earn their place against a named baseline.
 
-Simulate a full season:
+### Verified checkpoint · 18 October 2026
 
-```bash
-python scripts/run_pipeline.py --mode simulate-season --season 2024
-```
+| Check | Recorded result |
+| :--- | :--- |
+| Offline engine tests | **104 passed** |
+| Browser checks | **7 passed**, including mobile and offline fonts |
+| Clean installation | Startup, packaged assets and exact forecast reproduction passed |
+| 10,000 race simulations | **0.179 seconds** — slowest of three cached runs |
+| 10,000 season trajectories | **4.611 seconds** — slowest of three cached runs |
 
-You can also control Monte Carlo iteration counts:
+Runtime measurements use an illustrative 20-driver fixture with 22 remaining rounds on the recorded machine. They measure speed, not predictive accuracy.
 
-```bash
-python scripts/run_pipeline.py --mode predict --race "Monza" --season 2024 --round 16 --simulations 5000
-python scripts/run_pipeline.py --mode simulate-season --season 2024 --simulations 10000
-```
+**Research release:** prospective accuracy, championship calibration and live-feed readiness are still being validated. The pre-race baseline remains active. One Python dependency advisory has a [documented exception](docs/v2/SECURITY.md). See the [full evidence report](docs/v2/release-evidence.md) for passed checks, failed gates and remaining limitations.
 
-## Dashboard
+## Built for local work
 
-After running the full pipeline:
+| Layer | Technology |
+| :--- | :--- |
+| Application | Python 3.13 · FastAPI · React · TypeScript · Vite · Plotly |
+| Storage | SQLite metadata · partitioned Parquet · retained raw responses |
+| Modeling | Probability baselines · regularized strength · XGBoost ranking · chronological ensembles |
+| Public data | Jolpica · FastF1 · OpenF1 archives · Open-Meteo |
 
-```bash
-streamlit run dashboard/app.py
-```
+Active application code lives in [`v2/f1engine`](v2/f1engine) and [`web`](web). The [original implementation documentation](docs/legacy/README.md) is preserved separately as reference.
 
-Dashboard sections:
+For setup, APIs, experiments and replay commands, see the [technical guide](docs/v2/README.md).
 
-- Race Predictor
-- Championship Simulator
-- Driver Analytics
-- Team Analytics
-- Model Performance
+---
 
-Dashboard typography uses `Exo 2` for headings and `JetBrains Mono` for dense telemetry/data views.
-
-## Data Notes
-
-- Historical training data uses seasons 2015-2024
-- Jolpica is used as the Ergast-compatible source for results, qualifying, and standings
-- OpenF1 is used to enrich 2023-2024 race data with session, stint, and pit-stop information when available
-- Lap times and pit stops are fetched for the most recent three seasons in the configured range
-- Raw API payloads and flattened CSVs are cached per season to avoid refetching on reruns
-- The unified `race_results.csv` file includes DNF classification and merged qualifying positions
-
-## Modeling Notes
-
-- Driver ELO starts at `1500`
-- K-factor is `32`, reduced to `24` after 50 races
-- Pairwise ELO updates use finishing-order comparisons across all drivers in a race
-- Classifiers use `scale_pos_weight` to address label imbalance
-- Splits are:
-  - Train: `2015-2022`
-  - Validation: `2023`
-  - Test: `2024`
-
-## Key Artifacts
-
-Saved under `data/processed/`:
-
-- `race_results.csv`
-- `driver_elo_history.csv`
-- `constructor_elo_history.csv`
-- `features.csv`
-- `model_A.pkl`
-- `model_B.pkl`
-- `model_C.pkl`
-- `model_D.pkl`
-- `model_metrics.json`
-- `model_manifest.json`
-- `feature_importance_model_*.csv`
-- `test_predictions_model_*.csv`
-- `calibration_model_B.csv`
-
-## Engineering Standards Implemented
-
-- Path handling uses `pathlib.Path`
-- Logging uses the standard `logging` module
-- Console and file logging are both enabled
-- Functions include docstrings and type hints
-- API requests include rate limiting and retry logic
-- Cache fallback is used when API requests fail after retries
-- Data validation checks required columns after each major stage
+<p align="center"><em>Observe carefully. Forecast honestly. Verify everything.</em><br /><sub>Independent personal project. Not affiliated with Formula 1, the FIA or any team.</sub></p>

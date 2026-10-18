@@ -1,6 +1,6 @@
 # F1 Engine V2 — current release evidence
 
-Recorded **18 October 2026** on `codex/f1-engine-v2`. This checkpoint ships the requested **Suhas’s Pit Wall** interface and a repaired, revalidated forecasting engine. It is a usable local research application, not a proven best-in-world predictor. All five milestones have runnable capabilities; some predictive acceptance gates remain open.
+Recorded **18 October 2026**. This checkpoint ships the requested **Suhas’s Pit Wall** interface and a repaired, revalidated forecasting engine. It is a usable local research application, not a proven best-in-world predictor. All five milestones have runnable capabilities; some predictive acceptance gates remain open.
 
 ## Runnable artifact
 
@@ -26,7 +26,7 @@ The [12 October release report](release-evidence-2026-10-12.md) preserves the pr
 | Frontend security audit | Zero reported findings | [Current scan](validation-2026-10-18/npm-audit.json) |
 | Python security audit | One distinct documented advisory, listed twice | [Current scan](validation-2026-10-18/python-audit.json), [exception](SECURITY.md) |
 
-Default tests use neither internet nor private datasets. Deprecation warnings from the Starlette test client and NumPy/Pandas duration construction remain; they did not fail tests. Exact reproduction is established in the recorded local numerical environment, not across every operating system.
+Default tests use neither internet nor private datasets. Published test logs normalize machine-specific checkout paths to repository-relative paths; test results and warning text are unchanged. Deprecation warnings from the Starlette test client and NumPy/Pandas duration construction remain; they did not fail tests. Exact reproduction is established in the recorded local numerical environment, not across every operating system.
 
 ## Data repair and trust improvements
 
