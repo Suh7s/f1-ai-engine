@@ -2,7 +2,7 @@
 
 A local race-control application built around inspectable forecasts, immutable inputs and separately reported evidence. V2 is a research release: running software and passing regression checks do not establish superior predictive accuracy.
 
-The replacement lives in `v2/f1engine/` and `web/`. The original implementation and its artifacts remain reference material. V2 never loads legacy trained models or imports the legacy startup modules.
+The replacement lives in `v2/f1engine/` and `web/`. Unused V1 source, dashboards, tests, scripts and dependencies have been removed from the active tree. The [original implementation](https://github.com/Suh7s/f1-aii-engine/tree/1ecac8c) remains recoverable in Git history. V2 never loads legacy trained models.
 
 ## Install and launch
 

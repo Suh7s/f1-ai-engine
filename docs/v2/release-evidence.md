@@ -82,4 +82,10 @@ Both targets passed on this macOS ARM64 machine. These are runtime measurements,
 | Control room | Requested design across five workspaces; desktop/mobile/browser evidence; transparent missing/stale/error states | No claim of exhaustive accessibility or all-browser certification |
 | Live/replay | Deterministic replay and correction/reconnect/staleness tests; two real historical archives; free recorder adapter | Actual free-feed capture/reconnect validation; strategy/weather/neutralization modeling; independent live accuracy |
 
-No worldwide superiority, perfection or guaranteed race outcome is claimed. The original implementation remains preserved as reference, and all revised forecasts retain their predecessors.
+No worldwide superiority, perfection or guaranteed race outcome is claimed. The original implementation remains preserved in Git history at `1ecac8c`, and all revised forecasts retain their predecessors.
+
+## V1 repository cleanup · 19 October 2026
+
+Removed 55 unused V1 files: the old `src/` package, Streamlit dashboard, legacy tests, pipeline/scheduler/audit scripts, V1 dependency list and obsolete instructions/documentation. The original tree remains recoverable at commit `1ecac8c`. Current setup and source-recovery utilities remain.
+
+After removal, the default regression suite passed **104 tests**, with seven opt-in browser checks skipped and seven existing deprecation warnings. Ruff passed, no active Python imports referenced the removed packages, and `f1engine doctor` succeeded against a fresh empty data directory with the packaged UI and XGBoost available. The current Python source hash is unchanged, so the recorded forecasting evidence still refers to the same implementation. No new browser or predictive-performance claim is made by this cleanup.

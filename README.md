@@ -119,7 +119,7 @@ Runtime measurements use an illustrative 20-driver fixture with 22 remaining rou
 | Modeling | Probability baselines · regularized strength · XGBoost ranking · chronological ensembles |
 | Public data | Jolpica · FastF1 · OpenF1 archives · Open-Meteo |
 
-Active application code lives in [`v2/f1engine`](v2/f1engine) and [`web`](web). The [original implementation documentation](docs/legacy/README.md) is preserved separately as reference.
+Active application code lives in [`v2/f1engine`](v2/f1engine) and [`web`](web). Unused V1 code has been removed from the active repository. The [original implementation](https://github.com/Suh7s/f1-aii-engine/tree/1ecac8c) remains recoverable in Git history.
 
 For setup, APIs, experiments and replay commands, see the [technical guide](docs/v2/README.md).
 
