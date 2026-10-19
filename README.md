@@ -64,8 +64,8 @@ These screenshots show saved model estimates from the recorded dataset. They are
 **Requirements:** Python 3.13. The validated platform is macOS ARM64; Windows is not currently supported. Node is only needed when changing the frontend.
 
 ```sh
-git clone https://github.com/Suh7s/f1-aii-engine.git
-cd f1-aii-engine
+git clone https://github.com/Suh7s/f1-ai-engine.git
+cd f1-ai-engine
 ./scripts/setup-v2.sh
 source .venv-v2/bin/activate
 f1engine app
@@ -119,7 +119,7 @@ Runtime measurements use an illustrative 20-driver fixture with 22 remaining rou
 | Modeling | Probability baselines · regularized strength · XGBoost ranking · chronological ensembles |
 | Public data | Jolpica · FastF1 · OpenF1 archives · Open-Meteo |
 
-Active application code lives in [`v2/f1engine`](v2/f1engine) and [`web`](web). Unused V1 code has been removed from the active repository. The [original implementation](https://github.com/Suh7s/f1-aii-engine/tree/1ecac8c) remains recoverable in Git history.
+Active application code lives in [`v2/f1engine`](v2/f1engine) and [`web`](web). Unused V1 code has been removed from the active repository. The [original implementation](https://github.com/Suh7s/f1-ai-engine/tree/1ecac8c) remains recoverable in Git history.
 
 For setup, APIs, experiments and replay commands, see the [technical guide](docs/v2/README.md).
 
